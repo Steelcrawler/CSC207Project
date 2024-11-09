@@ -24,7 +24,7 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
             this.movieSearchPresenter.prepareSuccessView(movieSearchOutputData);
         }
         else {
-            this.movieSearchPresenter.prepareFailView("No movies by that title.");
+            this.movieSearchPresenter.prepareFailView("No movies with that title.");
         }
     }
 }
