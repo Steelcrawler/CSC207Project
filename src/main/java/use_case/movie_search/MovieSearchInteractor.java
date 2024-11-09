@@ -1,4 +1,7 @@
 package use_case.movie_search;
+import entity.Movie;
+import java.util.List;
+
 
 /**
  * The Movie Search Interactor.
@@ -16,12 +19,12 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
     @Override
     public void execute(MovieSearchInputData movieSearchInputData) {
         if (TMDBDataAccessObject.existsByTitle(movieSearchInputData.getMovieTitle())) {
-            final List<Movies> moviesList = this.TMDBDataAccessObject.searchMoviesByTitle(movieSearchInputData.getMovieTitle());
-            final movieSearchOutputData movieSearchOutputData = new movieSearchOutputData(moviesList, false);
+            final List<Movie> moviesList = this.TMDBDataAccessObject.searchMoviesByTitle(movieSearchInputData.getMovieTitle());
+            final MovieSearchOutputData movieSearchOutputData = new MovieSearchOutputData(moviesList, false);
             this.movieSearchPresenter.prepareSuccessView(movieSearchOutputData);
         }
         else {
-            this.movieSearchPresenter.prepareFailView("No movies by that title.");
+            this.movieSearchPresenter.prepareFailView("No movies with that title.");
         }
     }
 }
