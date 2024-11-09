@@ -30,8 +30,8 @@ public interface MovieSearchDataAccessInterface {
     String getMovieTitle();
 
     /**
-     * Returns the list of movies with the title.
-     * @return the list of Movies with the title.
+     * Returns the list of movies with that title.
+     * @return a list of Movies with that title.
      */
     List<Movie> searchMoviesByTitle(String title);
 }
