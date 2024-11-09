@@ -138,7 +138,7 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
     public void propertyChange(PropertyChangeEvent evt) {
         final MovieSearchState state = (MovieSearchState) evt.getNewValue();
         errorMessageField.setText(state.getErrorMessage());
-        resultsTable.
+        resultsTable.add
     }
 
     public String getViewName() {
