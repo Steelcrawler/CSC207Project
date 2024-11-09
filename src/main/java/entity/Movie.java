@@ -9,25 +9,28 @@ import java.util.List;
 public class Movie {
     private final String title;
     private final int movieID;
-    private final String genre;
+    private final List<Integer> genreIDs;
     private final Date releaseDate;
     private final double rating;
     private final String description;
-    private final List<String> notableCast;
-    private final String director;
     private final String plot;
-
-    public Movie(String title) {
+    
+    public Movie(String title, int movieID, List<Integer> genreIDs, Date releaseDate, double rating, String description, String plot) {
         this.title = title;
-        // populate the attributes using the API here
+        this.movieID = movieID;
+        this.genreIDs = genreIDs;
+        this.releaseDate = releaseDate;
+        this.rating = rating;
+        this.description = description;
+        this.plot = plot;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getGenre() {
-        return genre;
+    public List<Integer> getGenre() {
+        return genreIDs;
     }
 
     public Date getReleaseDate() {
@@ -40,14 +43,6 @@ public class Movie {
 
     public String getDescription() {
         return description;
-    }
-
-    public List<String> getNotableCast() {
-        return notableCast;
-    }
-
-    public String getDirector() {
-        return director;
     }
 
     public String getPlot() {
