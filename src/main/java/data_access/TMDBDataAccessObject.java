@@ -75,23 +75,4 @@ public class TMDBDataAccessObject {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.parse(dateString);
     }
-
-//     public static void main(String[] args) {
-//         // Debugging: Print the API key
-//         System.out.println("TMDB API Key: " + TMDB_API_KEY);
-
-//         TMDBDataAccessObject tmdbDataAccessObject = new TMDBDataAccessObject();
-//         List<Movie> movies = tmdbDataAccessObject.searchMoviesByTitle("Harry Potter");
-
-//         for (Movie movie : movies) {
-//             System.out.println("Title: " + movie.getTitle());
-//             System.out.println("Movie ID: " + movie.getMovieID());
-//             System.out.println("Genre IDs: " + movie.getGenre());
-//             System.out.println("Release Date: " + movie.getReleaseDate());
-//             System.out.println("Rating: " + movie.getRating());
-//             System.out.println("Description: " + movie.getDescription());
-//             System.out.println("Plot: " + movie.getPlot());
-//             System.out.println();
-//         }
-//     } 
 }
