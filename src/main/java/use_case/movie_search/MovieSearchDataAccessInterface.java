@@ -2,10 +2,12 @@ package use_case.movie_search;
 
 import entity.Movie;
 
+import java.util.List;
+
 /**
  * DAO for the Movie Search Use Case.
  */
-public interface MovieSearchUserDataAccessInterface {
+public interface MovieSearchDataAccessInterface {
 
     /**
      * Checks if the given title exists.
@@ -26,4 +28,10 @@ public interface MovieSearchUserDataAccessInterface {
      * @return the title of the given movie.
      */
     String getMovieTitle();
+
+    /**
+     * Returns the list of movies with the title.
+     * @return the list of Movies with the title.
+     */
+    List<Movie> searchMoviesByTitle(String title);
 }
