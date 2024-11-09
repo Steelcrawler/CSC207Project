@@ -17,7 +17,7 @@ public class MovieSearchOutputData {
         this.useCaseFailed = useCaseFailed;
     }
 
-    public List<Movie> getUsername() {
+    public List<Movie> getMovies() {
         return movies;
     }
 
