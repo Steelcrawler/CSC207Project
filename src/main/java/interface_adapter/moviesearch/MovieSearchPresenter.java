@@ -12,6 +12,8 @@ import use_case.movie_search.MovieSearchOutputData;
 import use_case.signup.SignupOutputBoundary;
 import use_case.signup.SignupOutputData;
 
+import javax.swing.*;
+
 /**
  * The Presenter for the Signup Use Case.
  */
@@ -28,12 +30,16 @@ public class MovieSearchPresenter implements MovieSearchOutputBoundary {
 
     @Override
     public void prepareSuccessView(MovieSearchOutputData outputData) {
-
+        final MovieSearchState movieSearchState = movieSearchViewModel.getState();
+        movieSearchState.setErrorMessage(errorMessage);
+        movieSearchViewModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
-
+        final MovieSearchState movieSearchState = movieSearchViewModel.getState();
+        movieSearchState.setErrorMessage(errorMessage);
+        movieSearchViewModel.firePropertyChanged();
     }
 }
 

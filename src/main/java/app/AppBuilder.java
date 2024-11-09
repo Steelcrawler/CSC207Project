@@ -33,6 +33,8 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.movie_search.MovieSearchInputBoundary;
+import use_case.movie_search.MovieSearchOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
@@ -145,6 +147,12 @@ public class AppBuilder {
         final LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
         return this;
+    }
+
+    public AppBuilder addMovieSearchUseCase() {
+        final MovieSearchOutputBoundary movieSearchOutputBoundary = new MovieSearchPresenter(viewManagerModel,
+                movieSearchViewModel);
+        final MovieSearchInputBoundary movieSearchInputBoundary = new MovieSearchInteractor()
     }
 
     /**

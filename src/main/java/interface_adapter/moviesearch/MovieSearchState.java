@@ -8,6 +8,8 @@ public class MovieSearchState {
     private String title = "";
     private String genre = "";
     private String rating = "";
+    private String errorMessage = "";
+    private String[]
 
     public String getTitle() {
         return title;
@@ -21,6 +23,8 @@ public class MovieSearchState {
         return rating;
     }
 
+    public String getErrorMessage() {return errorMessage;};
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -31,6 +35,10 @@ public class MovieSearchState {
 
     public void setRating(String rating) {
         this.rating = rating;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     @Override

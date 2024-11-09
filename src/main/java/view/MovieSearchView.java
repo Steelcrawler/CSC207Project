@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import interface_adapter.login.LoginController;
@@ -17,7 +18,7 @@ import interface_adapter.moviesearch.MovieSearchState;
 import interface_adapter.moviesearch.MovieSearchViewModel;
 import interface_adapter.signup.SignupViewModel;
 
-public class MovieSearchView extends JPanel {
+public class MovieSearchView extends JPanel implements ActionListener, ItemListener, PropertyChangeListener {
     private final String viewName = "movie search";
 
     private final MovieSearchViewModel movieSearchViewModel;
@@ -30,10 +31,13 @@ public class MovieSearchView extends JPanel {
     private final JComboBox<String> keywordsComboBox = new JComboBox<>(keywords);
 
     private final JButton searchButton;
+    private final JLabel errorMessageField = new JLabel();
+    private final JTable resultsTable = new JTable();
     private MovieSearchController movieSearchController;
 
     public MovieSearchView(MovieSearchViewModel movieSearchViewModel) {
         this.movieSearchViewModel = movieSearchViewModel;
+        this.movieSearchViewModel.addPropertyChangeListener(this);
 
         final JLabel title = new JLabel(movieSearchViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -59,7 +63,15 @@ public class MovieSearchView extends JPanel {
                 }
             }
         });
-
+        this.add(title);
+        this.add(titleInfo);
+        this.add(genreInfo);
+        this.add(ratingInfo);
+        this.add(buttons);
+        this.add(errorMessageField);
+        this.add(resultsTable);
+    }
+    private void addTitleListener() {
         titleTextField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
@@ -83,7 +95,9 @@ public class MovieSearchView extends JPanel {
                 documentListenerHelper();
             }
         });
+    }
 
+    private void addGenreListener() {
         genreComboBox.addItemListener(new ItemListener() {
 
             private void itemListenerHelper() {
@@ -99,7 +113,9 @@ public class MovieSearchView extends JPanel {
                 }
             }
         });
+    }
 
+    private void addRatingListener() {
         ratingComboBox.addItemListener(new ItemListener() {
 
             private void itemListenerHelper() {
@@ -115,18 +131,31 @@ public class MovieSearchView extends JPanel {
                 }
             }
         });
-        this.add(title);
-        this.add(titleInfo);
-        this.add(genreInfo);
-        this.add(ratingInfo);
-        this.add(buttons);
-
     }
+
+
+
+    public void propertyChange(PropertyChangeEvent evt) {
+        final MovieSearchState state = (MovieSearchState) evt.getNewValue();
+        errorMessageField.setText(state.getErrorMessage());
+        resultsTable.
+    }
+
     public String getViewName() {
         return viewName;
     }
     public void setMovieSearchController(MovieSearchController movieSearchController) {
         this.movieSearchController = movieSearchController;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent evt) {
+        System.out.println("Click " + evt.getActionCommand());
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent evt) {
+        System.out.println("Click " + evt.getStateChange());
     }
 }
 
