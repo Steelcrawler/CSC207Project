@@ -7,6 +7,7 @@ import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import io.github.cdimascio.dotenv.Dotenv;
+import use_case.movie_search.MovieSearchDataAccessInterface;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TMDBDataAccessObject {
+public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     private static final Dotenv dotenv = Dotenv.load();
     private static final String TMDB_API_KEY = dotenv.get("TMDB_API_KEY");
     private static final String BASE_URL = "https://api.themoviedb.org/3";
@@ -23,6 +24,22 @@ public class TMDBDataAccessObject {
 
     private final OkHttpClient client = new OkHttpClient();
 
+    @Override
+    public boolean existsByTitle(String title) {
+        return false;
+    }
+
+    @Override
+    public Movie get(String title) {
+        return null;
+    }
+
+    @Override
+    public String getMovieTitle() {
+        return "";
+    }
+
+    @Override
     public List<Movie> searchMoviesByTitle(String title) {
         List<Movie> movies = new ArrayList<>();
 
