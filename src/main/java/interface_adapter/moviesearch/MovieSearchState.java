@@ -49,13 +49,8 @@ public class MovieSearchState {
         this.errorMessage = errorMessage;
     }
 
-    public void setMoviesInfo(ArrayList<ArrayList<Object>> moviesInfo) {
-        this.moviesInfo = new Object[moviesInfo.size()][];
-        for (int i = 0; i < moviesInfo.size(); i++) {
-            for (int j = 0; j < 4; j++) {
-                this.moviesInfo[i][j] = moviesInfo.get(i).get(j);
-            }
-        }
+    public void setMoviesInfo(Object[][] moviesInfo) {
+        this.moviesInfo = moviesInfo;
     }
 
     public void setSearchFound(boolean searchFound) {
