@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import data_access.InMemoryUserDataAccessObject;
+import data_access.TMDBDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
@@ -160,7 +161,8 @@ public class AppBuilder {
     public AppBuilder addMovieSearchUseCase() {
         final MovieSearchOutputBoundary movieSearchOutputBoundary = new MovieSearchPresenter(viewManagerModel,
                 movieSearchViewModel);
-        final MovieSearchInputBoundary movieSearchInputBoundary = new MovieSearchInteractor(movieSearchDataAccessInterface, movieSearchOutputBoundary);
+        final MovieSearchDataAccessInterface tmdbDataAccessObject = new TMDBDataAccessObject();
+        final MovieSearchInputBoundary movieSearchInputBoundary = new MovieSearchInteractor(tmdbDataAccessObject, movieSearchOutputBoundary);
         final MovieSearchController movieSearchController = new MovieSearchController(movieSearchInputBoundary);
         movieSearchView.setMovieSearchController(movieSearchController);
         return this;
