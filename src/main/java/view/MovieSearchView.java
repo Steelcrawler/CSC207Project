@@ -38,36 +38,6 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
     private final JButton searchButton;
     private final JLabel errorMessageField = new JLabel();
 
-//    private final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
-//    private Object[][] data = {
-//            {"Kathy", "Smith",
-//                    "Snowboarding", "xyz"},
-//            {"John", "Doe",
-//                    "Rowing", "xyz"},
-//            {"Sue", "Black",
-//                    "Knitting", "xyz"},
-//            {"Jane", "White",
-//                    "Speed reading", "xyz"},
-//            {"Joe", "Brown",
-//                    "Pool", "xyz"}
-//    };
-//    private JTable resultsTable = new JTable(data, columnNames);
-//JTable resultsTable = new JTable(new DefaultTableModel());
-//    private Object[][] data = {
-//        {"", "",
-//                "", ""},
-//        {"", "",
-//                "", ""},
-//        {"", "",
-//                "", ""},
-//        {"", "",
-//                "", ""},
-//        {"", "",
-//                "", ""}
-//        };
-//    JTable resultsTable = new JTable(data, columnNames);
-
-//    private JTable resultsTable = new JTable();
     private MovieSearchController movieSearchController;
 
     public MovieSearchView(MovieSearchViewModel movieSearchViewModel) {
@@ -91,24 +61,11 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         searchButton = new JButton(MovieSearchViewModel.SEARCH_BUTTON_LABEL);
         buttons.add(searchButton);
 
-//        final JPanel resultsPanel = new JPanel();
-//        this.resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
-
-//        errorMessageField.setText(movieSearchViewModel.getState().getErrorMessage());
-
-//        resultsTable.setModel(new DefaultTableModel(new Object[][] {}, columnNames));
-//        resultsTable.setFillsViewportHeight(true);
-//        JScrollPane scrollPane = new JScrollPane(resultsTable);
-//
-//        // Add errorMessageField and scrollPane to resultsPanel
-//        resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
-//        resultsPanel.add(errorMessageField);
-//        resultsPanel.add(scrollPane);
-
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 if (evt.getSource().equals(searchButton)) {
                     final MovieSearchState currentState = movieSearchViewModel.getState();
+                    System.out.println("Title: " + currentState.getTitle());
 
                     movieSearchController.execute(currentState.getTitle());
                 }
@@ -129,6 +86,9 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
         this.revalidate();
         this.repaint();
+        addTitleListener();
+        addGenreListener();
+        addRatingListener();
 
 //        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
@@ -206,11 +166,11 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         this.revalidate();
         this.repaint();
 
-        if (state.getSearchFound()) {
-            final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
-            JTable resultsTable = new JTable(state.getMoviesInfo(), columnNames);
-            this.add(resultsTable);
-        }
+        // if (state.getSearchFound()) {
+        //     final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
+        //     JTable resultsTable = new JTable(state.getMoviesInfo(), columnNames);
+        //     this.add(resultsTable);
+        // }
     }
 
     public String getViewName() {
