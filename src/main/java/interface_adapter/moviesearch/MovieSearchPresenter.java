@@ -45,13 +45,20 @@ public class MovieSearchPresenter implements MovieSearchOutputBoundary {
             movieInfo.add(movie.getPlot());
             moviesInfo.add(movieInfo);
         }
-        movieSearchState.setMoviesInfo(moviesInfo);
+        Object[][] newmoviesInfo = new Object[moviesInfo.size()][4];
+        for (int i = 0; i < moviesInfo.size(); i++) {
+            for (int j = 0; j < 4; j++) {
+                newmoviesInfo[i][j] = moviesInfo.get(i).get(j);
+            }
+        }
+        movieSearchState.setMoviesInfo(newmoviesInfo);
         movieSearchViewModel.firePropertyChanged();
     }
 
     @Override
     public void prepareFailView(String errorMessage) {
         final MovieSearchState movieSearchState = movieSearchViewModel.getState();
+        movieSearchState.setSearchFound(true);
         movieSearchState.setErrorMessage(errorMessage);
         movieSearchViewModel.firePropertyChanged();
     }

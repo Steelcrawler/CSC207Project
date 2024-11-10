@@ -37,6 +37,7 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
     private final JButton searchButton;
     private final JLabel errorMessageField = new JLabel();
+    JTable resultsTable;
 
     private MovieSearchController movieSearchController;
 
@@ -165,12 +166,15 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         errorMessageField.setText(state.getErrorMessage());
         this.revalidate();
         this.repaint();
+//        final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
+//        Object[][] results = {{"xyz", "xyz", "xyz", "xyz"}};
+//        this.add(new JTable(results, columnNames));
 
-        // if (state.getSearchFound()) {
-        //     final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
-        //     JTable resultsTable = new JTable(state.getMoviesInfo(), columnNames);
-        //     this.add(resultsTable);
-        // }
+         if (state.getSearchFound()) {
+             final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
+             resultsTable = new JTable(state.getMoviesInfo(), columnNames);
+             this.add(resultsTable);
+         }
     }
 
     public String getViewName() {
