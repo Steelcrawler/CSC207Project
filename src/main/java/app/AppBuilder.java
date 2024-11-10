@@ -18,6 +18,7 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.moviesearch.MovieSearchController;
 import interface_adapter.moviesearch.MovieSearchPresenter;
 import interface_adapter.moviesearch.MovieSearchViewModel;
 import interface_adapter.moviesearch.MovieSearchViewModel;
@@ -33,7 +34,9 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.movie_search.MovieSearchDataAccessInterface;
 import use_case.movie_search.MovieSearchInputBoundary;
+import use_case.movie_search.MovieSearchInteractor;
 import use_case.movie_search.MovieSearchOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
@@ -70,6 +73,8 @@ public class AppBuilder {
     private LoginView loginView;
     private MovieSearchView movieSearchView;
     private MovieSearchViewModel movieSearchViewModel;
+    private MovieSearchDataAccessInterface movieSearchDataAccessInterface;
+    private MovieSearchInteractor movieSearchInteractor;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -148,11 +153,17 @@ public class AppBuilder {
         loginView.setLoginController(loginController);
         return this;
     }
-
+    /**
+     * Adds the Movie Search Use Case to the application.
+     * @return this builder
+     */
     public AppBuilder addMovieSearchUseCase() {
         final MovieSearchOutputBoundary movieSearchOutputBoundary = new MovieSearchPresenter(viewManagerModel,
                 movieSearchViewModel);
-        final MovieSearchInputBoundary movieSearchInputBoundary = new MovieSearchInteractor()
+        final MovieSearchInputBoundary movieSearchInputBoundary = new MovieSearchInteractor(movieSearchDataAccessInterface, movieSearchOutputBoundary);
+        final MovieSearchController movieSearchController = new MovieSearchController(movieSearchInputBoundary);
+        movieSearchView.setMovieSearchController(movieSearchController);
+        return this;
     }
 
     /**

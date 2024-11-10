@@ -18,6 +18,7 @@ public class Main {
                                             .addSignupView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
+                                            .addMovieSearchUseCase()
                                             .build();
 
         application.pack();

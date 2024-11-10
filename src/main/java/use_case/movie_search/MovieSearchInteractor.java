@@ -18,14 +18,23 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
 
     @Override
     public void execute(MovieSearchInputData movieSearchInputData) {
-        if (TMDBDataAccessObject.existsByTitle(movieSearchInputData.getMovieTitle())) {
-            final List<Movie> moviesList = this.TMDBDataAccessObject.searchMoviesByTitle(movieSearchInputData.getMovieTitle());
-            final MovieSearchOutputData movieSearchOutputData = new MovieSearchOutputData(moviesList, false);
-            this.movieSearchPresenter.prepareSuccessView(movieSearchOutputData);
+        if (TMDBDataAccessObject != null) {
+            System.out.println("Not null");
+            if (TMDBDataAccessObject.existsByTitle(movieSearchInputData.getMovieTitle())) {
+                System.out.println("movie title exists");
+                final List<Movie> moviesList = this.TMDBDataAccessObject.searchMoviesByTitle(movieSearchInputData.getMovieTitle());
+                final MovieSearchOutputData movieSearchOutputData = new MovieSearchOutputData(moviesList, false);
+                this.movieSearchPresenter.prepareSuccessView(movieSearchOutputData);
+            }
+            else {
+                this.movieSearchPresenter.prepareFailView("No movies with that title.");
+            }
         }
         else {
+            System.out.println("Its null");
             this.movieSearchPresenter.prepareFailView("No movies with that title.");
         }
+
     }
 }
 
