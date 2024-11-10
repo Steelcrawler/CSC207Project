@@ -36,7 +36,7 @@ public class MovieSearchPresenter implements MovieSearchOutputBoundary {
         System.out.println("here");
         final MovieSearchState movieSearchState = movieSearchViewModel.getState();
         movieSearchState.setSearchFound(true);
-        ArrayList<List> moviesInfo = new ArrayList<>();
+        ArrayList<ArrayList<Object>> moviesInfo = new ArrayList<>();
         for (Movie movie : outputData.getMovies()) {
             ArrayList<Object> movieInfo = new ArrayList<>();
             movieInfo.add(movie.getTitle());

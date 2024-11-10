@@ -13,7 +13,7 @@ public class MovieSearchState {
     private String rating = "";
     private String errorMessage = "";
     private Boolean searchFound = false;
-    private Object[][] moviesInfo = new Object[3][4];
+    private Object[][] moviesInfo;
 
     public String getTitle() {
         return title;
@@ -49,20 +49,13 @@ public class MovieSearchState {
         this.errorMessage = errorMessage;
     }
 
-    public void setMoviesInfo(ArrayList<List> moviesInfo) {
-        this.moviesInfo[0][0] = moviesInfo.get(0).get(0);
-        this.moviesInfo[0][1] = moviesInfo.get(0).get(1);
-        this.moviesInfo[0][2] = moviesInfo.get(0).get(2);
-        this.moviesInfo[0][3] = moviesInfo.get(0).get(3);
-        this.moviesInfo[1][0] = moviesInfo.get(1).get(0);
-        this.moviesInfo[1][1] = moviesInfo.get(1).get(1);
-        this.moviesInfo[1][2] = moviesInfo.get(1).get(2);
-        this.moviesInfo[1][3] = moviesInfo.get(1).get(3);
-        this.moviesInfo[2][0] = moviesInfo.get(2).get(0);
-        this.moviesInfo[2][1] = moviesInfo.get(2).get(1);
-        this.moviesInfo[2][2] = moviesInfo.get(2).get(2);
-        this.moviesInfo[2][3] = moviesInfo.get(2).get(3);
-
+    public void setMoviesInfo(ArrayList<ArrayList<Object>> moviesInfo) {
+        this.moviesInfo = new Object[moviesInfo.size()][];
+        for (int i = 0; i < moviesInfo.size(); i++) {
+            for (int j = 0; j < 4; j++) {
+                this.moviesInfo[i][j] = moviesInfo.get(i).get(j);
+            }
+        }
     }
 
     public void setSearchFound(boolean searchFound) {

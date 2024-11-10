@@ -37,6 +37,7 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
     private final JButton searchButton;
     private final JLabel errorMessageField = new JLabel();
+
 //    private final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
 //    private Object[][] data = {
 //            {"Kathy", "Smith",
@@ -51,15 +52,31 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 //                    "Pool", "xyz"}
 //    };
 //    private JTable resultsTable = new JTable(data, columnNames);
-JTable resultsTable = new JTable(new DefaultTableModel());
+//JTable resultsTable = new JTable(new DefaultTableModel());
+//    private Object[][] data = {
+//        {"", "",
+//                "", ""},
+//        {"", "",
+//                "", ""},
+//        {"", "",
+//                "", ""},
+//        {"", "",
+//                "", ""},
+//        {"", "",
+//                "", ""}
+//        };
+//    JTable resultsTable = new JTable(data, columnNames);
 
+//    private JTable resultsTable = new JTable();
     private MovieSearchController movieSearchController;
 
     public MovieSearchView(MovieSearchViewModel movieSearchViewModel) {
         this.movieSearchViewModel = movieSearchViewModel;
         this.movieSearchViewModel.addPropertyChangeListener(this);
 
-//        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setPreferredSize(new Dimension(800, 800));
+
         final JLabel title = new JLabel(movieSearchViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -74,12 +91,19 @@ JTable resultsTable = new JTable(new DefaultTableModel());
         searchButton = new JButton(MovieSearchViewModel.SEARCH_BUTTON_LABEL);
         buttons.add(searchButton);
 
-        final JPanel resultsPanel = new JPanel();
-        resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
+//        final JPanel resultsPanel = new JPanel();
+//        this.resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
+
 //        errorMessageField.setText(movieSearchViewModel.getState().getErrorMessage());
-        resultsPanel.add(errorMessageField);
-//        resultsPanel.add(resultsTable.getTableHeader());
-//        resultsPanel.add(resultsTable);
+
+//        resultsTable.setModel(new DefaultTableModel(new Object[][] {}, columnNames));
+//        resultsTable.setFillsViewportHeight(true);
+//        JScrollPane scrollPane = new JScrollPane(resultsTable);
+//
+//        // Add errorMessageField and scrollPane to resultsPanel
+//        resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
+//        resultsPanel.add(errorMessageField);
+//        resultsPanel.add(scrollPane);
 
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -95,7 +119,16 @@ JTable resultsTable = new JTable(new DefaultTableModel());
         this.add(genreInfo);
         this.add(ratingInfo);
         this.add(buttons);
+
+        JPanel resultsPanel = new JPanel();
+        resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
+        resultsPanel.setPreferredSize(new Dimension(400, 400));
+
+        resultsPanel.add(errorMessageField);
         this.add(resultsPanel);
+
+        this.revalidate();
+        this.repaint();
 
 //        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
@@ -167,17 +200,16 @@ JTable resultsTable = new JTable(new DefaultTableModel());
 
     public void propertyChange(PropertyChangeEvent evt) {
         final MovieSearchState state = (MovieSearchState) evt.getNewValue();
+        System.out.println(state.getErrorMessage());
+        errorMessageField.setForeground(Color.RED);
         errorMessageField.setText(state.getErrorMessage());
+        this.revalidate();
+        this.repaint();
+
         if (state.getSearchFound()) {
-            String[] columnNames = {"Title",
-                    "Genre",
-                    "Rating",
-                    "Plot Synopsis"};
-            Object[][] data = state.getMoviesInfo();
-            DefaultTableModel model = (DefaultTableModel) resultsTable.getModel();
-            for (Object[] movie : data) {
-                model.addRow(movie);
-            }
+            final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
+            JTable resultsTable = new JTable(state.getMoviesInfo(), columnNames);
+            this.add(resultsTable);
         }
     }
 
