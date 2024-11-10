@@ -3,6 +3,8 @@ package view;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +12,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
+import entity.Movie;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginState;
 import interface_adapter.moviesearch.MovieSearchController;
@@ -32,13 +37,29 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
     private final JButton searchButton;
     private final JLabel errorMessageField = new JLabel();
-    private final JTable resultsTable = new JTable();
+//    private final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
+//    private Object[][] data = {
+//            {"Kathy", "Smith",
+//                    "Snowboarding", "xyz"},
+//            {"John", "Doe",
+//                    "Rowing", "xyz"},
+//            {"Sue", "Black",
+//                    "Knitting", "xyz"},
+//            {"Jane", "White",
+//                    "Speed reading", "xyz"},
+//            {"Joe", "Brown",
+//                    "Pool", "xyz"}
+//    };
+//    private JTable resultsTable = new JTable(data, columnNames);
+JTable resultsTable = new JTable(new DefaultTableModel());
+
     private MovieSearchController movieSearchController;
 
     public MovieSearchView(MovieSearchViewModel movieSearchViewModel) {
         this.movieSearchViewModel = movieSearchViewModel;
         this.movieSearchViewModel.addPropertyChangeListener(this);
 
+//        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         final JLabel title = new JLabel(movieSearchViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -53,6 +74,12 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         searchButton = new JButton(MovieSearchViewModel.SEARCH_BUTTON_LABEL);
         buttons.add(searchButton);
 
+        final JPanel resultsPanel = new JPanel();
+        resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
+//        errorMessageField.setText(movieSearchViewModel.getState().getErrorMessage());
+        resultsPanel.add(errorMessageField);
+//        resultsPanel.add(resultsTable.getTableHeader());
+//        resultsPanel.add(resultsTable);
 
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -68,9 +95,14 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         this.add(genreInfo);
         this.add(ratingInfo);
         this.add(buttons);
-        this.add(errorMessageField);
-        this.add(resultsTable);
+        this.add(resultsPanel);
+
+//        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
+
+//    public String setResultsTable(JTable newResultsTable) {
+//        this.resultsTable = newResultsTable;
+//    }
     private void addTitleListener() {
         titleTextField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -133,12 +165,20 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         });
     }
 
-
-
     public void propertyChange(PropertyChangeEvent evt) {
         final MovieSearchState state = (MovieSearchState) evt.getNewValue();
         errorMessageField.setText(state.getErrorMessage());
-        resultsTable.add
+        if (state.getSearchFound()) {
+            String[] columnNames = {"Title",
+                    "Genre",
+                    "Rating",
+                    "Plot Synopsis"};
+            Object[][] data = state.getMoviesInfo();
+            DefaultTableModel model = (DefaultTableModel) resultsTable.getModel();
+            for (Object[] movie : data) {
+                model.addRow(movie);
+            }
+        }
     }
 
     public String getViewName() {

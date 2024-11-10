@@ -1,5 +1,6 @@
 package interface_adapter.moviesearch;
 
+import entity.Movie;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.moviesearch.MovieSearchState;
 import interface_adapter.moviesearch.MovieSearchViewModel;
@@ -13,6 +14,8 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.signup.SignupOutputData;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Presenter for the Signup Use Case.
@@ -30,8 +33,19 @@ public class MovieSearchPresenter implements MovieSearchOutputBoundary {
 
     @Override
     public void prepareSuccessView(MovieSearchOutputData outputData) {
+        System.out.println("here");
         final MovieSearchState movieSearchState = movieSearchViewModel.getState();
-        movieSearchState.setErrorMessage(errorMessage);
+        movieSearchState.setSearchFound(true);
+        ArrayList<List> moviesInfo = new ArrayList<>();
+        for (Movie movie : outputData.getMovies()) {
+            ArrayList<Object> movieInfo = new ArrayList<>();
+            movieInfo.add(movie.getTitle());
+            movieInfo.add(movie.getGenre());
+            movieInfo.add(movie.getRating());
+            movieInfo.add(movie.getPlot());
+            moviesInfo.add(movieInfo);
+        }
+        movieSearchState.setMoviesInfo(moviesInfo);
         movieSearchViewModel.firePropertyChanged();
     }
 
