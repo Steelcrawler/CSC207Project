@@ -7,8 +7,8 @@ import java.util.List;
  * The Movie Search Interactor.
  */
 public class MovieSearchInteractor implements MovieSearchInputBoundary {
-    private MovieSearchDataAccessInterface TMDBDataAccessObject;
-    private MovieSearchOutputBoundary movieSearchPresenter;
+    private final MovieSearchDataAccessInterface TMDBDataAccessObject;
+    private final MovieSearchOutputBoundary movieSearchPresenter;
 
     public MovieSearchInteractor(MovieSearchDataAccessInterface movieSearchDataAccessInterface,
                                  MovieSearchOutputBoundary movieSearchOutputBoundary) {
