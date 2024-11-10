@@ -26,18 +26,34 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
 
     @Override
     public boolean existsByTitle(String title) {
+        Request request = new Request.Builder()
+                .url(BASE_URL + SEARCH_MOVIE_ENDPOINT + "?query=" + title + "&include_adult=false&language=en-US&page=1&api_key=" + TMDB_API_KEY)
+                .get()
+                .addHeader("accept", "application/json")
+                .build();
+        
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful() && response.body() != null) {
+                String responseBody = response.body().string();
+                
+                // Debugging: Print the raw response body
+                System.out.println("Response Body: " + responseBody);
+                
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray results = jsonObject.getJSONArray("results");
+
+                return results.length() > 0;
+            } else {
+                // Debugging: Print the response code and message
+                System.out.println("Response Code: " + response.code());
+                System.out.println("Response Message: " + response.message());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to check if movie exists by title", e);
+        }
         return false;
     }
 
-    @Override
-    public Movie get(String title) {
-        return null;
-    }
-
-    @Override
-    public String getMovieTitle() {
-        return "";
-    }
 
     @Override
     public List<Movie> searchMoviesByTitle(String title) {
@@ -61,7 +77,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
 
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject movieJson = results.getJSONObject(i);
-                    String movieTitle = movieJson.getString("title");
+                    String movieTitle = movieJson.getString("original_title");
                     int movieID = movieJson.getInt("id");
                     List<Integer> genreIds = new ArrayList<>();
                     JSONArray genreIdsJson = movieJson.getJSONArray("genre_ids");
