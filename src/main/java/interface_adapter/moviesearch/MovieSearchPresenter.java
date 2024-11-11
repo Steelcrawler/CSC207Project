@@ -58,7 +58,7 @@ public class MovieSearchPresenter implements MovieSearchOutputBoundary {
     @Override
     public void prepareFailView(String errorMessage) {
         final MovieSearchState movieSearchState = movieSearchViewModel.getState();
-        movieSearchState.setSearchFound(true);
+        movieSearchState.setSearchFound(false);
         movieSearchState.setErrorMessage(errorMessage);
         movieSearchViewModel.firePropertyChanged();
     }
