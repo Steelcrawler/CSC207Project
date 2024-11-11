@@ -26,10 +26,11 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     private static final String GENRE_LIST_ENDPOINT = "/genre/movie/list";
 
     private final OkHttpClient client = new OkHttpClient();
-    private final Map<String, Integer> genreMap = new HashMap<>();
+    private final Map<Integer, String> genreMap = new HashMap<>();
 
     public TMDBDataAccessObject() {
         populateGenreMap();
+        System.out.println("Genre Map: " + genreMap);
     }
 
     private void populateGenreMap() {
@@ -53,7 +54,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
                     JSONObject genreJson = genres.getJSONObject(i);
                     String genreName = genreJson.getString("name");
                     int genreId = genreJson.getInt("id");
-                    genreMap.put(genreName, genreId);
+                    genreMap.put(genreId, genreName);
                 }
             } else {
                 // Debugging: Print the response code and message
@@ -65,8 +66,8 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
         }
     }
 
-    public int getGenreId(String genreName) {
-        return genreMap.get(genreName);
+    public String getGenreName(int genreId) {
+        return genreMap.get(genreId);
     }
 
 

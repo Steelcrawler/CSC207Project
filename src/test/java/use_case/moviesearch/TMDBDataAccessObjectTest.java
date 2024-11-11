@@ -52,13 +52,14 @@ public class TMDBDataAccessObjectTest {
     @Test
     public void testPopulateGenreMap() {
         // Verify the genreMap
-        int result = tmdbDataAccessObject.getGenreId("Action");
+        String result = tmdbDataAccessObject.getGenreName(28);
+        System.out.println(result);
         assertNotNull(result);
-        assertTrue(result == 28);
+        assertTrue("Action".equals(result));
 
-        result = tmdbDataAccessObject.getGenreId("Comedy");
+        result = tmdbDataAccessObject.getGenreName(35);
         assertNotNull(result);
-        assertTrue(result == 35);
+        assertTrue("Comedy".equals(result));
     }
     
 }

@@ -40,7 +40,7 @@ public class MovieSearchPresenter implements MovieSearchOutputBoundary {
         for (Movie movie : outputData.getMovies()) {
             ArrayList<Object> movieInfo = new ArrayList<>();
             movieInfo.add(movie.getTitle());
-            movieInfo.add(movie.getGenre());
+            movieInfo.add(movie.getGenres());
             movieInfo.add(movie.getRating());
             movieInfo.add(movie.getPlot());
             moviesInfo.add(movieInfo);
