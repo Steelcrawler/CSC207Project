@@ -24,13 +24,15 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     private static final String BASE_URL = "https://api.themoviedb.org/3";
     private static final String SEARCH_MOVIE_ENDPOINT = "/search/movie";
     private static final String GENRE_LIST_ENDPOINT = "/genre/movie/list";
+    private static final String MOVIE_REVIEWS_ENDPOINT = "/movie/{movie_id}/reviews";
+    private static final String VIDEO_ENDPOINT = "/movie/{movie_id}/videos";
 
     private final OkHttpClient client = new OkHttpClient();
     private final Map<Integer, String> genreMap = new HashMap<>();
 
     public TMDBDataAccessObject() {
         populateGenreMap();
-        System.out.println("Genre Map: " + genreMap);
+        // System.out.println("Genre Map: " + genreMap);
     }
 
     private void populateGenreMap() {
@@ -45,7 +47,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
                 String responseBody = response.body().string();
                 
                 // Debugging: Print the raw response body
-                System.out.println("Response Body: " + responseBody);
+                // System.out.println("Response Body: " + responseBody);
                 
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray genres = jsonObject.getJSONArray("genres");
@@ -84,7 +86,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
                 String responseBody = response.body().string();
                 
                 // Debugging: Print the raw response body
-                System.out.println("Response Body: " + responseBody);
+                // System.out.println("Response Body: " + responseBody);
                 
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray results = jsonObject.getJSONArray("results");
@@ -99,6 +101,84 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
             throw new RuntimeException("Failed to check if movie exists by title", e);
         }
         return false;
+    }
+
+    public List<String> getUserReviews(int movieID) {
+        List<String> userReviews = new ArrayList<>();
+
+        String url = BASE_URL + MOVIE_REVIEWS_ENDPOINT.replace("{movie_id}", String.valueOf(movieID)) + "?api_key=" + TMDB_API_KEY;
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("accept", "application/json")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful() && response.body() != null) {
+                String responseBody = response.body().string();
+                
+                // Debugging: Print the raw response body
+                // System.out.println("Response Body: " + responseBody);
+                
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray results = jsonObject.getJSONArray("results");
+
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject reviewJson = results.getJSONObject(i);
+                    String reviewContent = reviewJson.getString("content");
+                    userReviews.add(reviewContent);
+                }
+            } else {
+                // Debugging: Print the response code and message
+                System.out.println("Response Code: " + response.code());
+                System.out.println("Response Message: " + response.message());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to fetch user reviews", e);
+        }
+
+        return userReviews;
+    }
+
+    private String getTrailer(int movieID) {
+        String url = BASE_URL + VIDEO_ENDPOINT.replace("{movie_id}", String.valueOf(movieID)) + "?api_key=" + TMDB_API_KEY;
+
+        System.out.println("Request URL: " + url);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("accept", "application/json")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful() && response.body() != null) {
+                String responseBody = response.body().string();
+                
+                // Debugging: Print the raw response body
+                System.out.println("Response Body: " + responseBody);
+                
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray results = jsonObject.getJSONArray("results");
+                if (results.length() > 0) {
+                    JSONObject videoJson = results.getJSONObject(0);
+                    String videoKey = videoJson.getString("key");
+                    return "https://www.youtube.com/watch?v=" + videoKey;
+                } else {
+                    System.out.println("No videos found for movie ID: " + movieID);
+                }
+            } else {
+                // Debugging: Print the response code and message
+                System.out.println("Response Code: " + response.code());
+                System.out.println("Response Message: " + response.message());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to fetch videos", e);
+        }
+
+        return "";
+
     }
 
     @Override
@@ -116,7 +196,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
                 String responseBody = response.body().string();
                 
                 // Debugging: Print the raw response body
-                System.out.println("Response Body: " + responseBody);
+                // System.out.println("Response Body: " + responseBody);
                 
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray results = jsonObject.getJSONArray("results");
@@ -129,7 +209,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
                     JSONArray genreIdsJson = movieJson.getJSONArray("genre_ids");
                     for (int j = 0; j < genreIdsJson.length(); j++) {
                         int genreId = genreIdsJson.getInt(j);
-                        String genreTitle = genreMap.get(genreId);
+                        String genreTitle = getGenreName(genreId);
                         if (genreTitle != null) {
                             genreTitles.add(genreTitle);
                         }
@@ -137,10 +217,11 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
                     String releaseDateString = movieJson.optString("release_date", null);
                     Date releaseDate = releaseDateString != null && !releaseDateString.isEmpty() ? parseDate(releaseDateString) : null;
                     double rating = movieJson.getDouble("vote_average");
-                    String description = movieJson.getString("overview");
                     String plot = movieJson.getString("overview");
-
-                    movies.add(new Movie(movieTitle, movieID, genreTitles, releaseDate, rating, description, plot));
+                    String posterPath = movieJson.optString("poster_path", "");
+                    List<String> userReviews = getUserReviews(movieID);
+                    String trailerLink = getTrailer(movieID);
+                    movies.add(new Movie(movieTitle, movieID, genreTitles, releaseDate, rating, plot, posterPath, userReviews, trailerLink));
                 }
             } else {
                 // Debugging: Print the response code and message

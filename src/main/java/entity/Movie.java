@@ -12,19 +12,17 @@ public class Movie {
     private final List<String> genres;
     private final Date releaseDate;
     private final double rating;
-    private final String description;
     private final String plot;
     private final String posterPath;
     private final List<String> userReviews;
     private final String trailerLink;
 
-    public Movie(String title, int movieID, List<String> genres, Date releaseDate, double rating, String description, String plot, String posterPath, List<String> userReviews, String trailerLink) {
+    public Movie(String title, int movieID, List<String> genres, Date releaseDate, double rating, String plot, String posterPath, List<String> userReviews, String trailerLink) {
         this.title = title;
         this.movieID = movieID;
         this.genres = genres;
         this.releaseDate = releaseDate;
         this.rating = rating;
-        this.description = description;
         this.plot = plot;
         this.posterPath = posterPath;
         this.userReviews = userReviews;

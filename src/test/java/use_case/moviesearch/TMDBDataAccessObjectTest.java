@@ -46,7 +46,7 @@ public class TMDBDataAccessObjectTest {
             }
         }
 
-        assertTrue("Harry Potter and the Philosopher's Stone is not in the list", found);
+        assertTrue("Harry Potter and the Philosopher's Stone is in the list", found);
     }
 
     @Test
@@ -61,5 +61,26 @@ public class TMDBDataAccessObjectTest {
         assertNotNull(result);
         assertTrue("Comedy".equals(result));
     }
-    
+
+    @Test
+    public void testGetTrailerLink() {
+        List<Movie> movies = tmdbDataAccessObject.searchMoviesByTitle("Harry Potter");
+
+        assertNotNull(movies);
+        assertTrue(movies.size() > 0);
+
+        boolean found = false;
+        for (Movie movie : movies) {
+            System.out.println(movie.getTrailerLink());
+            if (movie.getTitle().equals("Harry Potter and the Philosopher's Stone")) {
+                System.out.println(movie.getTrailerLink());
+            }
+            if (movie.getTrailerLink().equals("https://www.youtube.com/watch?v=l91Km49W9qI")) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue("Harry Potter and the Philosopher's Stone has the correct trailer link", found);
+    }
 }
+    
