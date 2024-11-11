@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -23,11 +24,9 @@ public class TMDBDataAccessObjectTest {
 
     @Test
     public void testExistsByTitle() {
-        // Test with a title that exists
         boolean exists = tmdbDataAccessObject.existsByTitle("Harry Potter and the Philosopher's Stone");
         assertTrue("The movie 'Harry Potter and the Philosopher's Stone' should exist", exists);
 
-        // Test with a title that does not exist
         exists = tmdbDataAccessObject.existsByTitle("Nonexistent Movie Title");
         assertFalse(exists, "The movie 'Nonexistent Movie Title' should not exist");
     }
@@ -37,10 +36,8 @@ public class TMDBDataAccessObjectTest {
         List<Movie> movies = tmdbDataAccessObject.searchMoviesByTitle("Harry Potter");
 
         assertNotNull(movies);
-        System.out.println("Movies: " + movies);
         assertTrue(movies.size() > 0);
 
-        // Check if "Harry Potter and the Philosopher's Stone" is in the list
         boolean found = false;
         for (Movie movie : movies) {
             if (movie.getTitle().equals("Harry Potter and the Philosopher's Stone")) {
@@ -51,4 +48,17 @@ public class TMDBDataAccessObjectTest {
 
         assertTrue("Harry Potter and the Philosopher's Stone is not in the list", found);
     }
+
+    @Test
+    public void testPopulateGenreMap() {
+        // Verify the genreMap
+        int result = tmdbDataAccessObject.getGenreId("Action");
+        assertNotNull(result);
+        assertTrue(result == 28);
+
+        result = tmdbDataAccessObject.getGenreId("Comedy");
+        assertNotNull(result);
+        assertTrue(result == 35);
+    }
+    
 }

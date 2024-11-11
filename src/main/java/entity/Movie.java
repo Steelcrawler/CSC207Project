@@ -9,16 +9,16 @@ import java.util.List;
 public class Movie {
     private final String title;
     private final int movieID;
-    private final List<Integer> genreIDs;
+    private final List<String> genres;
     private final Date releaseDate;
     private final double rating;
     private final String description;
     private final String plot;
     
-    public Movie(String title, int movieID, List<Integer> genreIDs, Date releaseDate, double rating, String description, String plot) {
+    public Movie(String title, int movieID, List<String> genres, Date releaseDate, double rating, String description, String plot) {
         this.title = title;
         this.movieID = movieID;
-        this.genreIDs = genreIDs;
+        this.genres = genres;
         this.releaseDate = releaseDate;
         this.rating = rating;
         this.description = description;
@@ -29,8 +29,8 @@ public class Movie {
         return title;
     }
 
-    public List<Integer> getGenre() {
-        return genreIDs;
+    public List<String> getGenres() {
+        return genres;
     }
 
     public Date getReleaseDate() {

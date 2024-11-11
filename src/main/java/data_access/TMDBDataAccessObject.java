@@ -14,15 +14,61 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     private static final Dotenv dotenv = Dotenv.load();
     private static final String TMDB_API_KEY = dotenv.get("TMDB_API_KEY");
     private static final String BASE_URL = "https://api.themoviedb.org/3";
     private static final String SEARCH_MOVIE_ENDPOINT = "/search/movie";
+    private static final String GENRE_LIST_ENDPOINT = "/genre/movie/list";
 
     private final OkHttpClient client = new OkHttpClient();
+    private final Map<String, Integer> genreMap = new HashMap<>();
+
+    public TMDBDataAccessObject() {
+        populateGenreMap();
+    }
+
+    private void populateGenreMap() {
+        Request request = new Request.Builder()
+                .url(BASE_URL + GENRE_LIST_ENDPOINT + "?api_key=" + TMDB_API_KEY)
+                .get()
+                .addHeader("accept", "application/json")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful() && response.body() != null) {
+                String responseBody = response.body().string();
+                
+                // Debugging: Print the raw response body
+                System.out.println("Response Body: " + responseBody);
+                
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray genres = jsonObject.getJSONArray("genres");
+
+                for (int i = 0; i < genres.length(); i++) {
+                    JSONObject genreJson = genres.getJSONObject(i);
+                    String genreName = genreJson.getString("name");
+                    int genreId = genreJson.getInt("id");
+                    genreMap.put(genreName, genreId);
+                }
+            } else {
+                // Debugging: Print the response code and message
+                System.out.println("Response Code: " + response.code());
+                System.out.println("Response Message: " + response.message());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to fetch genres", e);
+        }
+    }
+
+    public int getGenreId(String genreName) {
+        return genreMap.get(genreName);
+    }
+
 
     @Override
     public boolean existsByTitle(String title) {
@@ -54,7 +100,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
         return false;
     }
 
-
     @Override
     public List<Movie> searchMoviesByTitle(String title) {
         List<Movie> movies = new ArrayList<>();
@@ -77,12 +122,16 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
 
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject movieJson = results.getJSONObject(i);
-                    String movieTitle = movieJson.getString("original_title");
+                    String movieTitle = movieJson.getString("title");
                     int movieID = movieJson.getInt("id");
-                    List<Integer> genreIds = new ArrayList<>();
+                    List<String> genreTitles = new ArrayList<>();
                     JSONArray genreIdsJson = movieJson.getJSONArray("genre_ids");
                     for (int j = 0; j < genreIdsJson.length(); j++) {
-                        genreIds.add(genreIdsJson.getInt(j));
+                        int genreId = genreIdsJson.getInt(j);
+                        String genreTitle = genreMap.get(genreId);
+                        if (genreTitle != null) {
+                            genreTitles.add(genreTitle);
+                        }
                     }
                     String releaseDateString = movieJson.optString("release_date", null);
                     Date releaseDate = releaseDateString != null && !releaseDateString.isEmpty() ? parseDate(releaseDateString) : null;
@@ -90,7 +139,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
                     String description = movieJson.getString("overview");
                     String plot = movieJson.getString("overview");
 
-                    movies.add(new Movie(movieTitle, movieID, genreIds, releaseDate, rating, description, plot));
+                    movies.add(new Movie(movieTitle, movieID, genreTitles, releaseDate, rating, description, plot));
                 }
             } else {
                 // Debugging: Print the response code and message
