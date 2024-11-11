@@ -63,6 +63,24 @@ public class TMDBDataAccessObjectTest {
     }
 
     @Test
+    public void testUserReviews() {
+        List<Movie> movies = tmdbDataAccessObject.searchMoviesByTitle("Harry Potter");
+
+        assertNotNull(movies);
+        assertTrue(movies.size() > 0);
+
+        boolean found = false;
+        for (Movie movie : movies) {
+            String firstReview = movie.getUserReviews().get(0);
+            if (firstReview.contains("Harry Potter is an Orphan who on his eleventh birthday discovers he's a wizard and is called to term at Hogwarts School.")) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue("Harry Potter and the Philosopher's Stone has the correct user review", found);
+    }
+
+    @Test
     public void testGetTrailerLink() {
         List<Movie> movies = tmdbDataAccessObject.searchMoviesByTitle("Harry Potter");
 
