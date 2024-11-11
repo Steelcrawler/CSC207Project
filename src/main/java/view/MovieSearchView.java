@@ -37,7 +37,8 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
     private final JButton searchButton;
     private final JLabel errorMessageField = new JLabel();
-    JTable resultsTable;
+    private JTable resultsTable;  // Table to display results
+    private JPanel resultsPanel = new JPanel();
 
     private MovieSearchController movieSearchController;
 
@@ -65,6 +66,9 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 if (evt.getSource().equals(searchButton)) {
+                    if (resultsTable != null) {
+                        resultsPanel.remove(resultsTable);
+                    }
                     final MovieSearchState currentState = movieSearchViewModel.getState();
                     System.out.println("Title: " + currentState.getTitle());
 
@@ -78,7 +82,6 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         this.add(ratingInfo);
         this.add(buttons);
 
-        JPanel resultsPanel = new JPanel();
         resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
         resultsPanel.setPreferredSize(new Dimension(400, 400));
 
@@ -161,19 +164,29 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
     public void propertyChange(PropertyChangeEvent evt) {
         final MovieSearchState state = (MovieSearchState) evt.getNewValue();
-        System.out.println(state.getErrorMessage());
-        errorMessageField.setForeground(Color.RED);
-        errorMessageField.setText(state.getErrorMessage());
-        this.revalidate();
-        this.repaint();
+        if (resultsTable != null) {
+            resultsPanel.remove(resultsTable);
+        }
+        if (!state.getSearchFound()) {
+            System.out.println(state.getErrorMessage());
+            errorMessageField.setForeground(Color.RED);
+            errorMessageField.setText(state.getErrorMessage());
+            this.revalidate();
+            this.repaint();
+        }
+
+
 //        final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
 //        Object[][] results = {{"xyz", "xyz", "xyz", "xyz"}};
 //        this.add(new JTable(results, columnNames));
 
          if (state.getSearchFound()) {
+             errorMessageField.setText("");
              final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
              resultsTable = new JTable(state.getMoviesInfo(), columnNames);
-             this.add(resultsTable);
+             resultsPanel.add(resultsTable);
+             resultsPanel.revalidate();
+             resultsPanel.repaint();
          }
     }
 
