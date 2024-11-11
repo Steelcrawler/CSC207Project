@@ -46,7 +46,7 @@ public class TMDBDataAccessObjectTest {
             }
         }
 
-        assertTrue("Harry Potter and the Philosopher's Stone is not in the list", found);
+        assertTrue("Harry Potter and the Philosopher's Stone is in the list", found);
     }
 
     @Test
@@ -61,5 +61,44 @@ public class TMDBDataAccessObjectTest {
         assertNotNull(result);
         assertTrue("Comedy".equals(result));
     }
-    
+
+    @Test
+    public void testUserReviews() {
+        List<Movie> movies = tmdbDataAccessObject.searchMoviesByTitle("Harry Potter");
+
+        assertNotNull(movies);
+        assertTrue(movies.size() > 0);
+
+        boolean found = false;
+        for (Movie movie : movies) {
+            String firstReview = movie.getUserReviews().get(0);
+            if (firstReview.contains("Harry Potter is an Orphan who on his eleventh birthday discovers he's a wizard and is called to term at Hogwarts School.")) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue("Harry Potter and the Philosopher's Stone has the correct user review", found);
+    }
+
+    @Test
+    public void testGetTrailerLink() {
+        List<Movie> movies = tmdbDataAccessObject.searchMoviesByTitle("Harry Potter");
+
+        assertNotNull(movies);
+        assertTrue(movies.size() > 0);
+
+        boolean found = false;
+        for (Movie movie : movies) {
+            System.out.println(movie.getTrailerLink());
+            if (movie.getTitle().equals("Harry Potter and the Philosopher's Stone")) {
+                System.out.println(movie.getTrailerLink());
+            }
+            if (movie.getTrailerLink().equals("https://www.youtube.com/watch?v=l91Km49W9qI")) {
+                found = true;
+                break;
+            }
+        }
+        assertTrue("Harry Potter and the Philosopher's Stone has the correct trailer link", found);
+    }
 }
+    
