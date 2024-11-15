@@ -6,6 +6,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import entity.User;
 import entity.UserFactory;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
@@ -31,11 +32,22 @@ public class MongoDBUserDataAccessObject implements SignupUserDataAccessInterfac
     private final UserFactory userFactory;
     private String currentUsername;
 
-    public MongoDBUserDataAccessObject(String connectionString, String dbName, UserFactory userFactory) {
+    public MongoDBUserDataAccessObject() {
+        Dotenv dotenv = Dotenv.load();
+        String connectionString = dotenv.get("MONGODB_CONNECTION_STRING");
+        String dbName = dotenv.get("MONGODB_DB_NAME");
+        String userFactoryClass = dotenv.get("USER_FACTORY_CLASS");
+
         this.mongoClient = MongoClients.create(connectionString);
         this.database = mongoClient.getDatabase(dbName);
         this.usersCollection = database.getCollection("users");
-        this.userFactory = userFactory;
+
+        try {
+            Class<?> clazz = Class.forName(userFactoryClass);
+            this.userFactory = (UserFactory) clazz.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to instantiate UserFactory", e);
+        }
     }
 
     @Override

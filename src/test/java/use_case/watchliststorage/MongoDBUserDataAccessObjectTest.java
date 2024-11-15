@@ -23,7 +23,7 @@ public class MongoDBUserDataAccessObjectTest {
     public void setUp() {
         userFactory = new CommonUserFactory();
         user = userFactory.create("john_doe", "password123");
-        dao = new MongoDBUserDataAccessObject("mongodb://localhost:27017", "movieDB", userFactory);
+        dao = new MongoDBUserDataAccessObject();
         dao.save(user);
     }
 
