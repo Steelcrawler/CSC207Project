@@ -235,6 +235,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
         return movies;
     }
 
+
     private Date parseDate(String dateString) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.parse(dateString);

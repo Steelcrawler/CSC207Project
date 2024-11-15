@@ -8,9 +8,9 @@ import java.util.ArrayList;
  */
 public class CommonUser implements User {
 
-    private final String name;
-    private final String password;
-    private final List<Integer> Watchlist;
+    private String name;
+    private String password;
+    private List<Integer> Watchlist;
 
     public CommonUser(String name, String password) {
         this.name = name;
@@ -34,7 +34,13 @@ public class CommonUser implements User {
     }
 
     @Override
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
     public void addToWatchlist(int movieID) {
         Watchlist.add(movieID);
     }
+
 }

@@ -19,6 +19,12 @@ public interface User {
     String getPassword();
 
     /**
+     * Sets the password of the user.
+     * @return
+     */
+    void setPassword(String password);
+
+    /**
      * Returns the watchlist of the user.
      * @return the watchlist of the user.
      */
@@ -29,5 +35,6 @@ public interface User {
      * @param movieID the ID of the movie to add to the watchlist.
      */
     void addToWatchlist(int movieID);
+    
 
 }
