@@ -10,12 +10,12 @@ public class CommonUser implements User {
 
     private String name;
     private String password;
-    private List<Integer> Watchlist;
+    private List<Integer> watchlist;
 
     public CommonUser(String name, String password) {
         this.name = name;
         this.password = password;
-        this.Watchlist = new ArrayList<>();
+        this.watchlist = new ArrayList<>();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class CommonUser implements User {
 
     @Override
     public List<Integer> getWatchlist() {
-        return Watchlist;
+        return this.watchlist;
     }
 
     @Override
