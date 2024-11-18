@@ -191,16 +191,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     }
 
     @Override
-    public List<Movie> searchMovies(String title, String genre) {
-        return searchMovies(title, genre, null);
-    }
-
-    @Override
-    public List<Movie> searchMovies(Integer rating) {
-        return searchMovies(null, null, rating);
-    }
-
-    @Override
     public List<Movie> searchMovies(String title, String genre, Integer rating) {
         List<Movie> movies = new ArrayList<>();
         StringBuilder urlBuilder = new StringBuilder(BASE_URL + DISCOVER_MOVIE_ENDPOINT + "?api_key=" + TMDB_API_KEY);
