@@ -153,7 +153,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     private String getTrailer(int movieID) {
         String url = BASE_URL + VIDEO_ENDPOINT.replace("{movie_id}", String.valueOf(movieID)) + "?api_key=" + TMDB_API_KEY;
 
-        System.out.println("Request URL: " + url);
+        // System.out.println("Request URL: " + url);
 
         Request request = new Request.Builder()
                 .url(url)
@@ -166,7 +166,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
                 String responseBody = response.body().string();
                 
                 // Debugging: Print the raw response body
-                System.out.println("Response Body: " + responseBody);
+                // System.out.println("Response Body: " + responseBody);
                 
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray results = jsonObject.getJSONArray("results");

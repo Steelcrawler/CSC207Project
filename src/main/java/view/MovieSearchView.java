@@ -28,9 +28,9 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
     private final MovieSearchViewModel movieSearchViewModel;
     private final JTextField titleTextField = new JTextField(30);
-    String[] genres = {"Comedy", "Horror"};
+    String[] genres = {"None", "War", "Music", "Comedy", "Documentary", "History", "Western", "Adventure", "Fantasy", "Science Fiction", "Animation", "Crime", "Mystery", "Drama", "TV Movie", "Thriller", "Horror", "Action", "Romance", "Family"};
     private final JComboBox<String> genreComboBox = new JComboBox<>(genres);
-    String[] ratings = {"> 20%", "> 40%", "> 60%", "> 80%"};
+    String[] ratings = {"None", "> 2", "> 4", "> 6", "> 8"};
     private final JComboBox<String> ratingComboBox = new JComboBox<>(ratings);
     String[] keywords = {"plot twist", "time travel", "conspiracy", "criminal", "monster"};
     private final JComboBox<String> keywordsComboBox = new JComboBox<>(keywords);
@@ -71,8 +71,14 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
                     }
                     final MovieSearchState currentState = movieSearchViewModel.getState();
                     System.out.println("Title: " + currentState.getTitle());
-
-                    movieSearchController.execute(currentState.getTitle());
+                    System.out.println("Genre: " + currentState.getGenre());
+                    System.out.println("Rating: " + currentState.getRating());
+        
+                    String title = currentState.getTitle();
+                    String genre = currentState.getGenre();
+                    String rating = currentState.getRating();
+        
+                    movieSearchController.execute(title, genre, rating);
                 }
             }
         });

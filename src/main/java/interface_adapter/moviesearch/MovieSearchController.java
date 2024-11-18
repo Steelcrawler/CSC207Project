@@ -31,9 +31,10 @@ public class MovieSearchController {
      * Executes the Movie Search Use Case.
      * @param title the title to search for.
      */
-    public void execute(String title) {
+
+    public void execute(String title, String genre, String rating) {
         final MovieSearchInputData movieSearchInputData = new MovieSearchInputData(
-                title);
+                title, genre, rating);
 
         movieSearchUseCaseInteractor.execute(movieSearchInputData);
     }
