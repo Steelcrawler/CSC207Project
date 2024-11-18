@@ -19,8 +19,8 @@ import entity.Movie;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginState;
 //import interface_adapter.moviesearch.MovieSearchController;
-//import interface_adapter.moviesearch.MovieSearchState;
-//import interface_adapter.moviesearch.MovieSearchViewModel;
+import interface_adapter.moviesearch.MovieSearchState;
+import interface_adapter.moviesearch.MovieSearchViewModel;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.watchlist.WatchlistController;
 import interface_adapter.watchlist.WatchlistState;
@@ -33,7 +33,7 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
     private final JPanel menuPanel;
     private final JButton backButton;
     private final JButton selectButton;
-    private JScrollPane watchlistScrollPane = new JScrollPane();
+    private final JScrollPane watchlistScrollPane;
     private final JPanel moviePanel;
 
     private WatchlistController watchlistController;
@@ -76,14 +76,13 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(backButton)) {
-                            final WatchlistState currentState = watchlistViewModel.getState();
+                            final MovieSearchState currentState = movieSearchViewModel.getState();
 
-                            watchlistController.execute(
-                                    currentState.getUsername(),
-                                    currentState.getPassword()
-                            );
-                }
-        )
+                        }
+                        }
+                    }
+        );
+
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
@@ -91,21 +90,6 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
 
     }
 
-//
-//
-////        final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
-////        Object[][] results = {{"xyz", "xyz", "xyz", "xyz"}};
-////        this.add(new JTable(results, columnNames));
-//
-//        if (state.getSearchFound()) {
-//            errorMessageField.setText("");
-//            final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
-//            resultsTable = new JTable(state.getMoviesInfo(), columnNames);
-//            resultsPanel.add(resultsTable);
-//            resultsPanel.revalidate();
-//            resultsPanel.repaint();
-//        }
-//    }
 
     public String getViewName() {
         return viewName;

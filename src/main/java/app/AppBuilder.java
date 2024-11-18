@@ -26,6 +26,7 @@ import interface_adapter.moviesearch.MovieSearchViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.watchlist.WatchlistViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -74,6 +75,8 @@ public class AppBuilder {
     private LoginView loginView;
     private MovieSearchView movieSearchView;
     private MovieSearchViewModel movieSearchViewModel;
+    private WatchlistView watchlistView;
+    private WatchlistViewModel watchlistViewModel;
     private MovieSearchDataAccessInterface movieSearchDataAccessInterface;
     private MovieSearchInteractor movieSearchInteractor;
 
@@ -103,6 +106,16 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the Watchlist View to the application.
+     * @retur  this builder
+     */
+    public AppBuilder addWatchlistView() {
+        watchlistViewModel = new WatchlistViewModel();
+        watchlistView = new WatchlistView(watchlistViewModel);
+        cardPanel.add(watchlistView, watchlistView.getViewName());
+        return this;
+    }
     /**
      * Adds the Login View to the application.
      * @return this builder
