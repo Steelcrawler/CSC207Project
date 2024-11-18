@@ -40,7 +40,7 @@ public class CommonUser implements User {
 
     @Override
     public void addToWatchlist(int movieID) {
-        Watchlist.add(movieID);
+        watchlist.add(movieID);
     }
 
 }
