@@ -26,6 +26,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     private static final String GENRE_LIST_ENDPOINT = "/genre/movie/list";
     private static final String MOVIE_REVIEWS_ENDPOINT = "/movie/{movie_id}/reviews";
     private static final String VIDEO_ENDPOINT = "/movie/{movie_id}/videos";
+    private static final String DISCOVER_MOVIE_ENDPOINT = "/discover/movie";
 
     private final OkHttpClient client = new OkHttpClient();
     private final Map<Integer, String> genreMap = new HashMap<>();
@@ -72,6 +73,14 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
         return genreMap.get(genreId);
     }
 
+    public Integer getGenreId(String genreName) {
+        for (Map.Entry<Integer, String> entry : genreMap.entrySet()) {
+            if (entry.getValue().equalsIgnoreCase(genreName)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
 
     @Override
     public boolean existsByTitle(String title) {
@@ -179,6 +188,81 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
 
         return "";
 
+    }
+
+    @Override
+    public List<Movie> searchMovies(String title, String genre) {
+        return searchMovies(title, genre, null);
+    }
+
+    @Override
+    public List<Movie> searchMovies(Integer rating) {
+        return searchMovies(null, null, rating);
+    }
+
+    @Override
+    public List<Movie> searchMovies(String title, String genre, Integer rating) {
+        List<Movie> movies = new ArrayList<>();
+        StringBuilder urlBuilder = new StringBuilder(BASE_URL + DISCOVER_MOVIE_ENDPOINT + "?api_key=" + TMDB_API_KEY);
+    
+        if (title != null && !title.isEmpty()) {
+            urlBuilder.append("&query=").append(title);
+        }
+        if (genre != null && !genre.isEmpty()) {
+            Integer genreId = getGenreId(genre);
+            if (genreId != null) {
+                urlBuilder.append("&with_genres=").append(genreId);
+            }
+        }
+        if (rating != null && rating >= 0 && rating <= 10) {
+            urlBuilder.append("&vote_average.gte=").append(rating);
+        }
+    
+        Request request = new Request.Builder()
+                .url(urlBuilder.toString())
+                .get()
+                .addHeader("accept", "application/json")
+                .build();
+    
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful() && response.body() != null) {
+                String responseBody = response.body().string();
+                
+                JSONObject jsonObject = new JSONObject(responseBody);
+                JSONArray results = jsonObject.getJSONArray("results");
+    
+                for (int i = 0; i < results.length(); i++) {
+                    JSONObject movieJson = results.getJSONObject(i);
+                    String movieTitle = movieJson.getString("title");
+                    int movieID = movieJson.getInt("id");
+                    List<String> genreTitles = new ArrayList<>();
+                    JSONArray genreIdsJson = movieJson.getJSONArray("genre_ids");
+                    for (int j = 0; j < genreIdsJson.length(); j++) {
+                        int genreId = genreIdsJson.getInt(j);
+                        String genreTitle = genreMap.get(genreId);
+                        if (genreTitle != null) {
+                            genreTitles.add(genreTitle);
+                        }
+                    }
+                    String releaseDateString = movieJson.optString("release_date", null);
+                    Date releaseDate = releaseDateString != null && !releaseDateString.isEmpty() ? parseDate(releaseDateString) : null;
+                    double ratingValue = movieJson.getDouble("vote_average");
+                    String plot = movieJson.getString("overview");
+                    String posterPath = movieJson.optString("poster_path", "");
+                    List<String> userReviews = getUserReviews(movieID);
+                    String trailerLink = getTrailer(movieID);
+    
+                    movies.add(new Movie(movieTitle, movieID, genreTitles, releaseDate, ratingValue, plot, posterPath, userReviews, trailerLink));
+                }
+            } else {
+                System.out.println("Response Code: " + response.code());
+                System.out.println("Response Message: " + response.message());
+            }
+        } catch (IOException | ParseException e) {
+            throw new RuntimeException("Failed to search movies", e);
+        }
+    
+        return movies;
     }
 
     @Override
