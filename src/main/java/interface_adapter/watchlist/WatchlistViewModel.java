@@ -1,7 +1,6 @@
 package interface_adapter.watchlist;
 
 import interface_adapter.ViewModel;
-import interface_adapter.moviesearch.MovieSearchState;
 
 public class WatchlistViewModel extends ViewModel<WatchlistState> {
     public static final String TITLE_LABEL = "Your Watchlist";
