@@ -1,5 +1,9 @@
 package data_access;
 
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.ServerApi;
+import com.mongodb.ServerApiVersion;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -42,9 +46,51 @@ public class MongoDBUserDataAccessObject implements SignupUserDataAccessInterfac
         String dbName = dotenv.get("MONGODB_DB_NAME");
         String userFactoryClass = dotenv.get("USER_FACTORY_CLASS");
 
-        this.mongoClient = MongoClients.create(connectionString);
+        System.out.println("Connecting to MongoDB with connection string: " + connectionString);
+        System.out.println("Database name: " + dbName);
+
+        ServerApi serverApi = ServerApi.builder()
+                .version(ServerApiVersion.V1)
+                .build();
+        MongoClientSettings settings = MongoClientSettings.builder()
+                .applyConnectionString(new ConnectionString(connectionString))
+                .serverApi(serverApi)
+                .build();
+
+        this.mongoClient = MongoClients.create(settings);
         this.database = mongoClient.getDatabase(dbName);
         this.usersCollection = database.getCollection("users");
+
+        // Verify connection and print database contents
+        // try {
+        //     database.runCommand(new Document("ping", 1));
+        //     System.out.println("Successfully connected to MongoDB");
+
+        //     System.out.println("\n=== Database Contents ===");
+        //     System.out.println("Database: " + dbName);
+
+        //     // List all collections
+        //     database.listCollectionNames().forEach(collectionName -> {
+        //         System.out.println("\nCollection: " + collectionName);
+        //         MongoCollection<Document> collection = database.getCollection(collectionName);
+
+        //         // Print all documents in the collection
+        //         System.out.println("Documents in collection:");
+        //         collection.find().forEach(doc -> {
+        //             System.out.println("\nDocument ID: " + doc.getObjectId("_id"));
+        //             System.out.println("Raw JSON: " + doc.toJson());
+        //             System.out.println("Field values:");
+        //             System.out.println("  username: " + doc.getString("username"));
+        //             System.out.println("  password: " + doc.getString("password"));
+        //             System.out.println("  watchlist: " + doc.getList("watchlist", Integer.class));
+        //         });
+        //     });
+        //     System.out.println("======================\n");
+
+        // } catch (Exception e) {
+        //     System.err.println("Failed to connect to MongoDB: " + e.getMessage());
+        //     throw e;
+        // }
 
         try {
             Class<?> clazz = Class.forName(userFactoryClass);
@@ -106,23 +152,17 @@ public class MongoDBUserDataAccessObject implements SignupUserDataAccessInterfac
     }
 
     @Override
-    public void addToWatchlist(String username, Integer movieId) {
+    public void addToWatchlist(String username, int movieId) {
         Bson filter = eq(USERNAME, username);
         Bson update = new Document("$push", new Document(WATCHLIST, movieId));
         usersCollection.updateOne(filter, update);
     }
 
     @Override
-    public void removeFromWatchlist(String username, Integer movieId) {
+    public void removeFromWatchlist(String username, int movieId) {
         Bson filter = eq(USERNAME, username);
         Bson update = new Document("$pull", new Document(WATCHLIST, movieId));
         usersCollection.updateOne(filter, update);
-    }
-
-    @Override
-    public boolean existsInWatchlist(String username, Integer movieID) {
-        List<Integer> userWatchlist = this.getWatchlist(username);
-        return userWatchlist.contains(movieID);
     }
 
     public MongoCollection<Document> getUsersCollection() {
@@ -132,5 +172,4 @@ public class MongoDBUserDataAccessObject implements SignupUserDataAccessInterfac
     public void close() {
         mongoClient.close();
     }
-
 }

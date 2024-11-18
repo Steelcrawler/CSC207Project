@@ -9,7 +9,9 @@ import org.json.JSONObject;
 import io.github.cdimascio.dotenv.Dotenv;
 import use_case.movie_search.MovieSearchDataAccessInterface;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     private static final Dotenv dotenv = Dotenv.load();
@@ -27,6 +30,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     private static final String MOVIE_REVIEWS_ENDPOINT = "/movie/{movie_id}/reviews";
     private static final String VIDEO_ENDPOINT = "/movie/{movie_id}/videos";
     private static final String DISCOVER_MOVIE_ENDPOINT = "/discover/movie";
+    private static final String KEYWORDS_EXPORT_URL = "http://files.tmdb.org/p/exports/keyword_ids_MM_DD_YYYY.json.gz";
 
     private final OkHttpClient client = new OkHttpClient();
     private final Map<Integer, String> genreMap = new HashMap<>();
@@ -35,6 +39,36 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
         populateGenreMap();
         // System.out.println("Genre Map: " + genreMap);
     }
+
+    public void downloadKeywords(String date) {
+        String url = KEYWORDS_EXPORT_URL.replace("MM_DD_YYYY", date);
+        System.out.println("Downloading keywords from " + url);
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful() && response.body() != null) {
+                InputStream inputStream = response.body().byteStream();
+                GZIPInputStream gzipInputStream = new GZIPInputStream(inputStream);
+                String outputFilePath = "keyword_ids_" + date + ".json";
+                try (FileOutputStream fileOutputStream = new FileOutputStream(outputFilePath)) {
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = gzipInputStream.read(buffer)) != -1) {
+                        fileOutputStream.write(buffer, 0, len);
+                    }
+                }
+                System.out.println("Keywords downloaded and saved to " + outputFilePath);
+            } else {
+                System.out.println("Failed to download keywords. Response Code: " + response.code());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to download keywords", e);
+        }
+    }
+
 
     private void populateGenreMap() {
         Request request = new Request.Builder()
@@ -309,9 +343,13 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
         return movies;
     }
 
-
     private Date parseDate(String dateString) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.parse(dateString);
+    }
+
+    public static void main(String[] args) {
+        TMDBDataAccessObject tmdbDataAccessObject = new TMDBDataAccessObject();
+        tmdbDataAccessObject.downloadKeywords("05_15_2024");
     }
 }
