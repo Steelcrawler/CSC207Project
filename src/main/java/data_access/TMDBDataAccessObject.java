@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import io.github.cdimascio.dotenv.Dotenv;
 import use_case.movie_search.MovieSearchDataAccessInterface;
+import use_case.movieinfo.MovieInfoDataAccessInterface;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -18,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
+public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, MovieInfoDataAccessInterface {
     private static final Dotenv dotenv = Dotenv.load();
     private static final String TMDB_API_KEY = dotenv.get("TMDB_API_KEY");
     private static final String BASE_URL = "https://api.themoviedb.org/3";
@@ -26,6 +27,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     private static final String GENRE_LIST_ENDPOINT = "/genre/movie/list";
     private static final String MOVIE_REVIEWS_ENDPOINT = "/movie/{movie_id}/reviews";
     private static final String VIDEO_ENDPOINT = "/movie/{movie_id}/videos";
+    private static final String DETAILS_ENDPOINT = "/movie/{movie_id}";
 
     private final OkHttpClient client = new OkHttpClient();
     private final Map<Integer, String> genreMap = new HashMap<>();
@@ -179,6 +181,52 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
 
         return "";
 
+    }
+
+    public Movie getMovieByID(int iD) {
+        Request request = new Request.Builder()
+                .url(BASE_URL + DETAILS_ENDPOINT + "?query=" + iD + "&include_adult=false&language=en-US&page=1&api_key=" + TMDB_API_KEY)
+                .get()
+                .addHeader("accept", "application/json")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful() && response.body() != null) {
+                String responseBody = response.body().toString();
+
+                // Debugging: Print the raw response body
+                // System.out.println("Response Body: " + responseBody);
+
+                JSONObject jsonObject = new JSONObject(responseBody);
+                String movieTitle = jsonObject.getString("title");
+                int movieID = jsonObject.getInt("id");
+
+                List<String> genreTitles = new ArrayList<>();
+                JSONArray genreIdsJson = jsonObject.getJSONArray("genres");
+                for (int j = 0; j < genreIdsJson.length(); j++) {
+                    JSONObject genreObject = genreIdsJson.getJSONObject(j);
+                    String genreName = genreObject.getString("name");
+                    genreTitles.add(genreName);
+                }
+                String releaseDateString = jsonObject.optString("release_date", null);
+                Date releaseDate = releaseDateString != null && !releaseDateString.isEmpty() ? parseDate(releaseDateString) : null;
+                double rating = jsonObject.getDouble("vote_average");
+                String plot = jsonObject.getString("overview");
+                String posterPath = jsonObject.optString("poster_path", "");
+                List<String> userReviews = getUserReviews(movieID);
+                String trailerLink = getTrailer(movieID);
+                Movie movie = new Movie(movieTitle, movieID, genreTitles, releaseDate, rating, plot, posterPath, userReviews, trailerLink);
+                return movie;
+            }
+            else {
+                // Debugging: Print the response code and message
+                    System.out.println("Response Code: " + response.code());
+                    System.out.println("Response Message: " + response.message());
+            }
+        }
+        catch (IOException | ParseException e) {
+            throw new RuntimeException("Failed to search movies by title", e);
+        }
     }
 
     @Override

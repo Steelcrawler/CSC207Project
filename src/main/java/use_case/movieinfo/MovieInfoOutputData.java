@@ -12,12 +12,17 @@ public class MovieInfoOutputData {
     private final String movieTitle;
     private final double movieRating;
     private final String moviePlot;
+    private final String moviePosterPath;
+    private final String movieTrailer;
+    private final List<String> movieReviews;
 
-    public MovieInfoOutputData(Movie movie) {
-        this.movieTitle = movie.getTitle();
-        this.movieRating = movie.getRating();
-        this.moviePlot = movie.getPlot();
-
+    public MovieInfoOutputData(String movieTitle, double movieRating, String moviePlot, String moviePoster, String movieTrailer, List<String> movieReviews) {
+        this.movieTitle = movieTitle;
+        this.movieRating = movieRating;
+        this.moviePlot = moviePlot;
+        this.moviePosterPath = moviePoster;
+        this.movieTrailer = movieTrailer;
+        this.movieReviews = movieReviews;
     }
 
     public String getMovieTitle() {
@@ -31,5 +36,11 @@ public class MovieInfoOutputData {
     public String getMoviePlot() {
         return moviePlot;
     }
+
+    public String getMovieTrailer() {return movieTrailer;}
+
+    public String getMoviePosterPath() {return moviePosterPath;}
+
+    public List<String> getMovieReviews() {return movieReviews;}
 
 }

@@ -1,8 +1,15 @@
 package view;
 
+import interface_adapter.movieinfo.MovieInfoController;
 import interface_adapter.movieinfo.MovieInfoState;
 import interface_adapter.movieinfo.MovieInfoViewModel;
+import interface_adapter.moviesearch.MovieSearchController;
+import interface_adapter.moviesearch.MovieSearchState;
+
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.*;
 
@@ -16,6 +23,9 @@ public class MovieInfoView extends JPanel {
     private final JLabel ratingLabel;
     private final JLabel plotLabel;
     private final JLabel trailerLabel;
+    private final ImageIcon moviePoster;
+
+    private MovieInfoController movieInfoController;
 
     public MovieInfoView(MovieInfoViewModel movieInfoViewModel) {
 
@@ -23,9 +33,11 @@ public class MovieInfoView extends JPanel {
         MovieInfoState current_state = movieInfoViewModel.getState();
 
         String movie_title = current_state.getMovieTitle();
-        String rating_info = current_state.getRatingInfo();
+        double rating_info = current_state.getRatingInfo();
         String plot_info = current_state.getPlotInfo();
         String trailer_link = current_state.getTrailerLink();
+        String posterPath = current_state.getPosterPath();
+        List<String> userReviews = current_state.getUserReviews();
 
         this.titleLabel = new JLabel(movieInfoViewModel.MOVIE_TITLE_INFO + movie_title);
         this.ratingLabel = new JLabel(movieInfoViewModel.RATING_INFO + rating_info);
@@ -35,11 +47,37 @@ public class MovieInfoView extends JPanel {
         plotLabel.setText(movieInfoViewModel.getState().getPlotInfo());
         this.plotLabel.setText(movieInfoViewModel.PLOT_INFO + plot_info);
 
+        ImageIcon moviePoster = new ImageIcon(posterPath);
+        JLabel moviePosterLabel = new JLabel(moviePoster);
+
         this.trailerLabel = new JLabel(movieInfoViewModel.TRAILER_INFO + trailer_link);
         this.backButton = new JButton(movieInfoViewModel.BACK_BUTTON_LABEL);
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(backButton)) {
+
+                    final MovieInfoState currentState = movieInfoViewModel.getState();
+                    movieInfoController.execute(currentState.getMovieID());
+                }
+            }
+        });
 
 
 
+        this.add(backButton);
+        this.add(titleLabel);
+        this.add(ratingLabel);
+        this.add(moviePosterLabel);
+        this.add(plotLabel);
+        this.add(trailerLabel);
 
+
+    }
+
+    public void setMovieInfoController(MovieInfoController movieInfoController) {
+        this.movieInfoController = movieInfoController;
+    }
+    public String getViewName() {
+        return viewName;
     }
 }

@@ -1,7 +1,6 @@
 package use_case.movieinfo;
 
 import entity.Movie;
-import use_case.movie_search.*;
 
 import java.util.List;
 
@@ -19,10 +18,21 @@ public class MovieInfoInteractor implements MovieInfoInputBoundary {
     }
 
     @Override
-    public void execute(Movie movie) {
-        final MovieInfoOutputData movieInfoOutputData = new MovieInfoOutputData(movie);
-        this.movieInfoPresenter.prepareSuccessView(movieInfoOutputData);
-
+    public void execute(MovieInfoInputData movieInfoInputData) {
+        if (TMDBDataAccessObject != null) {
+            Movie movie = TMDBDataAccessObject.getMovieByID(movieInfoInputData.getMovieID());
+            String movieTitle = movie.getTitle();
+            double movieRating = movie.getRating();
+            String moviePlot = movie.getPlot();
+            String moviePoster = movie.getPosterPath();
+            String movieTrailer = movie.getTrailerLink();
+            List<String> movieReviews = movie.getUserReviews();
+            final MovieInfoOutputData movieInfoOutputData = new MovieInfoOutputData(movieTitle, movieRating, moviePlot, moviePoster, movieTrailer, movieReviews);
+            this.movieInfoPresenter.prepareSuccessView(movieInfoOutputData);
+        }
+        else {
+            this.movieInfoPresenter.prepareFailView("Could not load info page for this movie");
+        }
     }
 }
 

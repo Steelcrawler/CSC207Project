@@ -1,6 +1,6 @@
 package use_case.movieinfo;
 
-import use_case.movieinfo.MovieInfoInputData;
+import entity.Movie;
 
 /**
  * The Movie Info Use Case.
@@ -12,5 +12,4 @@ public interface MovieInfoInputBoundary {
      * @param movieInfoInputData the input data for this use case
      */
     void execute(MovieInfoInputData movieInfoInputData);
-
 }

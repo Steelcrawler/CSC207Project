@@ -1,26 +1,26 @@
 package interface_adapter.movieinfo;
 
+import entity.Movie;
+import use_case.movieinfo.MovieInfoInputBoundary;
 import use_case.movieinfo.MovieInfoInputData;
+
 
 /**
  * The controller for the Movie Info Use Case.
  */
 public class MovieInfoController {
-    private final MovieInfoInputData movieInfoUseCaseInteractor;
+    private final MovieInfoInputBoundary movieInfoUseCaseInteractor;
 
-    public MovieInfoController(MovieInfoInputData movieInfoUseCaseInteractor) {
+    public MovieInfoController(MovieInfoInputBoundary movieInfoUseCaseInteractor) {
         this.movieInfoUseCaseInteractor = movieInfoUseCaseInteractor;
     }
 
     /**
-     * Executes the Login Use Case.
-     * @param username the username of the user logging in
-     * @param password the password of the user logging in
+     * Executes the Movie Info Use Case.
      */
-    public void execute(String username, String password) {
-        final LoginInputData loginInputData = new LoginInputData(
-                username, password);
+    public void execute(int movieID) {
+        final MovieInfoInputData movieInfoInputData = new MovieInfoInputData(movieID);
 
-        loginUseCaseInteractor.execute(loginInputData);
+        movieInfoUseCaseInteractor.execute(movieInfoInputData);
     }
 }

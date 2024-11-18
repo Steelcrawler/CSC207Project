@@ -33,7 +33,6 @@ public class MovieSearchPresenter implements MovieSearchOutputBoundary {
 
     @Override
     public void prepareSuccessView(MovieSearchOutputData outputData) {
-        System.out.println("here");
         final MovieSearchState movieSearchState = movieSearchViewModel.getState();
         movieSearchState.setSearchFound(true);
         ArrayList<ArrayList<Object>> moviesInfo = new ArrayList<>();
