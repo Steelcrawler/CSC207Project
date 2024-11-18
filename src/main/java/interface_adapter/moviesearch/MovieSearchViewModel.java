@@ -10,6 +10,8 @@ public class MovieSearchViewModel extends ViewModel<MovieSearchState> {
     public static final String RATING_LABEL = "Choose a rating";
 
     public static final String SEARCH_BUTTON_LABEL = "Search";
+    public static final String WATCHLIST_BUTTON_LABEL = "Watchlist";
+    public static final String ADD_TO_WATCHLIST_BUTTON_LABEL = "Add to Watchlist";
 
     public MovieSearchViewModel() {
         super("movie search");

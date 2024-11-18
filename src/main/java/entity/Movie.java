@@ -57,10 +57,6 @@ public class Movie {
         return rating;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public String getPlot() {
         return plot;
     }
