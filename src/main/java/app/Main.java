@@ -19,6 +19,7 @@ public class Main {
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addMovieSearchUseCase()
+                .addAddToWatchlistUseCase()
                                             .build();
 
         application.pack();
