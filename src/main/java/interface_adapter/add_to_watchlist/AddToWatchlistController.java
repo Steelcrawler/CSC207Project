@@ -15,12 +15,10 @@ public class AddToWatchlistController {
 
     /**
      * Executes the Add To Watchlist Use Case.
-     * @param movieID the movie ID to add to the watchlist.
      * @param movieTitle the title of the movie to add to the watchlist.
      */
-    public void execute(Integer movieID, String movieTitle) {
-        final AddToWatchlistInputData addToWatchlistInputData = new AddToWatchlistInputData(
-                movieID, movieTitle);
+    public void execute(String movieTitle, Integer movieID) {
+        final AddToWatchlistInputData addToWatchlistInputData = new AddToWatchlistInputData(movieTitle, movieID);
 
         addToWatchlistUseCaseInteractor.execute(addToWatchlistInputData);
     }
