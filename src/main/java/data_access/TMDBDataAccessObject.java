@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import io.github.cdimascio.dotenv.Dotenv;
 import use_case.movie_search.MovieSearchDataAccessInterface;
+import use_case.movieinfo.MovieInfoDataAccessInterface;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -18,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
+public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, MovieInfoDataAccessInterface {
     private static final Dotenv dotenv = Dotenv.load();
     private static final String TMDB_API_KEY = dotenv.get("TMDB_API_KEY");
     private static final String BASE_URL = "https://api.themoviedb.org/3";
@@ -26,6 +27,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     private static final String GENRE_LIST_ENDPOINT = "/genre/movie/list";
     private static final String MOVIE_REVIEWS_ENDPOINT = "/movie/{movie_id}/reviews";
     private static final String VIDEO_ENDPOINT = "/movie/{movie_id}/videos";
+    private static final String DETAILS_ENDPOINT = "/movie/{movie_id}";
     private static final String DISCOVER_MOVIE_ENDPOINT = "/discover/movie";
 
     private final OkHttpClient client = new OkHttpClient();
@@ -190,6 +192,53 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
 
     }
 
+    public Movie getMovieByID(int iD) {
+        Request request = new Request.Builder()
+                .url(BASE_URL + DETAILS_ENDPOINT + "?query=" + iD + "&include_adult=false&language=en-US&page=1&api_key=" + TMDB_API_KEY)
+                .get()
+                .addHeader("accept", "application/json")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful() && response.body() != null) {
+                String responseBody = response.body().toString();
+
+                // Debugging: Print the raw response body
+                // System.out.println("Response Body: " + responseBody);
+
+                JSONObject jsonObject = new JSONObject(responseBody);
+                String movieTitle = jsonObject.getString("title");
+                int movieID = jsonObject.getInt("id");
+
+                List<String> genreTitles = new ArrayList<>();
+                JSONArray genreIdsJson = jsonObject.getJSONArray("genres");
+                for (int j = 0; j < genreIdsJson.length(); j++) {
+                    JSONObject genreObject = genreIdsJson.getJSONObject(j);
+                    String genreName = genreObject.getString("name");
+                    genreTitles.add(genreName);
+                }
+                String releaseDateString = jsonObject.optString("release_date", null);
+                Date releaseDate = releaseDateString != null && !releaseDateString.isEmpty() ? parseDate(releaseDateString) : null;
+                double rating = jsonObject.getDouble("vote_average");
+                String plot = jsonObject.getString("overview");
+                String posterPath = jsonObject.optString("poster_path", "");
+                List<String> userReviews = getUserReviews(movieID);
+                String trailerLink = getTrailer(movieID);
+                Movie movie = new Movie(movieTitle, movieID, genreTitles, releaseDate, rating, plot, posterPath, userReviews, trailerLink);
+                return movie;
+            }
+            else {
+                // Debugging: Print the response code and message
+                    System.out.println("Response Code: " + response.code());
+                    System.out.println("Response Message: " + response.message());
+            }
+        }
+        catch (IOException | ParseException e) {
+            throw new RuntimeException("Failed to search movies by title", e);
+        }
+        return null;
+    }
+
     @Override
     public List<Movie> searchMovies(String title, String genre) {
         return searchMovies(title, genre, null);
@@ -204,7 +253,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     public List<Movie> searchMovies(String title, String genre, Integer rating) {
         List<Movie> movies = new ArrayList<>();
         StringBuilder urlBuilder = new StringBuilder(BASE_URL + DISCOVER_MOVIE_ENDPOINT + "?api_key=" + TMDB_API_KEY);
-    
+
         if (title != null && !title.isEmpty()) {
             urlBuilder.append("&query=").append(title);
         }
@@ -217,20 +266,20 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
         if (rating != null && rating >= 0 && rating <= 10) {
             urlBuilder.append("&vote_average.gte=").append(rating);
         }
-    
+
         Request request = new Request.Builder()
                 .url(urlBuilder.toString())
                 .get()
                 .addHeader("accept", "application/json")
                 .build();
-    
+
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
                 String responseBody = response.body().string();
-                
+
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray results = jsonObject.getJSONArray("results");
-    
+
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject movieJson = results.getJSONObject(i);
                     String movieTitle = movieJson.getString("title");
@@ -251,7 +300,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
                     String posterPath = movieJson.optString("poster_path", "");
                     List<String> userReviews = getUserReviews(movieID);
                     String trailerLink = getTrailer(movieID);
-    
+
                     movies.add(new Movie(movieTitle, movieID, genreTitles, releaseDate, ratingValue, plot, posterPath, userReviews, trailerLink));
                 }
             } else {
@@ -261,7 +310,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
         } catch (IOException | ParseException e) {
             throw new RuntimeException("Failed to search movies", e);
         }
-    
+
         return movies;
     }
 
@@ -318,7 +367,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
 
         return movies;
     }
-
 
     private Date parseDate(String dateString) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

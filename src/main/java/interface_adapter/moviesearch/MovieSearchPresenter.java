@@ -8,7 +8,7 @@ import use_case.movie_search.MovieSearchOutputData;
 import java.util.ArrayList;
 
 /**
- * The Presenter for the Signup Use Case.
+ * The Presenter for the Movie Search Use Case.
  */
 public class MovieSearchPresenter implements MovieSearchOutputBoundary {
 
