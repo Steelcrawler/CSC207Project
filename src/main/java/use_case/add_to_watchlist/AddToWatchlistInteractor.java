@@ -15,24 +15,16 @@ public class AddToWatchlistInteractor implements AddToWatchlistInputBoundary {
 
     @Override
     public void execute(AddToWatchlistInputData addToWatchlistInputData) {
-        if (MongoDBDataAccessObject != null) {
-            System.out.println("Not null");
-            if (!MongoDBDataAccessObject.existsInWatchlist(MongoDBDataAccessObject.getCurrentUsername(), addToWatchlistInputData.getMovieID())) {
-                System.out.println("movie isn't in watchlist yet");
-                this.MongoDBDataAccessObject.addToWatchlist(MongoDBDataAccessObject.getCurrentUsername(), addToWatchlistInputData.getMovieID());
+        if (!MongoDBDataAccessObject.existsInWatchlist(MongoDBDataAccessObject.getCurrentUsername(), addToWatchlistInputData.getMovieID())) {
+            System.out.println("Movie isn't in watchlist yet");
+            MongoDBDataAccessObject.addToWatchlist(MongoDBDataAccessObject.getCurrentUsername(), addToWatchlistInputData.getMovieID());
 
-                final AddToWatchlistOutputData addToWatchlistOutputData = new AddToWatchlistOutputData(addToWatchlistInputData.getMovieTitle(), false);
-                this.addToWatchlistPresenter.prepareSuccessView(addToWatchlistOutputData);
+            final AddToWatchlistOutputData addToWatchlistOutputData = new AddToWatchlistOutputData(addToWatchlistInputData.getMovieTitle(), false);
+            this.addToWatchlistPresenter.prepareSuccessView(addToWatchlistOutputData);
             }
-            else {
-                this.addToWatchlistPresenter.prepareFailView("This movie is already in your watchlist.");
-            }
-        }
         else {
-            System.out.println("Its null");
-            this.addToWatchlistPresenter.prepareFailView("No movies with that title.");
+            this.addToWatchlistPresenter.prepareFailView("This movie is already in your watchlist.");
+            }
         }
-
     }
-}
 
