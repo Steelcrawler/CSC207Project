@@ -5,16 +5,16 @@ package use_case.add_to_watchlist;
  */
 public class AddToWatchlistOutputData {
 
-    private final String movieTitle;
+    private final String addedMessage;
     private final boolean useCaseFailed;
 
     public AddToWatchlistOutputData(String movieTitle, boolean useCaseFailed) {
-        this.movieTitle = movieTitle;
+        this.addedMessage = movieTitle + " has been added to the watchlist.";
         this.useCaseFailed = useCaseFailed;
     }
 
-    public String getMovieTitle() {
-        return movieTitle;
+    public String getAddedMessage() {
+        return addedMessage;
     }
 
     public boolean isUseCaseFailed() {
