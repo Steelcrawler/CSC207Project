@@ -6,7 +6,7 @@ import interface_adapter.movieinfo.MovieInfoViewModel;
 import interface_adapter.moviesearch.MovieSearchController;
 import interface_adapter.moviesearch.MovieSearchState;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -23,7 +23,7 @@ public class MovieInfoView extends JPanel {
     private final JLabel ratingLabel;
     private final JLabel plotLabel;
     private final JLabel trailerLabel;
-    private final ImageIcon moviePoster;
+    private ImageIcon moviePoster;
 
     private MovieInfoController movieInfoController;
 
@@ -31,6 +31,9 @@ public class MovieInfoView extends JPanel {
 
         this.movieInfoViewModel = movieInfoViewModel;
         MovieInfoState current_state = movieInfoViewModel.getState();
+
+        this.setLayout(new BorderLayout());
+
 
         String movie_title = current_state.getMovieTitle();
         double rating_info = current_state.getRatingInfo();
@@ -62,16 +65,22 @@ public class MovieInfoView extends JPanel {
             }
         });
 
+        JPanel titleAndRating = new JPanel();
+        titleAndRating.add(titleLabel);
+        titleAndRating.add(ratingLabel);
 
+        this.add(backButton, BorderLayout.NORTH);
+        this.add(moviePosterLabel, BorderLayout.WEST);
+        this.add(plotLabel, BorderLayout.EAST);
+        this.add(titleAndRating, BorderLayout.CENTER);
+        this.add(trailerLabel, BorderLayout.SOUTH);
 
-        this.add(backButton);
-        this.add(titleLabel);
-        this.add(ratingLabel);
-        this.add(moviePosterLabel);
-        this.add(plotLabel);
-        this.add(trailerLabel);
-
-
+//        this.add(backButton);
+//        this.add(titleLabel);
+//        this.add(ratingLabel);
+//        this.add(moviePosterLabel);
+//        this.add(plotLabel);
+//        this.add(trailerLabel);
     }
 
     public void setMovieInfoController(MovieInfoController movieInfoController) {

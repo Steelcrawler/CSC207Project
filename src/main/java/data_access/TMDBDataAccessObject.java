@@ -236,6 +236,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
         catch (IOException | ParseException e) {
             throw new RuntimeException("Failed to search movies by title", e);
         }
+        return null;
     }
 
     @Override
