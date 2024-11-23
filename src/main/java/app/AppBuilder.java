@@ -212,7 +212,7 @@ public class AppBuilder {
      */
     public AppBuilder addOpenWatchlistUseCase() {
         final OpenWatchlistOutputBoundary openWatchlistOutputBoundary = new OpenWatchlistPresenter(viewManagerModel,
-                watchlistViewModel);
+                watchlistViewModel, movieSearchViewModel);
         final TMDBDataAccessObject tmdbDataAccessObject = new TMDBDataAccessObject();
         final OpenWatchlistInputBoundary openWatchlistInputBoundary = new OpenWatchlistInteractor(userDataAccessObject, tmdbDataAccessObject, openWatchlistOutputBoundary);
         final OpenWatchlistController openWatchlistController = new OpenWatchlistController(openWatchlistInputBoundary);

@@ -18,4 +18,8 @@ public class OpenWatchlistController {
     public void execute() {
         openWatchlistUseCaseInteractor.execute();
     }
+
+    public void switchToMovieSearchView() {
+        openWatchlistUseCaseInteractor.switchToMovieSearchView();
+    }
 }

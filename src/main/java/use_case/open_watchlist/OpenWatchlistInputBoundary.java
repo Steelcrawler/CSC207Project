@@ -9,4 +9,6 @@ public interface OpenWatchlistInputBoundary {
      * Execute the Open Watchlist Use Case.
      */
     void execute();
+
+    void switchToMovieSearchView();
 }
