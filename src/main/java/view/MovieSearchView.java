@@ -16,6 +16,7 @@ import interface_adapter.add_to_watchlist.AddToWatchlistController;
 import interface_adapter.moviesearch.MovieSearchController;
 import interface_adapter.moviesearch.MovieSearchState;
 import interface_adapter.moviesearch.MovieSearchViewModel;
+import interface_adapter.open_watchlist.OpenWatchlistController;
 
 import static javax.swing.BoxLayout.Y_AXIS;
 
@@ -32,12 +33,14 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
     private final JComboBox<String> keywordsComboBox = new JComboBox<>(keywords);
 
     private final JButton searchButton;
+    private final JButton watchlistButton;
     private final JLabel errorMessageField = new JLabel();
     private JTable resultsTable;  // Table to display results
     private JPanel resultsPanel = new JPanel();
 
     private MovieSearchController movieSearchController;
     private AddToWatchlistController addToWatchlistController;
+    private OpenWatchlistController openWatchlistController;
 
     public MovieSearchView(MovieSearchViewModel movieSearchViewModel) {
         this.movieSearchViewModel = movieSearchViewModel;
@@ -71,6 +74,15 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
                     movieSearchController.execute(currentState.getTitle());
                 }
+            }
+        });
+
+        watchlistButton = new JButton(MovieSearchViewModel.WATCHLIST_BUTTON_LABEL);
+        buttons.add(watchlistButton);
+
+        watchlistButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                openWatchlistController.execute();
             }
         });
 

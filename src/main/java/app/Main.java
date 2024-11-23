@@ -21,6 +21,7 @@ public class Main {
                                             .addLoginUseCase()
                                             .addMovieSearchUseCase()
                 .addAddToWatchlistUseCase()
+                .addOpenWatchlistUseCase()
                                             .build();
 
         application.pack();
