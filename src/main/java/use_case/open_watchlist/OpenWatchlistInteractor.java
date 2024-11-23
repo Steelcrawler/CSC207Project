@@ -1,6 +1,9 @@
 package use_case.open_watchlist;
 
 import data_access.TMDBDataAccessObject;
+import entity.Movie;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,13 +26,15 @@ public class OpenWatchlistInteractor implements OpenWatchlistInputBoundary {
         String currentUsername = MongoDBDataAccessObject.getCurrentUsername();
         List<Integer> movieIDsList = MongoDBDataAccessObject.getWatchlist(currentUsername);
         if (movieIDsList != null) {
-            List<String> titlesList;
+            List<String> titlesList = new ArrayList<>();
+            List<String> posterPathsList = new ArrayList<>();
             for (Integer movieID : movieIDsList) {
-                String movieTitle = tmdbDataAccessObject.getTitle(movieID);
-                titlesList.add(movieTitle);
+                Movie movie = tmdbDataAccessObject.getMovieByID(movieID);
+                titlesList.add(movie.getTitle());
+                posterPathsList.add(movie.getPosterPath());
             }
 
-            final OpenWatchlistOutputData openWatchlistOutputData = new OpenWatchlistOutputData(movieIDsList, titlesList, false);
+            final OpenWatchlistOutputData openWatchlistOutputData = new OpenWatchlistOutputData(movieIDsList, titlesList, posterPathsList, false);
             this.openWatchlistPresenter.prepareSuccessView(openWatchlistOutputData);
         }
         else {

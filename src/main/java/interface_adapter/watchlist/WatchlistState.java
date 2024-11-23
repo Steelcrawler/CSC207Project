@@ -8,6 +8,7 @@ import java.util.List;
 public class WatchlistState {
     private List<Integer> watchlist;
     private List<String> movieTitles;
+    private List<String> posterPaths;
     private boolean emptyWatchlist;
     private String errorMessage;
 
@@ -41,5 +42,13 @@ public class WatchlistState {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    public List<String> getPosterPaths() {
+        return posterPaths;
+    }
+
+    public void setPosterPaths(List<String> posterPaths) {
+        this.posterPaths = posterPaths;
     }
 }

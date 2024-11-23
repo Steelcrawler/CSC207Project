@@ -9,11 +9,13 @@ public class OpenWatchlistOutputData {
 
     private List<Integer> movieIDsList;
     private List<String> movieTitlesList;
+    private List<String> posterPathsList;
     private final boolean useCaseFailed;
 
-    public OpenWatchlistOutputData(List<Integer> movieIDsList, List<String> movieTitlesList, boolean useCaseFailed) {
+    public OpenWatchlistOutputData(List<Integer> movieIDsList, List<String> movieTitlesList, List<String> posterPathsList, boolean useCaseFailed) {
         this.movieIDsList = movieIDsList;
         this.movieTitlesList = movieTitlesList;
+        this.posterPathsList = posterPathsList;
         this.useCaseFailed = useCaseFailed;
     }
 
@@ -25,15 +27,11 @@ public class OpenWatchlistOutputData {
         return movieIDsList;
     }
 
-    public void setMovieIDsList(List<Integer> newMovieIDsList) {
-        movieIDsList = newMovieIDsList;
-    }
-
     public List<String> getMovieTitlesList() {
         return movieTitlesList;
     }
 
-    public void setMovieTitlesList(List<String> movieTitlesList) {
-        this.movieTitlesList = movieTitlesList;
+    public List<String> getPosterPathsList() {
+        return posterPathsList;
     }
 }

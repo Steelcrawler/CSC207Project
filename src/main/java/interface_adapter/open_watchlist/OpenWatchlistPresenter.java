@@ -28,6 +28,7 @@ public class OpenWatchlistPresenter implements OpenWatchlistOutputBoundary {
         final WatchlistState watchlistState = watchlistViewModel.getState();
         watchlistState.setWatchlist(outputData.getMovieIDsList());
         watchlistState.setMovieTitles(outputData.getMovieTitlesList());
+        watchlistState.setPosterPaths(outputData.getPosterPathsList());
         watchlistViewModel.firePropertyChanged();
     }
 
