@@ -22,9 +22,13 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.movieinfo.MovieInfoViewModel;
+import interface_adapter.movieinfo.MovieInfoController;
+import interface_adapter.movieinfo.MovieInfoPresenter;
+import interface_adapter.movieinfo.MovieInfoViewModel;
+import interface_adapter.moviesearch.MovieSearchViewModel;
 import interface_adapter.moviesearch.MovieSearchController;
 import interface_adapter.moviesearch.MovieSearchPresenter;
-import interface_adapter.moviesearch.MovieSearchViewModel;
 import interface_adapter.moviesearch.MovieSearchViewModel;
 import interface_adapter.open_watchlist.OpenWatchlistController;
 import interface_adapter.open_watchlist.OpenWatchlistPresenter;
@@ -45,6 +49,10 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.movieinfo.MovieInfoDataAccessInterface;
+import use_case.movieinfo.MovieInfoInputBoundary;
+import use_case.movieinfo.MovieInfoOutputBoundary;
+import use_case.movieinfo.MovieInfoInteractor;
 import use_case.movie_search.MovieSearchDataAccessInterface;
 import use_case.movie_search.MovieSearchInputBoundary;
 import use_case.movie_search.MovieSearchInteractor;
@@ -88,6 +96,8 @@ public class AppBuilder {
     private LoginView loginView;
     private MovieSearchView movieSearchView;
     private MovieSearchViewModel movieSearchViewModel;
+    private MovieInfoView movieInfoView;
+    private MovieInfoViewModel movieInfoViewModel;
     private WatchlistView watchlistView;
     private WatchlistViewModel watchlistViewModel;
 
@@ -108,13 +118,24 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the Signup View to the application.
+     * Adds the Movie Search View to the application.
      * @return this builder
      */
     public AppBuilder addMovieSearchView() {
         movieSearchViewModel = new MovieSearchViewModel();
         movieSearchView = new MovieSearchView(movieSearchViewModel);
         cardPanel.add(movieSearchView, movieSearchView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Movie Info View to the application.
+     * @return this builder
+     */
+    public AppBuilder addMovieInfoView() {
+        movieInfoViewModel = new MovieInfoViewModel();
+        movieInfoView = new MovieInfoView(movieInfoViewModel);
+        cardPanel.add(movieInfoView, movieInfoView.getViewName());
         return this;
     }
 
@@ -190,6 +211,21 @@ public class AppBuilder {
         final MovieSearchInputBoundary movieSearchInputBoundary = new MovieSearchInteractor(tmdbDataAccessObject, movieSearchOutputBoundary);
         final MovieSearchController movieSearchController = new MovieSearchController(movieSearchInputBoundary);
         movieSearchView.setMovieSearchController(movieSearchController);
+        return this;
+    }
+
+    /**
+     movie_info_view
+     * Adds the Movie Info Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addMovieInfoUseCase() {
+        final MovieInfoOutputBoundary movieInfoOutputBoundary = new MovieInfoPresenter(viewManagerModel,
+                movieInfoViewModel);
+        final MovieInfoDataAccessInterface tmdbDataAccessObject = new TMDBDataAccessObject();
+        final MovieInfoInputBoundary movieInfoInputBoundary = new MovieInfoInteractor(tmdbDataAccessObject, movieInfoOutputBoundary);
+        final MovieInfoController movieInfoController = new MovieInfoController(movieInfoInputBoundary);
+        movieInfoView.setMovieInfoController(movieInfoController);
         return this;
     }
 
