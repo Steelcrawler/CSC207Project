@@ -207,7 +207,9 @@ public class AppBuilder {
         final MovieInfoInputBoundary movieInfoInputBoundary = new MovieInfoInteractor(tmdbDataAccessObject, movieInfoOutputBoundary);
         final MovieInfoController movieInfoController = new MovieInfoController(movieInfoInputBoundary);
         movieInfoView.setMovieInfoController(movieInfoController);
-     
+        return this;
+    }
+        /**
      * Adds the Add To Watchlist Use Case to the application.
      * @return this builder
      */
@@ -217,7 +219,6 @@ public class AppBuilder {
         final AddToWatchlistInputBoundary addToWatchlistInputBoundary = new AddToWatchlistInteractor(userDataAccessObject, addToWatchlistOutputBoundary);
         final AddToWatchlistController addToWatchlistController = new AddToWatchlistController(addToWatchlistInputBoundary);
         movieSearchView.setAddToWatchlistController(addToWatchlistController);
- main
         return this;
     }
 
