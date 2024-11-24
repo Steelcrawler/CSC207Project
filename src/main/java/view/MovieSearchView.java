@@ -238,6 +238,9 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
     public void setAddToWatchlistController(AddToWatchlistController addToWatchlistController) {
         this.addToWatchlistController = addToWatchlistController;
     }
+    public void setOpenWatchlistController(OpenWatchlistController openWatchlistController) {
+        this.openWatchlistController = openWatchlistController;
+    }
 }
 
 

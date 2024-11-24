@@ -252,7 +252,7 @@ public class AppBuilder {
         final TMDBDataAccessObject tmdbDataAccessObject = new TMDBDataAccessObject();
         final OpenWatchlistInputBoundary openWatchlistInputBoundary = new OpenWatchlistInteractor(userDataAccessObject, tmdbDataAccessObject, openWatchlistOutputBoundary);
         final OpenWatchlistController openWatchlistController = new OpenWatchlistController(openWatchlistInputBoundary);
-        watchlistView.setOpenWatchlistController(openWatchlistController);
+        movieSearchView.setOpenWatchlistController(openWatchlistController);
         return this;
     }
 
