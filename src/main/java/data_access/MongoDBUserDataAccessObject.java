@@ -165,6 +165,12 @@ public class MongoDBUserDataAccessObject implements SignupUserDataAccessInterfac
         usersCollection.updateOne(filter, update);
     }
 
+    @Override
+    public boolean existsInWatchlist(String username, Integer movieID) {
+        List<Integer> userWatchlist = this.getWatchlist(username);
+        return userWatchlist.contains(movieID);
+    }
+
     public MongoCollection<Document> getUsersCollection() {
         return usersCollection;
     }
