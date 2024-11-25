@@ -37,7 +37,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     private static final String MOVIE_REVIEWS_ENDPOINT = "/movie/{movie_id}/reviews";
     private static final String VIDEO_ENDPOINT = "/movie/{movie_id}/videos";
     private static final String DISCOVER_MOVIE_ENDPOINT = "/discover/movie";
-    private static final String KEYWORDS_EXPORT_URL = "http://files.tmdb.org/p/exports/keyword_ids_MM_DD_YYYY.json.gz";
 
     private final OkHttpClient client = new OkHttpClient();
     private final Map<Integer, String> genreMap = new HashMap<>();

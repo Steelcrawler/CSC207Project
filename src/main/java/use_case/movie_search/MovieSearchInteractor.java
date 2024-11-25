@@ -28,7 +28,7 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
     @Override
     public void execute(MovieSearchInputData movieSearchInputData) {
         if (TMDBDataAccessObject != null) {
-            System.out.println("Not null");
+            // System.out.println("Not null");
             String title = parseTitle(movieSearchInputData.getMovieTitle());
             String genre = parseGenre(movieSearchInputData.getGenre());
             Integer rating = parseRating(movieSearchInputData.getRating());
@@ -36,6 +36,7 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
             System.out.println("Title: " + title);
     
             if (title == null && genre == null && rating == null && keywordIds.isEmpty()) {
+                System.out.println("case 1");
                 this.movieSearchPresenter.prepareFailView("No search criteria provided.");
                 return;
             }
@@ -45,13 +46,16 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
                 moviesList = this.TMDBDataAccessObject.searchMoviesByTitle(title);
             } 
             else if (title == null) {
+                System.out.println("case 3");
                 moviesList = this.TMDBDataAccessObject.searchMovies(title, genre, rating, keywordIds);
             } 
             else {
+                System.out.println("case 4");
                 this.movieSearchPresenter.prepareFailView("No movies with that title.");
                 return;
             }
             if (moviesList.isEmpty()) {
+                System.out.println("case 5");
                 this.movieSearchPresenter.prepareFailView("No movies found with the given criteria.");
                 return;
             }

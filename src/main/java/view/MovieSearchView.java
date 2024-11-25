@@ -143,6 +143,7 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
                 tagsPanel.removeAll();
                 tagsPanel.revalidate();
                 tagsPanel.repaint();
+                updateKeywordState();
             }
         });
 
@@ -153,6 +154,11 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
         resultsPanel.add(errorMessageField);
         this.add(resultsPanel);
+
+        // Add the note at the bottom
+        JLabel noteLabel = new JLabel("Note: Searching by title will not include any other search criteria");
+        noteLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        this.add(noteLabel);
 
         this.revalidate();
         this.repaint();
@@ -314,6 +320,12 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
                 documentListenerHelper();
             }
         });
+    }
+
+    private void updateKeywordState() {
+        final MovieSearchState currentState = movieSearchViewModel.getState();
+        currentState.getKeywords().clear();
+        movieSearchViewModel.setState(currentState);
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
