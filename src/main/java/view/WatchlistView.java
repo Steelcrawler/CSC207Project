@@ -9,8 +9,12 @@ import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import interface_adapter.Select.SelectViewModel;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.moviesearch.MovieSearchState;
+import interface_adapter.open_select.OpenSelectController;
 import interface_adapter.open_watchlist.OpenWatchlistController;
+import interface_adapter.signup.SignupState;
 import interface_adapter.watchlist.WatchlistState;
 import interface_adapter.watchlist.WatchlistViewModel;
 
@@ -24,11 +28,14 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
     private JScrollPane watchlistScrollPane;
     private JPanel moviePanel;
 
+    private ViewManagerModel viewManagerModel;
     private OpenWatchlistController openWatchlistController;
-
-    public WatchlistView(WatchlistViewModel watchlistViewModel) {
+    private SelectViewModel selectViewModel;
+    private OpenSelectController openSelectController;
+    public WatchlistView(WatchlistViewModel watchlistViewModel, ViewManagerModel viewManagerModel) {
         this.watchlistViewModel = watchlistViewModel;
         this.watchlistViewModel.addPropertyChangeListener(this);
+        this.viewManagerModel = viewManagerModel;
 
         this.setLayout(new BorderLayout());
 
@@ -44,6 +51,20 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
         menuPanel.add(titleLabel, BorderLayout.CENTER);
 
         this.add(menuPanel, BorderLayout.NORTH);
+
+        selectButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(selectButton)) {
+                            selectViewModel.getState().setWatchlist(watchlistViewModel.getState().getWatchlist());
+                            selectViewModel.getState().setMovieTitles(watchlistViewModel.getState().getMovieTitles());
+                            selectViewModel.getState().setPosterPaths(watchlistViewModel.getState().getPosterPaths());
+                            viewManagerModel.setState(selectViewModel.getViewName());
+                            viewManagerModel.firePropertyChanged();
+                        }
+                    }
+                }
+        );
 
         backButton.addActionListener(
                 new ActionListener() {

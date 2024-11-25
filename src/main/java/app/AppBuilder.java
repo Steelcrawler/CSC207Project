@@ -145,7 +145,7 @@ public class AppBuilder {
      */
     public AppBuilder addWatchlistView() {
         watchlistViewModel = new WatchlistViewModel();
-        watchlistView = new WatchlistView(watchlistViewModel);
+        watchlistView = new WatchlistView(watchlistViewModel, viewManagerModel);
         cardPanel.add(watchlistView, watchlistView.getViewName());
         return this;
     }

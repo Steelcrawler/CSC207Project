@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.Movie;
+import interface_adapter.Select.SelectViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginState;
 //import interface_adapter.moviesearch.MovieSearchController;
@@ -38,7 +39,7 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
     private final JButton recommendationButton;
     private final JPanel eastPanel;
 
-    private SelectController selectController;
+    //private SelectController selectController;
 
     public SelectView(SelectViewModel selectViewModel) {
         this.selectViewModel = selectViewModel;
@@ -94,9 +95,9 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
     public String getViewName() {
         return viewName;
     }
-    public void setSelectController(SelectController selectController) {
-        this.selectController = selectController;
-    }
+//    public void setSelectController(SelectController selectController) {
+//        this.selectController = selectController;
+//    }
 
     @Override
     public void actionPerformed(ActionEvent evt) {
