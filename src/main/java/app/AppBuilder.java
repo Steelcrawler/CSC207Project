@@ -30,6 +30,8 @@ import interface_adapter.moviesearch.MovieSearchViewModel;
 import interface_adapter.moviesearch.MovieSearchController;
 import interface_adapter.moviesearch.MovieSearchPresenter;
 import interface_adapter.moviesearch.MovieSearchViewModel;
+import interface_adapter.open_watchlist.OpenWatchlistController;
+import interface_adapter.open_watchlist.OpenWatchlistPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -37,6 +39,7 @@ import use_case.add_to_watchlist.AddToWatchlistDataAccessInterface;
 import use_case.add_to_watchlist.AddToWatchlistInputBoundary;
 import use_case.add_to_watchlist.AddToWatchlistInteractor;
 import use_case.add_to_watchlist.AddToWatchlistOutputBoundary;
+import interface_adapter.watchlist.WatchlistViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -54,6 +57,10 @@ import use_case.movie_search.MovieSearchDataAccessInterface;
 import use_case.movie_search.MovieSearchInputBoundary;
 import use_case.movie_search.MovieSearchInteractor;
 import use_case.movie_search.MovieSearchOutputBoundary;
+import use_case.open_watchlist.OpenWatchlistDataAccessInterface;
+import use_case.open_watchlist.OpenWatchlistInputBoundary;
+import use_case.open_watchlist.OpenWatchlistInteractor;
+import use_case.open_watchlist.OpenWatchlistOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
@@ -91,6 +98,8 @@ public class AppBuilder {
     private MovieSearchViewModel movieSearchViewModel;
     private MovieInfoView movieInfoView;
     private MovieInfoViewModel movieInfoViewModel;
+    private WatchlistView watchlistView;
+    private WatchlistViewModel watchlistViewModel;
 
 
     public AppBuilder() {
@@ -130,6 +139,16 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the Watchlist View to the application.
+     * @return  this builder
+     */
+    public AppBuilder addWatchlistView() {
+        watchlistViewModel = new WatchlistViewModel();
+        watchlistView = new WatchlistView(watchlistViewModel);
+        cardPanel.add(watchlistView, watchlistView.getViewName());
+        return this;
+    }
     /**
      * Adds the Login View to the application.
      * @return this builder
@@ -196,7 +215,7 @@ public class AppBuilder {
     }
 
     /**
- movie_info_view
+     movie_info_view
      * Adds the Movie Info Use Case to the application.
      * @return this builder
      */
@@ -209,7 +228,8 @@ public class AppBuilder {
         movieInfoView.setMovieInfoController(movieInfoController);
         return this;
     }
-        /**
+
+    /**
      * Adds the Add To Watchlist Use Case to the application.
      * @return this builder
      */
@@ -219,6 +239,20 @@ public class AppBuilder {
         final AddToWatchlistInputBoundary addToWatchlistInputBoundary = new AddToWatchlistInteractor(userDataAccessObject, addToWatchlistOutputBoundary);
         final AddToWatchlistController addToWatchlistController = new AddToWatchlistController(addToWatchlistInputBoundary);
         movieSearchView.setAddToWatchlistController(addToWatchlistController);
+        return this;
+    }
+
+    /**
+     * Adds the Open Watchlist Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addOpenWatchlistUseCase() {
+        final OpenWatchlistOutputBoundary openWatchlistOutputBoundary = new OpenWatchlistPresenter(viewManagerModel,
+                watchlistViewModel, movieSearchViewModel);
+        final TMDBDataAccessObject tmdbDataAccessObject = new TMDBDataAccessObject();
+        final OpenWatchlistInputBoundary openWatchlistInputBoundary = new OpenWatchlistInteractor(userDataAccessObject, tmdbDataAccessObject, openWatchlistOutputBoundary);
+        final OpenWatchlistController openWatchlistController = new OpenWatchlistController(openWatchlistInputBoundary);
+        movieSearchView.setOpenWatchlistController(openWatchlistController);
         return this;
     }
 
