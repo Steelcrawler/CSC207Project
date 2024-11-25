@@ -1,6 +1,7 @@
 package interface_adapter.moviesearch;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The state for the Movie Search View Model.
@@ -16,6 +17,7 @@ public class MovieSearchState {
     private int rowOfATWButtonClicked = -1;
     private ArrayList<Integer> moviesIDs;
     private String movieAddedToWatchlist = "";
+    private List<String> keywords = new ArrayList<String>();
 
     public String getTitle() {
         return title;
@@ -29,7 +31,12 @@ public class MovieSearchState {
         return rating;
     }
 
-    public String getErrorMessage() {return errorMessage;}
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
+
+    public String getErrorMessage() {return errorMessage;};
 
     public Object[][] getMoviesInfo() {return moviesInfo;}
 
@@ -58,12 +65,18 @@ public class MovieSearchState {
     public void setSearchFound(boolean searchFound) {
         this.searchFound = searchFound;
     }
+
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
+    }
+
     @Override
     public String toString() {
         return "MovieSearchState{"
                 + "title='" + title + '\''
                 + ", genre='" + genre + '\''
                 + ", rating='" + rating + '\''
+                + ", keywords=" + keywords + '\''
                 + '}';
     }
 

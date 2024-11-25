@@ -26,20 +26,7 @@ public interface MovieSearchDataAccessInterface {
      * Returns a list of movies based on the title, genre, and rating limit provided. If a parameter is not provided, it is ignored in the search.
      * @return a list of Movies satisfying those criteria.
      */
-    public List<Movie> searchMovies(String title, String genre, Integer rating);
-
-    /**
-     * Returns a list of movies based on the rating limit provided.
-     * @return a list of Movies satisfying the rating limit.
-     */
-    public List<Movie> searchMovies(Integer rating);
-
-
-    /**
-     * Returns a list of movies based on the title and genre provided. Make title null to just search by genre
-     * @return a list of Movies satisfying the genre.
-     */ 
-    public List<Movie> searchMovies(String title, String genre);
+    public List<Movie> searchMovies(String title, String genre, Integer rating, List<Integer> keywordIds);
 
     
 
