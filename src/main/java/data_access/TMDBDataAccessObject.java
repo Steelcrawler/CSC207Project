@@ -193,18 +193,20 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
     }
 
     public Movie getMovieByID(int iD) {
+        String url = BASE_URL + DETAILS_ENDPOINT.replace("{movie_id}", String.valueOf(iD)) + "?api_key=" + TMDB_API_KEY;
+
         Request request = new Request.Builder()
-                .url(BASE_URL + DETAILS_ENDPOINT + "?query=" + iD + "&include_adult=false&language=en-US&page=1&api_key=" + TMDB_API_KEY)
+                .url(url)
                 .get()
                 .addHeader("accept", "application/json")
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
-                String responseBody = response.body().toString();
+                String responseBody = response.body().string();
 
                 // Debugging: Print the raw response body
-                // System.out.println("Response Body: " + responseBody);
+                 System.out.println("Response Body: " + responseBody);
 
                 JSONObject jsonObject = new JSONObject(responseBody);
                 String movieTitle = jsonObject.getString("title");
