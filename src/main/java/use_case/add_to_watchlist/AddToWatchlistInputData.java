@@ -5,19 +5,19 @@ package use_case.add_to_watchlist;
  */
 public class AddToWatchlistInputData {
 
-    private final int movieID;
     private final String movieTitle;
+    private final Integer movieID;
 
-    public AddToWatchlistInputData(int movieID, String movieTitle) {
-        this.movieID = movieID;
+    public AddToWatchlistInputData(String movieTitle, Integer movieID) {
         this.movieTitle = movieTitle;
-    }
-
-    Integer getMovieID() {
-        return movieID;
+        this.movieID = movieID;
     }
 
     String getMovieTitle() {
         return movieTitle;
+    }
+
+    Integer getMovieID() {
+        return movieID;
     }
 }

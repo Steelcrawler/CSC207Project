@@ -3,7 +3,7 @@ package use_case.movie_search;
 import java.util.List;
 
 /**
- * The Input Data for the Login Use Case.
+ * The Input Data for the Movie Search Use Case.
  */
 public class MovieSearchInputData {
 

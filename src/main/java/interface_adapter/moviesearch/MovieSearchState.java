@@ -14,6 +14,9 @@ public class MovieSearchState {
     private String errorMessage = "";
     private Boolean searchFound = false;
     private Object[][] moviesInfo;
+    private int rowOfATWButtonClicked = -1;
+    private ArrayList<Integer> moviesIDs;
+    private String movieAddedToWatchlist = "";
     private List<String> keywords = new ArrayList<String>();
 
     public String getTitle() {
@@ -63,8 +66,8 @@ public class MovieSearchState {
         this.searchFound = searchFound;
     }
 
-    public void setGenres(List<String> genres) {
-        this.genres = genres;
+    public void setKeywords(List<String> keywords) {
+        this.keywords = keywords;
     }
 
     @Override
@@ -75,6 +78,30 @@ public class MovieSearchState {
                 + ", rating='" + rating + '\''
                 + ", keywords=" + keywords + '\''
                 + '}';
+    }
+
+    public ArrayList<Integer> getMoviesIDs() {
+        return moviesIDs;
+    }
+
+    public void setMoviesIDs(ArrayList<Integer> moviesIDs) {
+        this.moviesIDs = moviesIDs;
+    }
+
+    public int getRowOfATWButtonClicked() {
+        return rowOfATWButtonClicked;
+    }
+
+    public void setRowOfATWButtonClicked(int rowOfATWButtonClicked) {
+        this.rowOfATWButtonClicked = rowOfATWButtonClicked;
+    }
+
+    public void setMovieAddedToWatchlist(String addedMessage) {
+        movieAddedToWatchlist = addedMessage;
+    }
+
+    public String getMovieAddedToWatchlist() {
+        return movieAddedToWatchlist;
     }
 }
 

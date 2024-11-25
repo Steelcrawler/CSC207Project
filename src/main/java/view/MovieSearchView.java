@@ -19,10 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import interface_adapter.add_to_watchlist.AddToWatchlistController;
 import entity.Movie;
 import interface_adapter.moviesearch.MovieSearchController;
 import interface_adapter.moviesearch.MovieSearchState;
 import interface_adapter.moviesearch.MovieSearchViewModel;
+
+import static javax.swing.BoxLayout.Y_AXIS;
 
 public class MovieSearchView extends JPanel implements ActionListener, ItemListener, PropertyChangeListener {
     private final String viewName = "movie search";
@@ -47,6 +50,7 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
     private JPanel resultsPanel = new JPanel();
 
     private MovieSearchController movieSearchController;
+    private AddToWatchlistController addToWatchlistController;
 
     public MovieSearchView(MovieSearchViewModel movieSearchViewModel) {
         this.movieSearchViewModel = movieSearchViewModel;
@@ -126,12 +130,12 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
                     System.out.println("Genre: " + currentState.getGenre());
                     System.out.println("Rating: " + currentState.getRating());
                     System.out.println("Keywords: " + currentState.getKeywords());
-        
+
                     String title = currentState.getTitle();
                     String genre = currentState.getGenre();
                     String rating = currentState.getRating();
                     List<String> keywords = currentState.getKeywords();
-        
+
                     movieSearchController.execute(title, genre, rating, keywords);
                 }
             }
@@ -149,8 +153,8 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
         this.add(buttons);
 
-        resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
-        resultsPanel.setPreferredSize(new Dimension(400, 400));
+        resultsPanel.setLayout(new BoxLayout(resultsPanel, Y_AXIS));
+        resultsPanel.setPreferredSize(new Dimension(700, 400));
 
         resultsPanel.add(errorMessageField);
         this.add(resultsPanel);
@@ -341,13 +345,42 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
             this.repaint();
         }
 
-        if (state.getSearchFound()) {
-            errorMessageField.setText("");
-            final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
-            resultsTable = new JTable(state.getMoviesInfo(), columnNames);
-            resultsPanel.add(resultsTable);
-            resultsPanel.revalidate();
-            resultsPanel.repaint();
+        // if movie get search found
+         if (state.getSearchFound()) {
+             errorMessageField.setText("");
+             final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis", "Add to Watchlist"};
+
+             // create a DefaultTableModel to store our data
+             DefaultTableModel resultsModel = new DefaultTableModel(state.getMoviesInfo(), columnNames);
+             // create a JTable with the model
+             resultsTable = new JTable(resultsModel);
+
+             // create and display an "add to watchlist" button in each cell in the "Add to Watchlist" column
+             resultsTable.getColumn("Add to Watchlist").setCellRenderer(new ButtonRenderer());
+             // create button editor for each cell in the "Add to Watchlist" column
+             resultsTable.getColumn("Add to Watchlist").setCellEditor(new ButtonEditor(new JCheckBox(), state, movieSearchViewModel));
+             resultsPanel.add(resultsTable);
+             resultsPanel.revalidate();
+             resultsPanel.repaint();
+             }
+
+         // if an Add to Watchlist button has been clicked, call the controller on that button's movie
+        if (state.getRowOfATWButtonClicked() != -1) {
+            // need to know the row of the button that's been clicked to get the movieTitle and movieID
+            int rowOfButtonClicked = state.getRowOfATWButtonClicked();
+            // set the row of ATW button clicked back to -1 before executing the use case so we're not stuck in a loop
+            state.setRowOfATWButtonClicked(-1);
+            String movieTitle = (String) state.getMoviesInfo()[rowOfButtonClicked][0];
+            Integer movieID = state.getMoviesIDs().get(rowOfButtonClicked);
+            addToWatchlistController.execute(movieTitle, movieID);
+            movieSearchViewModel.firePropertyChanged();
+        }
+
+        // if a movie's been added to the watchlist or it's already been added, create a pop-up
+        if (state.getMovieAddedToWatchlist() != "") {
+            JOptionPane.showMessageDialog(this, state.getMovieAddedToWatchlist());
+            state.setMovieAddedToWatchlist("");
+            movieSearchViewModel.firePropertyChanged();
         }
     }
 
@@ -368,4 +401,10 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
     public void itemStateChanged(ItemEvent evt) {
         System.out.println("Click " + evt.getStateChange());
     }
+    public void setAddToWatchlistController(AddToWatchlistController addToWatchlistController) {
+        this.addToWatchlistController = addToWatchlistController;
+    }
 }
+
+
+
