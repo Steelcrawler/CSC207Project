@@ -25,7 +25,6 @@ The Movie Search Application is a Java-based application that allows users to se
 1. **Clone the repository**:
     ```sh
     git clone https://github.com/Steelcrawler/CSC207Project.git
-    cd moviesearchapp
     ```
 
 2. **Build the project (if necessary)**:
