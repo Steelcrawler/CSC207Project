@@ -15,10 +15,13 @@ public class Main {
         final JFrame application = appBuilder
                                             .addLoginView()
                                             .addMovieSearchView()
+                                            .addWatchlistView()
                                             .addSignupView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addMovieSearchUseCase()
+                .addAddToWatchlistUseCase()
+                .addOpenWatchlistUseCase()
                                             .build();
 
         application.pack();

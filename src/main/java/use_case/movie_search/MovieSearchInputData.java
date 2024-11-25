@@ -1,7 +1,7 @@
 package use_case.movie_search;
 
 /**
- * The Input Data for the Login Use Case.
+ * The Input Data for the Movie Search Use Case.
  */
 public class MovieSearchInputData {
 

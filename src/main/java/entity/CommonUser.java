@@ -1,16 +1,21 @@
 package entity;
 
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * A simple implementation of the User interface.
  */
 public class CommonUser implements User {
 
-    private final String name;
-    private final String password;
+    private String name;
+    private String password;
+    private List<Integer> watchlist;
 
     public CommonUser(String name, String password) {
         this.name = name;
         this.password = password;
+        this.watchlist = new ArrayList<>();
     }
 
     @Override
@@ -21,6 +26,21 @@ public class CommonUser implements User {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public List<Integer> getWatchlist() {
+        return this.watchlist;
+    }
+
+    @Override
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public void addToWatchlist(int movieID) {
+        watchlist.add(movieID);
     }
 
 }
