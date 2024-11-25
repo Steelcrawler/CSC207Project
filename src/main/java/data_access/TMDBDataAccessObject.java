@@ -9,16 +9,23 @@ import org.json.JSONObject;
 import io.github.cdimascio.dotenv.Dotenv;
 import use_case.movie_search.MovieSearchDataAccessInterface;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 
 public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
@@ -41,11 +48,12 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     }
 
     public void downloadKeywords(String date) {
-        String url = KEYWORDS_EXPORT_URL.replace("MM_DD_YYYY", date);
+        String url = "http://files.tmdb.org/p/exports/keyword_ids_" + date + ".json.gz";
         System.out.println("Downloading keywords from " + url);
         Request request = new Request.Builder()
                 .url(url)
                 .get()
+                .addHeader("accept", "application/json")
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
@@ -53,16 +61,39 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
                 InputStream inputStream = response.body().byteStream();
                 GZIPInputStream gzipInputStream = new GZIPInputStream(inputStream);
                 String outputFilePath = "keyword_ids_" + date + ".json";
-                try (FileOutputStream fileOutputStream = new FileOutputStream(outputFilePath)) {
-                    byte[] buffer = new byte[1024];
-                    int len;
-                    while ((len = gzipInputStream.read(buffer)) != -1) {
-                        fileOutputStream.write(buffer, 0, len);
+                String keywordsFilePath = "keywords_" + date + ".txt";
+                Map<String, Integer> keywordMap = new TreeMap<>(); // Use TreeMap for sorted keys
+                List<String> keywordsList = new ArrayList<>();
+
+                try (FileOutputStream fileOutputStream = new FileOutputStream(outputFilePath);
+                    BufferedWriter keywordsWriter = new BufferedWriter(new FileWriter(keywordsFilePath));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(gzipInputStream))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        JSONObject jsonObject = new JSONObject(line);
+                        int id = jsonObject.getInt("id");
+                        String name = jsonObject.getString("name");
+                        keywordMap.put(name, id);
+                        keywordsList.add(name);
+                    }
+
+                    // Write the keyword map to the JSON file
+                    fileOutputStream.write(new JSONObject(keywordMap).toString().getBytes());
+
+                    // Sort the keywords list alphabetically
+                    Collections.sort(keywordsList);
+
+                    // Write the sorted keywords list to the text file
+                    for (String keyword : keywordsList) {
+                        keywordsWriter.write(keyword);
+                        keywordsWriter.newLine();
                     }
                 }
                 System.out.println("Keywords downloaded and saved to " + outputFilePath);
+                System.out.println("Keywords list saved to " + keywordsFilePath);
             } else {
                 System.out.println("Failed to download keywords. Response Code: " + response.code());
+                System.out.println("Response Message: " + response.message());
             }
         } catch (IOException e) {
             throw new RuntimeException("Failed to download keywords", e);
@@ -225,7 +256,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
     }
 
     @Override
-    public List<Movie> searchMovies(String title, String genre, Integer rating) {
+    public List<Movie> searchMovies(String title, String genre, Integer rating, List<Integer> keywordIDs) {
         List<Movie> movies = new ArrayList<>();
         StringBuilder urlBuilder = new StringBuilder(BASE_URL + DISCOVER_MOVIE_ENDPOINT + "?api_key=" + TMDB_API_KEY);
     
@@ -240,6 +271,12 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
         }
         if (rating != null && rating >= 0 && rating <= 10) {
             urlBuilder.append("&vote_average.gte=").append(rating);
+        }
+        if (keywordIDs != null && !keywordIDs.isEmpty()) {
+            String keywordIDsString = keywordIDs.stream()
+                                                .map(String::valueOf)
+                                                .collect(Collectors.joining(","));
+            urlBuilder.append("&with_keywords=").append(keywordIDsString);
         }
     
         Request request = new Request.Builder()
@@ -350,6 +387,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface {
 
     public static void main(String[] args) {
         TMDBDataAccessObject tmdbDataAccessObject = new TMDBDataAccessObject();
-        tmdbDataAccessObject.downloadKeywords("05_15_2024");
+        tmdbDataAccessObject.downloadKeywords("11_22_2024");
     }
 }

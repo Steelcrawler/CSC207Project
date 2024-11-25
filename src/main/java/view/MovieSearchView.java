@@ -4,7 +4,6 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,16 +11,18 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import entity.Movie;
-import interface_adapter.login.LoginController;
-import interface_adapter.login.LoginState;
 import interface_adapter.moviesearch.MovieSearchController;
 import interface_adapter.moviesearch.MovieSearchState;
 import interface_adapter.moviesearch.MovieSearchViewModel;
-import interface_adapter.signup.SignupViewModel;
 
 public class MovieSearchView extends JPanel implements ActionListener, ItemListener, PropertyChangeListener {
     private final String viewName = "movie search";
@@ -32,10 +33,15 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
     private final JComboBox<String> genreComboBox = new JComboBox<>(genres);
     String[] ratings = {"None", "> 2", "> 4", "> 6", "> 8"};
     private final JComboBox<String> ratingComboBox = new JComboBox<>(ratings);
-    String[] keywords = {"plot twist", "time travel", "conspiracy", "criminal", "monster"};
-    private final JComboBox<String> keywordsComboBox = new JComboBox<>(keywords);
+
+    private final JTextField keywordTextField = new JTextField(30);
+    private final JList<String> keywordSuggestionsList = new JList<>();
+    private final DefaultListModel<String> keywordSuggestionsModel = new DefaultListModel<>();
+    private final JPanel tagsPanel = new JPanel();
+    private final List<String> keywords = new ArrayList<>();
 
     private final JButton searchButton;
+    private final JButton resetKeywordsButton;
     private final JLabel errorMessageField = new JLabel();
     private JTable resultsTable;  // Table to display results
     private JPanel resultsPanel = new JPanel();
@@ -59,9 +65,55 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         final LabelComboBox ratingInfo = new LabelComboBox(
                 new JLabel(MovieSearchViewModel.RATING_LABEL), ratingComboBox);
 
+        this.add(title);
+        this.add(titleInfo);
+        this.add(genreInfo);
+        this.add(ratingInfo);
+
+        loadKeywords();
+
+        keywordTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateKeywordSuggestions();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateKeywordSuggestions();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateKeywordSuggestions();
+            }
+        });
+
+        keywordSuggestionsList.setModel(keywordSuggestionsModel);
+        keywordSuggestionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        keywordSuggestionsList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                String selectedKeyword = keywordSuggestionsList.getSelectedValue();
+                if (selectedKeyword != null) {
+                    addTag(selectedKeyword);
+                    keywordTextField.setText("");
+                    keywordSuggestionsModel.clear();
+                    updateKeywordSuggestionsVisibility();
+                }
+            }
+        });
+
+        this.add(new JLabel("Keywords:"));
+        this.add(keywordTextField);
+        this.add(new JScrollPane(keywordSuggestionsList));
+        this.add(new JLabel("Selected Keywords:"));
+        this.add(tagsPanel);
+
         final JPanel buttons = new JPanel();
         searchButton = new JButton(MovieSearchViewModel.SEARCH_BUTTON_LABEL);
+        resetKeywordsButton = new JButton("Reset Keywords");
         buttons.add(searchButton);
+        buttons.add(resetKeywordsButton);
 
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -73,19 +125,27 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
                     System.out.println("Title: " + currentState.getTitle());
                     System.out.println("Genre: " + currentState.getGenre());
                     System.out.println("Rating: " + currentState.getRating());
+                    System.out.println("Keywords: " + currentState.getKeywords());
         
                     String title = currentState.getTitle();
                     String genre = currentState.getGenre();
                     String rating = currentState.getRating();
+                    List<String> keywords = currentState.getKeywords();
         
-                    movieSearchController.execute(title, genre, rating);
+                    movieSearchController.execute(title, genre, rating, keywords);
                 }
             }
         });
-        this.add(title);
-        this.add(titleInfo);
-        this.add(genreInfo);
-        this.add(ratingInfo);
+
+        resetKeywordsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tagsPanel.removeAll();
+                tagsPanel.revalidate();
+                tagsPanel.repaint();
+            }
+        });
+
         this.add(buttons);
 
         resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
@@ -99,13 +159,71 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         addTitleListener();
         addGenreListener();
         addRatingListener();
-
-//        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        addKeywordListener();
     }
 
-//    public String setResultsTable(JTable newResultsTable) {
-//        this.resultsTable = newResultsTable;
-//    }
+    private void loadKeywords() {
+        // Get the base directory (current working directory)
+        File baseDir = new File(System.getProperty("user.dir"));
+        // Construct the target file path
+        File targetFile = new File(baseDir, "persistent_data/keywords_11_22_2024.txt");
+
+        if (targetFile.exists()) {
+            System.out.println("File exists: " + targetFile.getAbsolutePath());
+            try (BufferedReader reader = new BufferedReader(new FileReader(targetFile))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    keywords.add(line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("File not found.");
+        }
+    }
+
+    private void updateKeywordSuggestions() {
+        String input = keywordTextField.getText();
+        if (input.isEmpty()) {
+            keywordSuggestionsModel.clear();
+            updateKeywordSuggestionsVisibility();
+            return;
+        }
+
+        List<String> suggestions = keywords.stream()
+                .filter(keyword -> keyword.toLowerCase().startsWith(input.toLowerCase()))
+                .collect(Collectors.toList());
+
+        keywordSuggestionsModel.clear();
+        for (String suggestion : suggestions) {
+            keywordSuggestionsModel.addElement(suggestion);
+        }
+
+        updateKeywordSuggestionsVisibility();
+    }
+
+    private void updateKeywordSuggestionsVisibility() {
+        if (keywordSuggestionsModel.isEmpty()) {
+            keywordSuggestionsList.setVisible(false);
+        } else {
+            keywordSuggestionsList.setVisible(true);
+            keywordSuggestionsList.setPreferredSize(new Dimension(keywordTextField.getWidth(), keywordSuggestionsModel.size() * 20));
+        }
+        keywordSuggestionsList.revalidate();
+        keywordSuggestionsList.repaint();
+    }
+
+    private void addTag(String keyword) {
+        JLabel tagLabel = new JLabel(keyword);
+        tagLabel.setOpaque(true);
+        tagLabel.setBackground(Color.LIGHT_GRAY);
+        tagLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        tagsPanel.add(tagLabel);
+        tagsPanel.revalidate();
+        tagsPanel.repaint();
+    }
+
     private void addTitleListener() {
         titleTextField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -168,6 +286,36 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         });
     }
 
+    private void addKeywordListener() {
+        keywordTextField.getDocument().addDocumentListener(new DocumentListener() {
+
+            private void documentListenerHelper() {
+                final MovieSearchState currentState = movieSearchViewModel.getState();
+                currentState.getKeywords().clear();
+                for (int i = 0; i < tagsPanel.getComponentCount(); i++) {
+                    JLabel tagLabel = (JLabel) tagsPanel.getComponent(i);
+                    currentState.getKeywords().add(tagLabel.getText());
+                }
+                movieSearchViewModel.setState(currentState);
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                documentListenerHelper();
+            }
+        });
+    }
+
     public void propertyChange(PropertyChangeEvent evt) {
         final MovieSearchState state = (MovieSearchState) evt.getNewValue();
         if (resultsTable != null) {
@@ -181,24 +329,20 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
             this.repaint();
         }
 
-
-//        final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
-//        Object[][] results = {{"xyz", "xyz", "xyz", "xyz"}};
-//        this.add(new JTable(results, columnNames));
-
-         if (state.getSearchFound()) {
-             errorMessageField.setText("");
-             final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
-             resultsTable = new JTable(state.getMoviesInfo(), columnNames);
-             resultsPanel.add(resultsTable);
-             resultsPanel.revalidate();
-             resultsPanel.repaint();
-         }
+        if (state.getSearchFound()) {
+            errorMessageField.setText("");
+            final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis"};
+            resultsTable = new JTable(state.getMoviesInfo(), columnNames);
+            resultsPanel.add(resultsTable);
+            resultsPanel.revalidate();
+            resultsPanel.repaint();
+        }
     }
 
     public String getViewName() {
         return viewName;
     }
+
     public void setMovieSearchController(MovieSearchController movieSearchController) {
         this.movieSearchController = movieSearchController;
     }
@@ -213,6 +357,3 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         System.out.println("Click " + evt.getStateChange());
     }
 }
-
-
-

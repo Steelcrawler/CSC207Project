@@ -14,6 +14,7 @@ public class MovieSearchState {
     private String errorMessage = "";
     private Boolean searchFound = false;
     private Object[][] moviesInfo;
+    private List<String> keywords = new ArrayList<String>();
 
     public String getTitle() {
         return title;
@@ -26,6 +27,11 @@ public class MovieSearchState {
     public String getRating() {
         return rating;
     }
+
+    public List<String> getKeywords() {
+        return keywords;
+    }
+
 
     public String getErrorMessage() {return errorMessage;};
 
@@ -56,12 +62,18 @@ public class MovieSearchState {
     public void setSearchFound(boolean searchFound) {
         this.searchFound = searchFound;
     }
+
+    public void setGenres(List<String> genres) {
+        this.genres = genres;
+    }
+
     @Override
     public String toString() {
         return "MovieSearchState{"
                 + "title='" + title + '\''
                 + ", genre='" + genre + '\''
                 + ", rating='" + rating + '\''
+                + ", keywords=" + keywords + '\''
                 + '}';
     }
 }

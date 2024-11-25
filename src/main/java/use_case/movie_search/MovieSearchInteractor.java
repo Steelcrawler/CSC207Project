@@ -1,6 +1,15 @@
 package use_case.movie_search;
 import entity.Movie;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.json.JSONObject;
 
 
 /**
@@ -23,9 +32,10 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
             String title = parseTitle(movieSearchInputData.getMovieTitle());
             String genre = parseGenre(movieSearchInputData.getGenre());
             Integer rating = parseRating(movieSearchInputData.getRating());
+            List<Integer> keywordIds = parseKeywords(movieSearchInputData.getKeywords());
             System.out.println("Title: " + title);
     
-            if (title == null && genre == null && rating == null) {
+            if (title == null && genre == null && rating == null && keywordIds.isEmpty()) {
                 this.movieSearchPresenter.prepareFailView("No search criteria provided.");
                 return;
             }
@@ -35,13 +45,17 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
                 moviesList = this.TMDBDataAccessObject.searchMoviesByTitle(title);
             } 
             else if (title == null) {
-                moviesList = this.TMDBDataAccessObject.searchMovies(title, genre, rating);
+                moviesList = this.TMDBDataAccessObject.searchMovies(title, genre, rating, keywordIds);
             } 
             else {
                 this.movieSearchPresenter.prepareFailView("No movies with that title.");
                 return;
             }
-
+            if (moviesList.isEmpty()) {
+                this.movieSearchPresenter.prepareFailView("No movies found with the given criteria.");
+                return;
+            }
+                
             MovieSearchOutputData movieSearchOutputData = new MovieSearchOutputData(moviesList, false);
             this.movieSearchPresenter.prepareSuccessView(movieSearchOutputData);
         } else {
@@ -81,6 +95,36 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
         } else {
             return null;
         }
+    }
+
+    private List<Integer> parseKeywords(List<String> keywords) {
+        Map<String, Integer> keywordMap = loadKeywordMap();
+        List<Integer> keywordIds = new ArrayList<>();
+        if (keywords != null && !keywords.isEmpty()) {
+            for (String keyword : keywords) {
+                Integer id = keywordMap.get(keyword);
+                if (id != null) {
+                    keywordIds.add(id);
+                }
+            }
+        }
+        return keywordIds;
+    }
+
+    private Map<String, Integer> loadKeywordMap() {
+        Map<String, Integer> keywordMap = new HashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader("persistent_data/keyword_ids_11_22_2024.json"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                JSONObject jsonObject = new JSONObject(line);
+                for (String key : jsonObject.keySet()) {
+                    keywordMap.put(key, jsonObject.getInt(key));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return keywordMap;
     }
 }
 
