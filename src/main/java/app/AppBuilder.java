@@ -12,6 +12,8 @@ import data_access.TMDBDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.add_to_watchlist.AddToWatchlistController;
+import interface_adapter.add_to_watchlist.AddToWatchlistPresenter;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
@@ -31,6 +33,10 @@ import interface_adapter.moviesearch.MovieSearchViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import use_case.add_to_watchlist.AddToWatchlistDataAccessInterface;
+import use_case.add_to_watchlist.AddToWatchlistInputBoundary;
+import use_case.add_to_watchlist.AddToWatchlistInteractor;
+import use_case.add_to_watchlist.AddToWatchlistOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -190,6 +196,7 @@ public class AppBuilder {
     }
 
     /**
+ movie_info_view
      * Adds the Movie Info Use Case to the application.
      * @return this builder
      */
@@ -200,6 +207,17 @@ public class AppBuilder {
         final MovieInfoInputBoundary movieInfoInputBoundary = new MovieInfoInteractor(tmdbDataAccessObject, movieInfoOutputBoundary);
         final MovieInfoController movieInfoController = new MovieInfoController(movieInfoInputBoundary);
         movieInfoView.setMovieInfoController(movieInfoController);
+     
+     * Adds the Add To Watchlist Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addAddToWatchlistUseCase() {
+        final AddToWatchlistOutputBoundary addToWatchlistOutputBoundary = new AddToWatchlistPresenter(viewManagerModel,
+                movieSearchViewModel);
+        final AddToWatchlistInputBoundary addToWatchlistInputBoundary = new AddToWatchlistInteractor(userDataAccessObject, addToWatchlistOutputBoundary);
+        final AddToWatchlistController addToWatchlistController = new AddToWatchlistController(addToWatchlistInputBoundary);
+        movieSearchView.setAddToWatchlistController(addToWatchlistController);
+ main
         return this;
     }
 
