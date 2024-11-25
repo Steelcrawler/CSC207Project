@@ -152,16 +152,16 @@ public class MongoDBUserDataAccessObject implements SignupUserDataAccessInterfac
     }
 
     @Override
-    public void addToWatchlist(String username, int movieId) {
+    public void addToWatchlist(String username, Integer movieId) {
         Bson filter = eq(USERNAME, username);
-        Bson update = new Document("$push", new Document(WATCHLIST, movieId));
+        Bson update = new Document("$push", new Document(WATCHLIST, (int) movieId));
         usersCollection.updateOne(filter, update);
     }
 
     @Override
-    public void removeFromWatchlist(String username, int movieId) {
+    public void removeFromWatchlist(String username, Integer movieId) {
         Bson filter = eq(USERNAME, username);
-        Bson update = new Document("$pull", new Document(WATCHLIST, movieId));
+        Bson update = new Document("$pull", new Document(WATCHLIST, (int) movieId));
         usersCollection.updateOne(filter, update);
     }
 
