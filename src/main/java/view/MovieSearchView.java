@@ -24,6 +24,7 @@ import entity.Movie;
 import interface_adapter.moviesearch.MovieSearchController;
 import interface_adapter.moviesearch.MovieSearchState;
 import interface_adapter.moviesearch.MovieSearchViewModel;
+import interface_adapter.open_watchlist.OpenWatchlistController;
 
 import static javax.swing.BoxLayout.Y_AXIS;
 
@@ -45,12 +46,14 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
     private final JButton searchButton;
     private final JButton resetKeywordsButton;
+    private final JButton watchlistButton;
     private final JLabel errorMessageField = new JLabel();
     private JTable resultsTable;  // Table to display results
     private JPanel resultsPanel = new JPanel();
 
     private MovieSearchController movieSearchController;
     private AddToWatchlistController addToWatchlistController;
+    private OpenWatchlistController openWatchlistController;
 
     public MovieSearchView(MovieSearchViewModel movieSearchViewModel) {
         this.movieSearchViewModel = movieSearchViewModel;
@@ -116,8 +119,10 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         final JPanel buttons = new JPanel();
         searchButton = new JButton(MovieSearchViewModel.SEARCH_BUTTON_LABEL);
         resetKeywordsButton = new JButton("Reset Keywords");
+        watchlistButton = new JButton(MovieSearchViewModel.WATCHLIST_BUTTON_LABEL);
         buttons.add(searchButton);
         buttons.add(resetKeywordsButton);
+        buttons.add(watchlistButton);
 
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -148,6 +153,13 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
                 tagsPanel.revalidate();
                 tagsPanel.repaint();
                 updateKeywordState();
+            }
+        });
+
+        watchlistButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openWatchlistController.execute();
             }
         });
 
@@ -390,6 +402,10 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
     public void setMovieSearchController(MovieSearchController movieSearchController) {
         this.movieSearchController = movieSearchController;
+    }
+
+    public void setOpenWatchlistController(OpenWatchlistController openWatchlistController) {
+        this.openWatchlistController = openWatchlistController;
     }
 
     @Override
