@@ -15,15 +15,15 @@ public class Main {
         final JFrame application = appBuilder
                                             .addLoginView()
                                             .addMovieSearchView()
-                .addMovieInfoView()
-                .addMovieInfoUseCase()
                                             .addWatchlistView()
+                                            .addMovieInfoView()
                                             .addSignupView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addMovieSearchUseCase()
-                .addAddToWatchlistUseCase()
-                .addOpenWatchlistUseCase()
+                                            .addAddToWatchlistUseCase()
+                                            .addOpenWatchlistUseCase()
+                                            .addMovieInfoUseCase()
                                             .build();
 
         application.pack();
