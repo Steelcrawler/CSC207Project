@@ -14,4 +14,6 @@ public interface OpenWatchlistOutputBoundary {
         void prepareFailView(String errorMessage);
 
         void switchToMovieSearchView();
+
+        void switchToMovieInfoView(int movieID);
 }

@@ -1,6 +1,7 @@
 package interface_adapter.open_watchlist;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.movieinfo.MovieInfoViewModel;
 import interface_adapter.moviesearch.MovieSearchViewModel;
 import interface_adapter.watchlist.WatchlistState;
 import interface_adapter.watchlist.WatchlistViewModel;
@@ -15,12 +16,14 @@ public class OpenWatchlistPresenter implements OpenWatchlistOutputBoundary {
     private final WatchlistViewModel watchlistViewModel;
     private final MovieSearchViewModel movieSearchViewModel;
     private final ViewManagerModel viewManagerModel;
+    private final MovieInfoViewModel movieInfoViewModel;
 
     public OpenWatchlistPresenter(ViewManagerModel viewManagerModel,
                                   WatchlistViewModel openWatchlistViewModel, MovieSearchViewModel movieSearchViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.watchlistViewModel = openWatchlistViewModel;
         this.movieSearchViewModel = movieSearchViewModel;
+        this.movieInfoViewModel = new MovieInfoViewModel();
     }
 
     @Override
@@ -46,6 +49,11 @@ public class OpenWatchlistPresenter implements OpenWatchlistOutputBoundary {
     @Override
     public void switchToMovieSearchView() {
         viewManagerModel.setState(movieSearchViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+    }
+    @Override
+    public void switchToMovieInfoView(int movieID) {
+        viewManagerModel.setState(movieInfoViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 }
