@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import javax.swing.*;
@@ -146,14 +148,48 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         ratingLabel.setText(movieInfoViewModel.RATING_INFO + rating_info);
         textArea.setText(plot_info);
 
-        ImageIcon posterIcon = new ImageIcon(posterPath);
-        posterLabel.setIcon(posterIcon);
-        moviePoster.add(posterLabel);
+        try {
+        URL posterURL = new URL(posterPath);
+        ImageIcon posterIcon = new ImageIcon(posterURL);
 
-        if (posterIcon.getIconWidth() == -1 || posterIcon.getIconHeight() == -1) {
-            System.out.println("Failed to load image");
-        } else {
-            System.out.println("Image loaded successfully");}
+
+            // Get the original dimensions of the image
+            int originalWidth = posterIcon.getIconWidth();
+            int originalHeight = posterIcon.getIconHeight();
+
+            // Set max width and height
+            int maxWidth = 150;
+            int maxHeight = 250;
+
+            // Calculate the scaling factor while maintaining the aspect ratio
+            double widthRatio = (double) maxWidth / originalWidth;
+            double heightRatio = (double) maxHeight / originalHeight;
+            double scaleRatio = Math.min(widthRatio, heightRatio); // Use the smaller ratio to preserve aspect ratio
+
+            // Calculate the new width and height based on the scaling factor
+            int newWidth = (int) (originalWidth * scaleRatio);
+            int newHeight = (int) (originalHeight * scaleRatio);
+
+            // Resize the image
+            Image img = posterIcon.getImage();
+            Image resizedImg = img.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+
+            // Create a new ImageIcon from the resized image
+            posterIcon = new ImageIcon(resizedImg);
+
+            posterLabel.setIcon(posterIcon);
+            posterLabel.setPreferredSize(new Dimension(newWidth, newHeight));
+        moviePoster.add(posterLabel);
+            if (posterIcon.getIconWidth() == -1 || posterIcon.getIconHeight() == -1) {
+                System.out.println("Failed to load image");
+            } else {
+                System.out.println("Image loaded successfully");}
+        } catch (MalformedURLException e) {
+            // Handle invalid URL format
+            e.printStackTrace();
+            System.out.println("Invalid URL format: " + e.getMessage());
+        }
+
 
         trailerLabel.setText(movieInfoViewModel.TRAILER_INFO + trailer_link);
 
