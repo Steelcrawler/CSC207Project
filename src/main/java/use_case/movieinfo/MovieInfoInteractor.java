@@ -1,7 +1,15 @@
 package use_case.movieinfo;
 
 import entity.Movie;
+import interface_adapter.movieinfo.MovieInfoState;
+import interface_adapter.moviesearch.MovieSearchState;
+import view.ButtonEditor;
+import view.ButtonRenderer;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
 import java.util.List;
 
 /**
@@ -20,7 +28,9 @@ public class MovieInfoInteractor implements MovieInfoInputBoundary {
     @Override
     public void execute(MovieInfoInputData movieInfoInputData) {
         if (TMDBDataAccessObject != null) {
+            System.out.println(movieInfoInputData.getMovieID());
             Movie movie = TMDBDataAccessObject.getMovieByID(movieInfoInputData.getMovieID());
+
             String movieTitle = movie.getTitle();
             double movieRating = movie.getRating();
             String moviePlot = movie.getPlot();
@@ -33,6 +43,11 @@ public class MovieInfoInteractor implements MovieInfoInputBoundary {
         else {
             this.movieInfoPresenter.prepareFailView("Could not load info page for this movie");
         }
+    }
+
+    @Override
+    public void switchView() {
+        this.movieInfoPresenter.switchToWatchlistView();
     }
 }
 

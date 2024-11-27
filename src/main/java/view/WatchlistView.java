@@ -87,6 +87,11 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
             for (int i = 0; i < state.getWatchlist().size(); i++) {
                 JButton movieButton = new JButton(state.getMovieTitles().get(i));
                 JPanel individualMoviePanel = new JPanel();
+
+                int movieID = state.getWatchlist().get(i);
+
+                movieButton.addActionListener(movie_evt -> openWatchlistController.switchToMovieInfoView(movieID));
+
 //            the actual movie stuff will go in this JPanel, the button is a placeholder
                 movieButton.setPreferredSize(new Dimension(110, 140));
                 individualMoviePanel.add(movieButton);

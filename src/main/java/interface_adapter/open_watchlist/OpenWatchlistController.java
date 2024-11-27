@@ -22,4 +22,6 @@ public class OpenWatchlistController {
     public void switchToMovieSearchView() {
         openWatchlistUseCaseInteractor.switchToMovieSearchView();
     }
+
+    public void switchToMovieInfoView(int movieID) {openWatchlistUseCaseInteractor.switchToMovieInfoView(movieID);}
 }

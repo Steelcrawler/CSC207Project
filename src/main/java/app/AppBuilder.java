@@ -224,7 +224,7 @@ public class AppBuilder {
                 movieInfoViewModel);
         final MovieInfoDataAccessInterface tmdbDataAccessObject = new TMDBDataAccessObject();
         final MovieInfoInputBoundary movieInfoInputBoundary = new MovieInfoInteractor(tmdbDataAccessObject, movieInfoOutputBoundary);
-        final MovieInfoController movieInfoController = new MovieInfoController(movieInfoInputBoundary);
+        MovieInfoController movieInfoController = new MovieInfoController(movieInfoInputBoundary);
         movieInfoView.setMovieInfoController(movieInfoController);
         return this;
     }
@@ -248,11 +248,12 @@ public class AppBuilder {
      */
     public AppBuilder addOpenWatchlistUseCase() {
         final OpenWatchlistOutputBoundary openWatchlistOutputBoundary = new OpenWatchlistPresenter(viewManagerModel,
-                watchlistViewModel, movieSearchViewModel);
+                watchlistViewModel, movieSearchViewModel, movieInfoViewModel);
         final TMDBDataAccessObject tmdbDataAccessObject = new TMDBDataAccessObject();
         final OpenWatchlistInputBoundary openWatchlistInputBoundary = new OpenWatchlistInteractor(userDataAccessObject, tmdbDataAccessObject, openWatchlistOutputBoundary);
         final OpenWatchlistController openWatchlistController = new OpenWatchlistController(openWatchlistInputBoundary);
         movieSearchView.setOpenWatchlistController(openWatchlistController);
+        watchlistView.setOpenWatchlistController(openWatchlistController);
         return this;
     }
 
@@ -270,5 +271,10 @@ public class AppBuilder {
         viewManagerModel.firePropertyChanged();
 
         return application;
+    }
+
+    public static void main(String[] args) {
+        AppBuilder test = new AppBuilder();
+        System.out.println(test.movieInfoView.getClass().getName());
     }
 }
