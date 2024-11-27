@@ -46,5 +46,8 @@ public class OpenWatchlistInteractor implements OpenWatchlistInputBoundary {
     public void switchToMovieSearchView() {
         openWatchlistPresenter.switchToMovieSearchView();
     }
+    public void switchToMovieInfoView(int movieID) {
+        openWatchlistPresenter.switchToMovieInfoView(movieID);
+    }
 }
 

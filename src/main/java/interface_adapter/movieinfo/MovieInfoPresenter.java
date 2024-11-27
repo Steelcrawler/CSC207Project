@@ -47,6 +47,12 @@ public class MovieInfoPresenter implements MovieInfoOutputBoundary {
         movieInfoViewModel.firePropertyChanged();
     }
 
+    @Override
+    public void switchToWatchlistView() {
+        this.viewManagerModel.setState("Watchlist");
+        this.viewManagerModel.firePropertyChanged();
+    }
+
 //    @Override
 //    public void prepareSuccessView(MovieInfoOutputData outputData) {
 //        final MovieInfoState movieInfoState = movieInfoViewModel.getState();

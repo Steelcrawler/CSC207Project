@@ -12,4 +12,6 @@ public interface MovieInfoInputBoundary {
      * @param movieInfoInputData the input data for this use case
      */
     void execute(MovieInfoInputData movieInfoInputData);
+    void switchView();
+
 }

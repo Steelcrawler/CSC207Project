@@ -287,7 +287,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                 Date releaseDate = releaseDateString != null && !releaseDateString.isEmpty() ? parseDate(releaseDateString) : null;
                 double rating = jsonObject.getDouble("vote_average");
                 String plot = jsonObject.getString("overview");
-                String posterPath = jsonObject.optString("poster_path", "");
+                String posterPath = "https://image.tmdb.org/t/p/w500" + jsonObject.optString("poster_path", "");
                 List<String> userReviews = getUserReviews(movieID);
                 String trailerLink = getTrailer(movieID);
                 Movie movie = new Movie(movieTitle, movieID, genreTitles, releaseDate, rating, plot, posterPath, userReviews, trailerLink);

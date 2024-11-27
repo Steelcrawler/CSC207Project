@@ -11,4 +11,6 @@ public interface OpenWatchlistInputBoundary {
     void execute();
 
     void switchToMovieSearchView();
+
+    void switchToMovieInfoView(int movieID);
 }

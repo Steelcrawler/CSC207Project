@@ -20,7 +20,11 @@ public class MovieInfoController {
      */
     public void execute(int movieID) {
         final MovieInfoInputData movieInfoInputData = new MovieInfoInputData(movieID);
-
         movieInfoUseCaseInteractor.execute(movieInfoInputData);
     }
+
+    public void switchView() {
+        movieInfoUseCaseInteractor.switchView();
+    }
+
 }
