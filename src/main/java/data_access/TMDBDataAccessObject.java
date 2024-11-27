@@ -10,14 +10,24 @@ import io.github.cdimascio.dotenv.Dotenv;
 import use_case.movie_search.MovieSearchDataAccessInterface;
 import use_case.movieinfo.MovieInfoDataAccessInterface;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.zip.GZIPInputStream;
 
 public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, MovieInfoDataAccessInterface {
     private static final Dotenv dotenv = Dotenv.load();
@@ -37,6 +47,60 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
         populateGenreMap();
         // System.out.println("Genre Map: " + genreMap);
     }
+
+    public void downloadKeywords(String date) {
+        String url = "http://files.tmdb.org/p/exports/keyword_ids_" + date + ".json.gz";
+        System.out.println("Downloading keywords from " + url);
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .addHeader("accept", "application/json")
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful() && response.body() != null) {
+                InputStream inputStream = response.body().byteStream();
+                GZIPInputStream gzipInputStream = new GZIPInputStream(inputStream);
+                String outputFilePath = "keyword_ids_" + date + ".json";
+                String keywordsFilePath = "keywords_" + date + ".txt";
+                Map<String, Integer> keywordMap = new TreeMap<>(); // Use TreeMap for sorted keys
+                List<String> keywordsList = new ArrayList<>();
+
+                try (FileOutputStream fileOutputStream = new FileOutputStream(outputFilePath);
+                    BufferedWriter keywordsWriter = new BufferedWriter(new FileWriter(keywordsFilePath));
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(gzipInputStream))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        JSONObject jsonObject = new JSONObject(line);
+                        int id = jsonObject.getInt("id");
+                        String name = jsonObject.getString("name");
+                        keywordMap.put(name, id);
+                        keywordsList.add(name);
+                    }
+
+                    // Write the keyword map to the JSON file
+                    fileOutputStream.write(new JSONObject(keywordMap).toString().getBytes());
+
+                    // Sort the keywords list alphabetically
+                    Collections.sort(keywordsList);
+
+                    // Write the sorted keywords list to the text file
+                    for (String keyword : keywordsList) {
+                        keywordsWriter.write(keyword);
+                        keywordsWriter.newLine();
+                    }
+                }
+                System.out.println("Keywords downloaded and saved to " + outputFilePath);
+                System.out.println("Keywords list saved to " + keywordsFilePath);
+            } else {
+                System.out.println("Failed to download keywords. Response Code: " + response.code());
+                System.out.println("Response Message: " + response.message());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to download keywords", e);
+        }
+    }
+
 
     private void populateGenreMap() {
         Request request = new Request.Builder()
@@ -155,7 +219,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
     private String getTrailer(int movieID) {
         String url = BASE_URL + VIDEO_ENDPOINT.replace("{movie_id}", String.valueOf(movieID)) + "?api_key=" + TMDB_API_KEY;
 
-        System.out.println("Request URL: " + url);
+        // System.out.println("Request URL: " + url);
 
         Request request = new Request.Builder()
                 .url(url)
@@ -168,7 +232,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                 String responseBody = response.body().string();
                 
                 // Debugging: Print the raw response body
-                System.out.println("Response Body: " + responseBody);
+                // System.out.println("Response Body: " + responseBody);
                 
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray results = jsonObject.getJSONArray("results");
@@ -193,18 +257,20 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
     }
 
     public Movie getMovieByID(int iD) {
+        String url = BASE_URL + DETAILS_ENDPOINT.replace("{movie_id}", String.valueOf(iD)) + "?api_key=" + TMDB_API_KEY;
+
         Request request = new Request.Builder()
-                .url(BASE_URL + DETAILS_ENDPOINT + "?query=" + iD + "&include_adult=false&language=en-US&page=1&api_key=" + TMDB_API_KEY)
+                .url(url)
                 .get()
                 .addHeader("accept", "application/json")
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
-                String responseBody = response.body().toString();
+                String responseBody = response.body().string();
 
                 // Debugging: Print the raw response body
-                // System.out.println("Response Body: " + responseBody);
+                 System.out.println("Response Body: " + responseBody);
 
                 JSONObject jsonObject = new JSONObject(responseBody);
                 String movieTitle = jsonObject.getString("title");
@@ -240,17 +306,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
     }
 
     @Override
-    public List<Movie> searchMovies(String title, String genre) {
-        return searchMovies(title, genre, null);
-    }
-
-    @Override
-    public List<Movie> searchMovies(Integer rating) {
-        return searchMovies(null, null, rating);
-    }
-
-    @Override
-    public List<Movie> searchMovies(String title, String genre, Integer rating) {
+    public List<Movie> searchMovies(String title, String genre, Integer rating, List<Integer> keywordIDs) {
         List<Movie> movies = new ArrayList<>();
         StringBuilder urlBuilder = new StringBuilder(BASE_URL + DISCOVER_MOVIE_ENDPOINT + "?api_key=" + TMDB_API_KEY);
 
@@ -266,6 +322,13 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
         if (rating != null && rating >= 0 && rating <= 10) {
             urlBuilder.append("&vote_average.gte=").append(rating);
         }
+        if (keywordIDs != null && !keywordIDs.isEmpty()) {
+            String keywordIDsString = keywordIDs.stream()
+                                                .map(String::valueOf)
+                                                .collect(Collectors.joining(","));
+            urlBuilder.append("&with_keywords=").append(keywordIDsString);
+        }
+
 
         Request request = new Request.Builder()
                 .url(urlBuilder.toString())
@@ -300,7 +363,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                     String posterPath = movieJson.optString("poster_path", "");
                     List<String> userReviews = getUserReviews(movieID);
                     String trailerLink = getTrailer(movieID);
-
+    
                     movies.add(new Movie(movieTitle, movieID, genreTitles, releaseDate, ratingValue, plot, posterPath, userReviews, trailerLink));
                 }
             } else {
@@ -310,7 +373,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
         } catch (IOException | ParseException e) {
             throw new RuntimeException("Failed to search movies", e);
         }
-
+    
         return movies;
     }
 
@@ -368,8 +431,14 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
         return movies;
     }
 
+
     private Date parseDate(String dateString) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         return sdf.parse(dateString);
+    }
+
+    public static void main(String[] args) {
+        TMDBDataAccessObject tmdbDataAccessObject = new TMDBDataAccessObject();
+        tmdbDataAccessObject.downloadKeywords("11_22_2024");
     }
 }

@@ -1,5 +1,7 @@
 package interface_adapter.moviesearch;
 
+import java.util.List;
+
 import use_case.movie_search.MovieSearchInputBoundary;
 import use_case.movie_search.MovieSearchInputData;
 import use_case.signup.SignupInputBoundary;
@@ -31,9 +33,10 @@ public class MovieSearchController {
      * Executes the Movie Search Use Case.
      * @param title the title to search for.
      */
-    public void execute(String title) {
+
+    public void execute(String title, String genre, String rating, List<String> keywords) {
         final MovieSearchInputData movieSearchInputData = new MovieSearchInputData(
-                title);
+                title, genre, rating, keywords);
 
         movieSearchUseCaseInteractor.execute(movieSearchInputData);
     }
