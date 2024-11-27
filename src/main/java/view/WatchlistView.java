@@ -9,10 +9,12 @@ import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import interface_adapter.movieinfo.MovieInfoController;
 import interface_adapter.moviesearch.MovieSearchState;
 import interface_adapter.open_watchlist.OpenWatchlistController;
 import interface_adapter.watchlist.WatchlistState;
 import interface_adapter.watchlist.WatchlistViewModel;
+import use_case.movieinfo.MovieInfoInputData;
 
 public class WatchlistView extends JPanel implements ActionListener, ItemListener, PropertyChangeListener {
     private final String viewName = "Watchlist";
@@ -25,6 +27,7 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
     private JPanel moviePanel;
 
     private OpenWatchlistController openWatchlistController;
+    private MovieInfoController movieInfoController;
 
     public WatchlistView(WatchlistViewModel watchlistViewModel) {
         this.watchlistViewModel = watchlistViewModel;
@@ -68,8 +71,7 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
                 JPanel individualMoviePanel = new JPanel();
 
                 int movieID = state.getWatchlist().get(i);
-
-                movieButton.addActionListener(movie_evt -> openWatchlistController.switchToMovieInfoView(movieID));
+                movieButton.addActionListener(movie_evt -> movieInfoController.execute(movieID));
 
 //            the actual movie stuff will go in this JPanel, the button is a placeholder
                 movieButton.setPreferredSize(new Dimension(110, 140));
@@ -89,6 +91,10 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
 
     public void setOpenWatchlistController(OpenWatchlistController openWatchlistController) {
         this.openWatchlistController = openWatchlistController;
+    }
+
+    public void setMovieInfoController(MovieInfoController movieInfoController) {
+        this.movieInfoController = movieInfoController;
     }
 
     @Override

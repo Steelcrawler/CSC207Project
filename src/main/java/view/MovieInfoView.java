@@ -41,7 +41,7 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
 
 
         this.movieInfoViewModel = movieInfoViewModel;
-        movieInfoViewModel.addPropertyChangeListener(this);
+        this.movieInfoViewModel.addPropertyChangeListener(this);
 
         this.setLayout(new FlowLayout());
 
@@ -55,17 +55,17 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
                 }
             }
         });
-        this.testButton = new JButton("Test");
-        testButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                if (evt.getSource().equals(testButton)) {
-
-                    final MovieInfoState currentState = movieInfoViewModel.getState();
-                    System.out.println("Currentstatemovieid: " + currentState.getMovieID());
-                    movieInfoController.execute(currentState.getMovieID());
-                }
-            }
-        });
+//        this.testButton = new JButton("Test");
+//        testButton.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent evt) {
+//                if (evt.getSource().equals(testButton)) {
+//
+//                    final MovieInfoState currentState = movieInfoViewModel.getState();
+//                    System.out.println("Currentstatemovieid: " + currentState.getMovieID());
+//                    movieInfoController.execute(currentState.getMovieID());
+//                }
+//            }
+//        });
         this.titleLabel = new JLabel(movieInfoViewModel.MOVIE_TITLE_INFO);
         this.ratingLabel = new JLabel(movieInfoViewModel.RATING_INFO);
 
@@ -78,7 +78,7 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         textArea.setEditable(true);  // Allow editing
 
         // Add content to the JTextArea (Optional)
-        textArea.setText("plottttt");
+        textArea.setText("");
 
         // Create the JScrollPane and add the JTextArea to it
         JScrollPane scrollPane = new JScrollPane(textArea);
@@ -97,30 +97,12 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         titleAndRating.add(titleLabel);
         titleAndRating.add(ratingLabel);
 
-        this.add(testButton);
-//        this.add(backButton, BorderLayout.NORTH);
+        this.add(backButton);
         this.add(moviePoster);
         this.add(titleAndRating);
         this.add(scrollPane);
-//        this.add(plotLabel, BorderLayout.CENTER);
 
         this.add(trailerLabel);
-
-//        this.add(testButton, BorderLayout.NORTH);
-////        this.add(backButton, BorderLayout.NORTH);
-//        this.add(moviePosterLabel, BorderLayout.WEST);
-//        this.add(titleAndRating, BorderLayout.CENTER);
-//        this.add(scrollPane, BorderLayout.CENTER);
-////        this.add(plotLabel, BorderLayout.CENTER);
-//
-//        this.add(trailerLabel, BorderLayout.SOUTH);
-
-//        this.add(backButton);
-//        this.add(titleLabel);
-//        this.add(ratingLabel);
-//        this.add(moviePosterLabel);
-//        this.add(plotLabel);
-//        this.add(trailerLabel);
     }
 
     public void setMovieInfoController(MovieInfoController movieInfoController) {
@@ -133,7 +115,6 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
 
     public void propertyChange(PropertyChangeEvent evt) {
         final MovieInfoState state = (MovieInfoState) evt.getNewValue();
-
 
         String movie_title = state.getMovieTitle();
         System.out.println("Movietitle: " + movie_title);
@@ -193,14 +174,6 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
 
         trailerLabel.setText(movieInfoViewModel.TRAILER_INFO + trailer_link);
 
-
-
-
-
-//        titleLabel.setText(state.getMovieTitle());
-//        ratingLabel.setText(ratingLabel.getText() + state.getRatingInfo());
-//        plotLabel.setText(state.getPlotInfo());
-//        trailerLabel.setText(state.getTrailerLink());
 
     }
 
