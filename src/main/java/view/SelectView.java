@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entity.Movie;
+import interface_adapter.Select.SelectState;
 import interface_adapter.Select.SelectViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginState;
@@ -28,7 +29,7 @@ import interface_adapter.watchlist.WatchlistState;
 import interface_adapter.watchlist.WatchlistViewModel;
 
 public class SelectView extends JPanel implements ActionListener, ItemListener, PropertyChangeListener {
-    private final String viewName = "Watchlist";
+    private final String viewName = "Select";
 
     private final SelectViewModel selectViewModel;
     private final JPanel menuPanel;
@@ -44,23 +45,24 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
     public SelectView(SelectViewModel selectViewModel) {
         this.selectViewModel = selectViewModel;
         this.selectViewModel.addPropertyChangeListener(this);
+        this.setPreferredSize(new Dimension(800, 800));
 
         this.setLayout(new BorderLayout());
 
         menuPanel = new JPanel(new BorderLayout());
 
-        backButton = new JButton(WatchlistViewModel.BACK_BUTTON_LABEL);
+        backButton = new JButton(SelectViewModel.BACK_BUTTON_LABEL);
         menuPanel.add(backButton, BorderLayout.WEST);
 
         eastPanel = new JPanel(new BorderLayout());
-        deleteButton = new JButton(WatchlistViewModel.SELECT_BUTTON_LABEL);
-        recommendationButton = new JButton("Get a recommendation"); //SelectViewModel isn't implemented yet
+        deleteButton = new JButton(SelectViewModel.DELETE_BUTTON_LABEL);
+        recommendationButton = new JButton(SelectViewModel.REC_BUTTON_LABEL); //SelectViewModel isn't implemented yet
         eastPanel.add(deleteButton, BorderLayout.EAST);
         JPanel spacer = new JPanel();
         spacer.setPreferredSize(new Dimension(20, 20));
         eastPanel.add(spacer, BorderLayout.CENTER);
         eastPanel.add(recommendationButton, BorderLayout.WEST);
-        JLabel titleLabel = new JLabel(WatchlistViewModel.TITLE_LABEL, SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel(SelectViewModel.TITLE_LABEL, SwingConstants.CENTER);
         menuPanel.add(titleLabel, BorderLayout.CENTER);
         menuPanel.add(eastPanel, BorderLayout.EAST);
 
@@ -87,7 +89,7 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
-        final WatchlistState state = (WatchlistState) evt.getNewValue();
+        final SelectState state = (SelectState) evt.getNewValue();
 
     }
 

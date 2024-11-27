@@ -112,6 +112,10 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
         this.openWatchlistController = openWatchlistController;
     }
 
+    public void setSelectViewModel(SelectViewModel selectViewModel) {
+        this.selectViewModel = selectViewModel;
+    }
+
     @Override
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
