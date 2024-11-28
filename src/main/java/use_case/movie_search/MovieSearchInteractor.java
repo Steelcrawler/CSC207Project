@@ -34,7 +34,7 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
             Integer rating = parseRating(movieSearchInputData.getRating());
             List<Integer> keywordIds = parseKeywords(movieSearchInputData.getKeywords());
             System.out.println("Title: " + title);
-    
+
             if (title == null && genre == null && rating == null && keywordIds.isEmpty()) {
                 System.out.println("case 1");
                 this.movieSearchPresenter.prepareFailView("No search criteria provided.");
@@ -44,12 +44,10 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
             if (title != null && TMDBDataAccessObject.existsByTitle(title)) {
                 System.out.println("movie title exists");
                 moviesList = this.TMDBDataAccessObject.searchMoviesByTitle(title);
-            } 
-            else if (title == null) {
+            } else if (title == null) {
                 System.out.println("case 3");
                 moviesList = this.TMDBDataAccessObject.searchMovies(title, genre, rating, keywordIds);
-            } 
-            else {
+            } else {
                 System.out.println("case 4");
                 this.movieSearchPresenter.prepareFailView("No movies with that title.");
                 return;
@@ -59,7 +57,7 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
                 this.movieSearchPresenter.prepareFailView("No movies found with the given criteria.");
                 return;
             }
-                
+
             MovieSearchOutputData movieSearchOutputData = new MovieSearchOutputData(moviesList, false);
             this.movieSearchPresenter.prepareSuccessView(movieSearchOutputData);
         } else {
@@ -68,25 +66,23 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
         }
     }
 
-    private String parseTitle(String title) {
+    public String parseTitle(String title) {
         if (!"".equals(title)) {
             return title;
-        }
-        else {
+        } else {
             return null;
         }
     }
 
-    private String parseGenre(String genre) {
+    public String parseGenre(String genre) {
         if (!"None".equals(genre)) {
             return genre;
-        }
-        else {
+        } else {
             return null;
         }
     }
 
-    private Integer parseRating(String rating) {
+    public Integer parseRating(String rating) {
         System.out.println("Rating: " + rating);
         if (rating != null && !rating.isEmpty() && !"None".equals(rating)) {
             try {
@@ -101,7 +97,7 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
         }
     }
 
-    private List<Integer> parseKeywords(List<String> keywords) {
+    public List<Integer> parseKeywords(List<String> keywords) {
         Map<String, Integer> keywordMap = loadKeywordMap();
         List<Integer> keywordIds = new ArrayList<>();
         if (keywords != null && !keywords.isEmpty()) {
@@ -115,9 +111,20 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
         return keywordIds;
     }
 
-    private Map<String, Integer> loadKeywordMap() {
+    public Map<String, Integer> loadKeywordMap() {
+        return loadKeywordMap(false);
+    }
+
+    public Map<String, Integer> loadKeywordMap(boolean fail) {
         Map<String, Integer> keywordMap = new HashMap<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("persistent_data/keyword_ids_11_22_2024.json"))) {
+        String filePath;
+        if (fail) {
+            filePath = "aosfa[oifjads";
+        }
+        else {
+            filePath = "persistent_data/keyword_ids_11_22_2024.json";
+        }
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 JSONObject jsonObject = new JSONObject(line);
@@ -130,5 +137,10 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
         }
         return keywordMap;
     }
+
+    public BufferedReader createBufferedReader(String filePath) throws IOException {
+        return new BufferedReader(new FileReader(filePath));
+    }
+    
 }
 
