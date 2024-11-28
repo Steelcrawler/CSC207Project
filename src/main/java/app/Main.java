@@ -13,19 +13,20 @@ public class Main {
     public static void main(String[] args) {
         final AppBuilder appBuilder = new AppBuilder();
         final JFrame application = appBuilder
-                                            .addLoginView()
-                                            .addMovieSearchView()
-                                            .addWatchlistView()
-                                            .addMovieInfoView()
-                                            .addSignupView()
-                                            .addSignupUseCase()
-                                            .addLoginUseCase()
-                                            .addMovieSearchUseCase()
-                                            .addAddToWatchlistUseCase()
-                                            .addOpenWatchlistUseCase()
-                                            .addMovieInfoUseCase()
-                                            .addDeleteFromWatchlistUseCase()
-                                            .build();
+                .addLoginView()
+                .addMovieSearchView()
+                .addWatchlistView()
+                .addMovieInfoView()
+                .addSignupView()
+                .addSignupUseCase()
+                .addLoginUseCase()
+                .addMovieSearchUseCase()
+                .addAddToWatchlistUseCase()
+                .addOpenWatchlistUseCase()
+                .addMovieInfoUseCase()
+                .addSelectView()
+                .addDeleteFromWatchlistUseCase()
+                .build();
 
         application.pack();
         application.setVisible(true);
