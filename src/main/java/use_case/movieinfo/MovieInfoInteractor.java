@@ -37,6 +37,7 @@ public class MovieInfoInteractor implements MovieInfoInputBoundary {
             String moviePoster = movie.getPosterPath();
             String movieTrailer = movie.getTrailerLink();
             List<String> movieReviews = movie.getUserReviews();
+
             final MovieInfoOutputData movieInfoOutputData = new MovieInfoOutputData(movieTitle, movieRating, moviePlot, moviePoster, movieTrailer, movieReviews);
             this.movieInfoPresenter.prepareSuccessView(movieInfoOutputData);
         }

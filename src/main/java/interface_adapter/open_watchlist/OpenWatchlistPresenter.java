@@ -54,11 +54,9 @@ public class OpenWatchlistPresenter implements OpenWatchlistOutputBoundary {
     }
     @Override
     public void switchToMovieInfoView(int movieID) {
-        System.out.println("switch view");
         MovieInfoState movieInfoState = movieInfoViewModel.getState();
         movieInfoState.setMovieID(movieID);
         viewManagerModel.setState(movieInfoViewModel.getViewName());
-        System.out.println("Here: " + movieInfoViewModel.getState().getMovieID());
         viewManagerModel.firePropertyChanged();
     }
 }
