@@ -12,13 +12,9 @@ import java.beans.PropertyChangeListener;
 import interface_adapter.movieinfo.MovieInfoController;
 import interface_adapter.Select.SelectViewModel;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.moviesearch.MovieSearchState;
-import interface_adapter.open_select.OpenSelectController;
 import interface_adapter.open_watchlist.OpenWatchlistController;
-import interface_adapter.signup.SignupState;
 import interface_adapter.watchlist.WatchlistState;
 import interface_adapter.watchlist.WatchlistViewModel;
-import use_case.movieinfo.MovieInfoInputData;
 
 public class WatchlistView extends JPanel implements ActionListener, ItemListener, PropertyChangeListener {
     private final String viewName = "Watchlist";
@@ -34,7 +30,6 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
     private OpenWatchlistController openWatchlistController;
     private MovieInfoController movieInfoController;
     private SelectViewModel selectViewModel;
-    private OpenSelectController openSelectController;
 
     public WatchlistView(WatchlistViewModel watchlistViewModel, ViewManagerModel viewManagerModel) {
         this.watchlistViewModel = watchlistViewModel;
