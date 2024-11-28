@@ -84,13 +84,13 @@ public class MovieInfoInteractorTest {
         Assertions.assertThrows(NullPointerException.class, () -> interactor.execute(inputData));
     }
 
+    @Test
     void testWithShortMovieNameTest() {
         MovieInfoInputData inputData = new MovieInfoInputData(402431);
         MovieInfoDataAccessInterface tmdbDataAccessObject = new TMDBDataAccessObject();
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         MovieInfoViewModel movieInfoViewModel = new MovieInfoViewModel();
 
-        // This creates a successPresenter that tests whether the test case is as we expect.
         MovieInfoOutputBoundary successPresenter = new MovieInfoPresenter(viewManagerModel, movieInfoViewModel) {
             @Override
             public void prepareSuccessView(MovieInfoOutputData movie_info) {
@@ -107,29 +107,7 @@ public class MovieInfoInteractorTest {
         MovieInfoInputBoundary interactor = new MovieInfoInteractor(tmdbDataAccessObject, successPresenter);
         interactor.execute(inputData);
     }
-//    void nullInputTest() {
-//        MovieInfoInputData inputData = new MovieInfoInputData(null);
-//        MovieInfoDataAccessInterface tmdbDataAccessObject = new TMDBDataAccessObject();
-//        ViewManagerModel viewManagerModel = new ViewManagerModel();
-//        MovieInfoViewModel movieInfoViewModel = new MovieInfoViewModel();
-//
-//        // This creates a successPresenter that tests whether the test case is as we expect.
-//        MovieInfoOutputBoundary successPresenter = new MovieInfoPresenter(viewManagerModel, movieInfoViewModel) {
-//            @Override
-//            public void prepareSuccessView(MovieInfoOutputData movie_info) {
-//                Assertions.assertEquals("Wicked", movie_info.getMovieTitle());
-//                Assertions.assertEquals(7.7, movie_info.getMovieRating());
-//            }
-//
-//            @Override
-//            public void prepareFailView(String error) {
-//                Assertions.fail("Use case failure is unexpected.");
-//            }
-//        };
-//
-//        MovieInfoInputBoundary interactor = new MovieInfoInteractor(tmdbDataAccessObject, successPresenter);
-//        interactor.execute(inputData);
-//    }
+
     @Test
     void switchViewToWatchlist() {
         MovieInfoInputData inputData = new MovieInfoInputData(402431);
@@ -158,31 +136,4 @@ public class MovieInfoInteractorTest {
         String finalView = viewManagerModel.getState();
         Assertions.assertEquals("Watchlist", finalView);
     }
-
-//    @Test
-//    void testNullTMDBDataAccessObject() {
-//        ViewManagerModel viewManagerModel = new ViewManagerModel();
-//        MovieInfoViewModel movieInfoViewModel = new MovieInfoViewModel();
-//        MovieInfoInputData inputData = new MovieInfoInputData(402431);
-//        TMDBDataAccessObject tmdbDataAccessObject = null;
-//
-//        MovieInfoOutputBoundary testPresenter = new MovieInfoPresenter(viewManagerModel, movieInfoViewModel) {
-//            @Override
-//            public void prepareSuccessView(MovieInfoOutputData movie_info) {
-//                Assertions.assertEquals("Wicked", movie_info.getMovieTitle());
-//                Assertions.assertEquals(7.7, movie_info.getMovieRating());
-//            }
-//
-//            @Override
-//            public void prepareFailView(String error) {
-//                Assertions.fail("Use case failure is unexpected.");
-//            }
-//        };
-//        MovieInfoInputBoundary interactor = new MovieInfoInteractor(tmdbDataAccessObject, testPresenter);
-//        interactor.execute(inputData);
-//
-//    }
-
-
-
 }

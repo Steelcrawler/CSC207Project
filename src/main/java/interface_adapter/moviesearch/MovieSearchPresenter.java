@@ -6,6 +6,7 @@ import use_case.movie_search.MovieSearchOutputBoundary;
 import use_case.movie_search.MovieSearchOutputData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Presenter for the Movie Search Use Case.
@@ -14,20 +15,23 @@ public class MovieSearchPresenter implements MovieSearchOutputBoundary {
 
     private final MovieSearchViewModel movieSearchViewModel;
     private final ViewManagerModel viewManagerModel;
+    private final List<Movie> movieList;
 
     public MovieSearchPresenter(ViewManagerModel viewManagerModel,
                            MovieSearchViewModel movieSearchViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.movieSearchViewModel = movieSearchViewModel;
+        this.movieList = new ArrayList<>();
     }
 
     @Override
     public void prepareSuccessView(MovieSearchOutputData outputData) {
         final MovieSearchState movieSearchState = movieSearchViewModel.getState();
-        movieSearchState.setSearchFound(true);
         ArrayList<ArrayList<Object>> moviesInfo = new ArrayList<>();
+        movieSearchState.setSearchFound(true);
+        addAllMovies(outputData.getMovies());
         ArrayList<Integer> moviesIDs = new ArrayList<>();
-        for (Movie movie : outputData.getMovies()) {
+        for (Movie movie : this.movieList) {
             ArrayList<Object> movieInfo = new ArrayList<>();
             movieInfo.add(movie.getTitle());
             movieInfo.add(movie.getGenres());
@@ -53,6 +57,9 @@ public class MovieSearchPresenter implements MovieSearchOutputBoundary {
         movieSearchState.setSearchFound(false);
         movieSearchState.setErrorMessage(errorMessage);
         movieSearchViewModel.firePropertyChanged();
+    }
+    public void addAllMovies(List<Movie> movies) {
+        this.movieList.addAll(movies);
     }
 }
 

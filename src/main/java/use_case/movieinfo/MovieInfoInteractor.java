@@ -27,16 +27,13 @@ public class MovieInfoInteractor implements MovieInfoInputBoundary {
 
     @Override
     public void execute(MovieInfoInputData movieInfoInputData) {
-        System.out.println(movieInfoInputData.getMovieID());
         Movie movie = TMDBDataAccessObject.getMovieByID(movieInfoInputData.getMovieID());
-
         String movieTitle = movie.getTitle();
         double movieRating = movie.getRating();
         String moviePlot = movie.getPlot();
         String moviePoster = movie.getPosterPath();
         String movieTrailer = movie.getTrailerLink();
         List<String> movieReviews = movie.getUserReviews();
-
         final MovieInfoOutputData movieInfoOutputData = new MovieInfoOutputData(movieTitle, movieRating, moviePlot, moviePoster, movieTrailer, movieReviews);
         this.movieInfoPresenter.prepareSuccessView(movieInfoOutputData);
     }
