@@ -24,6 +24,7 @@ public class Main {
                                             .addAddToWatchlistUseCase()
                                             .addOpenWatchlistUseCase()
                                             .addMovieInfoUseCase()
+                                            .addDeleteFromWatchlistUseCase()
                                             .build();
 
         application.pack();
