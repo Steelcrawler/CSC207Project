@@ -102,7 +102,7 @@ public class AppBuilder {
     private WatchlistView watchlistView;
     private WatchlistViewModel watchlistViewModel;
     private SelectView selectView;
-    private SelectViewModel selectViewModel;
+    private SelectViewModel selectViewModel = new SelectViewModel();
 
 
     public AppBuilder() {
@@ -149,7 +149,7 @@ public class AppBuilder {
     public AppBuilder addWatchlistView() {
         watchlistViewModel = new WatchlistViewModel();
         watchlistView = new WatchlistView(watchlistViewModel, viewManagerModel);
-        watchlistView.setSelectViewModel(new SelectViewModel());
+        watchlistView.setSelectViewModel(selectViewModel);
         cardPanel.add(watchlistView, watchlistView.getViewName());
         return this;
     }
@@ -158,7 +158,6 @@ public class AppBuilder {
      *
      */
     public AppBuilder addSelectView() {
-        selectViewModel = new SelectViewModel();
         selectView = new SelectView(selectViewModel);
         cardPanel.add(selectView, selectView.getViewName());
         return this;

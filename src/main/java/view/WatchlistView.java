@@ -32,6 +32,7 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
     private OpenWatchlistController openWatchlistController;
     private SelectViewModel selectViewModel;
     private OpenSelectController openSelectController;
+
     public WatchlistView(WatchlistViewModel watchlistViewModel, ViewManagerModel viewManagerModel) {
         this.watchlistViewModel = watchlistViewModel;
         this.watchlistViewModel.addPropertyChangeListener(this);
@@ -59,6 +60,7 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
                             selectViewModel.getState().setWatchlist(watchlistViewModel.getState().getWatchlist());
                             selectViewModel.getState().setMovieTitles(watchlistViewModel.getState().getMovieTitles());
                             selectViewModel.getState().setPosterPaths(watchlistViewModel.getState().getPosterPaths());
+                            selectViewModel.firePropertyChanged();
                             viewManagerModel.setState(selectViewModel.getViewName());
                             viewManagerModel.firePropertyChanged();
                         }
@@ -72,8 +74,8 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
                         if (evt.getSource().equals(backButton)) {
                             openWatchlistController.switchToMovieSearchView();
                         }
-                        }
                     }
+                }
         );
     }
 
