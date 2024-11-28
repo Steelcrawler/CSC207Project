@@ -239,6 +239,7 @@ public class AppBuilder {
         final MovieInfoInputBoundary movieInfoInputBoundary = new MovieInfoInteractor(tmdbDataAccessObject, movieInfoOutputBoundary);
         MovieInfoController movieInfoController = new MovieInfoController(movieInfoInputBoundary);
         movieInfoView.setMovieInfoController(movieInfoController);
+        watchlistView.setMovieInfoController(movieInfoController);
         return this;
     }
 

@@ -8,12 +8,12 @@ import java.util.List;
  */
 public class MovieInfoState {
     private int movieID;
-    private String movieTitle = "";
-    private double ratingInfo = 0;
-    private String plotInfo = "";
-    private String trailerLink = "";
-    private String posterPath = "";
-    private List<String> userReviews = new ArrayList<>();
+    private String movieTitle;
+    private double ratingInfo;
+    private String plotInfo;
+    private String trailerLink;
+    private String posterPath;
+    private List<String> userReviews;
 
     public int getMovieID() {return movieID;}
     public String getMovieTitle() {return movieTitle;}
