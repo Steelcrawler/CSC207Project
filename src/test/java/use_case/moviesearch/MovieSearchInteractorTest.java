@@ -8,10 +8,17 @@ import use_case.movie_search.MovieSearchOutputData;
 import entity.Movie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -127,9 +134,38 @@ class MovieSearchInteractorTest {
     }
 
     @Test
+    void testLoadKeywordMapWithFail() {
+        Map<String, Integer> keywordMap = interactor.loadKeywordMap(true);
+        assertTrue(keywordMap.isEmpty());
+    }
+
+    @Test
+    void testCreateBufferedReader() throws IOException {
+        MovieSearchInteractor interactor = new MovieSearchInteractor(mockDataAccess, mockPresenter);
+        
+        String testContent = "Test content";
+        Path tempFile = Files.createTempFile("test", ".txt");
+        Files.writeString(tempFile, testContent);
+
+        try {
+            BufferedReader reader = interactor.createBufferedReader(tempFile.toString());
+            assertNotNull(reader);
+            assertEquals(testContent, reader.readLine());
+            reader.close();
+        } finally {
+            Files.delete(tempFile);
+        }
+
+        // Test with non-existent file
+        assertThrows(FileNotFoundException.class, () ->
+                interactor.createBufferedReader("nonexistent.txt")
+        );
+    }
+
+    @Test
     void testLoadKeywordMapWithIOException() throws IOException {
         MovieSearchInteractor spyInteractor = spy(interactor);
-        doReturn(new HashMap<String, Integer>()).when(spyInteractor).loadKeywordMap(true);
+        doThrow(new IOException()).when(spyInteractor).createBufferedReader(anyString());
 
         Map<String, Integer> result = spyInteractor.loadKeywordMap(true);
         assertTrue(result.isEmpty());
