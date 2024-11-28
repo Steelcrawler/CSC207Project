@@ -19,17 +19,16 @@ public class MovieInfoPresenter implements MovieInfoOutputBoundary {
 
     private final MovieInfoViewModel movieInfoViewModel;
     private final ViewManagerModel viewManagerModel;
-    // private final WatchlistViewModel watchlistViewModel;
 
     public MovieInfoPresenter(ViewManagerModel viewManagerModel,
                               MovieInfoViewModel movieInfoViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.movieInfoViewModel = movieInfoViewModel;
-        // need this.watchlistViewModel = watchlistViewModel;
     }
 
     @Override
     public void prepareSuccessView(MovieInfoOutputData outputData) {
+        this.viewManagerModel.setState("movie info");
         final MovieInfoState movieInfoState =  movieInfoViewModel.getState();
         movieInfoState.setMovieTitle(outputData.getMovieTitle());
         movieInfoState.setRatingInfo(outputData.getMovieRating());

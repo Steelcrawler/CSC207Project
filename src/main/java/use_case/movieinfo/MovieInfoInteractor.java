@@ -27,23 +27,18 @@ public class MovieInfoInteractor implements MovieInfoInputBoundary {
 
     @Override
     public void execute(MovieInfoInputData movieInfoInputData) {
-        if (TMDBDataAccessObject != null) {
-            System.out.println(movieInfoInputData.getMovieID());
-            Movie movie = TMDBDataAccessObject.getMovieByID(movieInfoInputData.getMovieID());
+        System.out.println(movieInfoInputData.getMovieID());
+        Movie movie = TMDBDataAccessObject.getMovieByID(movieInfoInputData.getMovieID());
 
-            String movieTitle = movie.getTitle();
-            double movieRating = movie.getRating();
-            String moviePlot = movie.getPlot();
-            String moviePoster = movie.getPosterPath();
-            String movieTrailer = movie.getTrailerLink();
-            List<String> movieReviews = movie.getUserReviews();
+        String movieTitle = movie.getTitle();
+        double movieRating = movie.getRating();
+        String moviePlot = movie.getPlot();
+        String moviePoster = movie.getPosterPath();
+        String movieTrailer = movie.getTrailerLink();
+        List<String> movieReviews = movie.getUserReviews();
 
-            final MovieInfoOutputData movieInfoOutputData = new MovieInfoOutputData(movieTitle, movieRating, moviePlot, moviePoster, movieTrailer, movieReviews);
-            this.movieInfoPresenter.prepareSuccessView(movieInfoOutputData);
-        }
-        else {
-            this.movieInfoPresenter.prepareFailView("Could not load info page for this movie");
-        }
+        final MovieInfoOutputData movieInfoOutputData = new MovieInfoOutputData(movieTitle, movieRating, moviePlot, moviePoster, movieTrailer, movieReviews);
+        this.movieInfoPresenter.prepareSuccessView(movieInfoOutputData);
     }
 
     @Override
