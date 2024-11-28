@@ -117,7 +117,13 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
 
     public Map<String, Integer> loadKeywordMap(boolean fail) {
         Map<String, Integer> keywordMap = new HashMap<>();
-        String filePath = fail ? "persistent_data/nonsense_file.json" : "persistent_data/keyword_ids_11_22_2024.json";
+        String filePath;
+        if (fail) {
+            filePath = "aosfa[oifjads";
+        }
+        else {
+            filePath = "persistent_data/keyword_ids_11_22_2024.json";
+        }
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -131,5 +137,10 @@ public class MovieSearchInteractor implements MovieSearchInputBoundary {
         }
         return keywordMap;
     }
+
+    public BufferedReader createBufferedReader(String filePath) throws IOException {
+        return new BufferedReader(new FileReader(filePath));
+    }
+    
 }
 
