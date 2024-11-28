@@ -11,6 +11,7 @@ import data_access.MongoDBUserDataAccessObject;
 import data_access.TMDBDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
+import interface_adapter.Select.SelectViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.add_to_watchlist.AddToWatchlistController;
 import interface_adapter.add_to_watchlist.AddToWatchlistPresenter;
@@ -100,6 +101,8 @@ public class AppBuilder {
     private MovieInfoViewModel movieInfoViewModel;
     private WatchlistView watchlistView;
     private WatchlistViewModel watchlistViewModel;
+    private SelectView selectView;
+    private SelectViewModel selectViewModel = new SelectViewModel();
 
 
     public AppBuilder() {
@@ -145,8 +148,18 @@ public class AppBuilder {
      */
     public AppBuilder addWatchlistView() {
         watchlistViewModel = new WatchlistViewModel();
-        watchlistView = new WatchlistView(watchlistViewModel);
+        watchlistView = new WatchlistView(watchlistViewModel, viewManagerModel);
+        watchlistView.setSelectViewModel(selectViewModel);
         cardPanel.add(watchlistView, watchlistView.getViewName());
+        return this;
+    }
+
+    /**
+     *
+     */
+    public AppBuilder addSelectView() {
+        selectView = new SelectView(selectViewModel);
+        cardPanel.add(selectView, selectView.getViewName());
         return this;
     }
     /**
