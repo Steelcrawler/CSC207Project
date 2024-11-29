@@ -7,6 +7,7 @@ public class RecommendationState {
     private List<String> movieTitles;
     private List<String> posterPaths;
     private List<String> plots;
+    private List<Integer> inputMovieIDs;
     private boolean emptyWatchlist;
     private String errorMessage;
 
@@ -52,5 +53,13 @@ public class RecommendationState {
 
     public void setPosterPaths(List<String> posterPaths) {
         this.posterPaths = posterPaths;
+    }
+
+    public List<Integer> getInputMovieIDs() {
+        return inputMovieIDs;
+    }
+
+    public void setInputMovieIDs(List<Integer> inputMovieIDs) {
+        this.inputMovieIDs = inputMovieIDs;
     }
 }

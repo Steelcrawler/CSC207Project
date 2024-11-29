@@ -100,6 +100,16 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
                 }
         );
 
+        justificationButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(justificationButton)) {
+                            System.out.println(recommendationViewModel.getState().getInputMovieIDs());
+                        }
+                    }
+                }
+        );
+
     }
 
     private void nextHelper() {

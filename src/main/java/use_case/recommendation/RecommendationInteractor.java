@@ -40,6 +40,9 @@ public class RecommendationInteractor implements RecommendationInputBoundary {
             List<String> movieTitlesOutput = new ArrayList<String>();
             List<String> posterPathsOutput = new ArrayList<String>();
             List<String> plotsOutput = new ArrayList<String>();
+            List<Integer> selectedIDsOutput = new ArrayList<Integer>();
+            selectedIDsOutput.addAll(recommendationInputData.getSelectedMoviesList());
+
             for (Movie movie : moviesList) {
                 movieIDsOutput.add(movie.getMovieID());
                 movieTitlesOutput.add(movie.getTitle());
@@ -50,7 +53,7 @@ public class RecommendationInteractor implements RecommendationInputBoundary {
 
 
 
-            RecommendationOutputData recommendationOutputData = new RecommendationOutputData(movieIDsOutput, movieTitlesOutput, posterPathsOutput, plotsOutput, false);
+            RecommendationOutputData recommendationOutputData = new RecommendationOutputData(movieIDsOutput, movieTitlesOutput, posterPathsOutput, plotsOutput, selectedIDsOutput, false);
             this.recommendationPresenter.prepareSuccessView(recommendationOutputData);
         }
     }
