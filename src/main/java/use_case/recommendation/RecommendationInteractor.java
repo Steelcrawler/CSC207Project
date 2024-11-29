@@ -1,5 +1,6 @@
 package use_case.recommendation;
 import entity.Movie;
+import interface_adapter.recommendation.RecommendationPresenter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -52,5 +53,10 @@ public class RecommendationInteractor implements RecommendationInputBoundary {
             RecommendationOutputData recommendationOutputData = new RecommendationOutputData(movieIDsOutput, movieTitlesOutput, posterPathsOutput, plotsOutput, false);
             this.recommendationPresenter.prepareSuccessView(recommendationOutputData);
         }
+    }
+
+    @Override
+    public void toSelectView() {
+        recommendationPresenter.toSelectView();
     }
 }

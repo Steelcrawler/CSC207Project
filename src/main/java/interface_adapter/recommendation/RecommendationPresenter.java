@@ -40,4 +40,10 @@ public class RecommendationPresenter implements RecommendationOutputBoundary {
     public void prepareFailView(String errorMessage) {
         System.out.println("fialed to recpresenter");
     }
+
+    @Override
+    public void toSelectView() {
+        viewManagerModel.setState(selectViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+    }
 }

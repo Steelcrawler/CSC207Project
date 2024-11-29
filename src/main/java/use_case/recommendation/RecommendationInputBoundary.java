@@ -12,4 +12,5 @@ public interface RecommendationInputBoundary {
      */
     void execute(RecommendationInputData recommendationInputData);
 
+    void toSelectView();
 }

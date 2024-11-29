@@ -22,12 +22,14 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
 
     private final RecommendationViewModel recommendationViewModel;
 
+    private final JButton nextButton;
     private JButton backButton;
+    private JButton justificationButton;
     private JLabel titleLabel;
     private JLabel plotLabel;
     private JPanel moviePoster;
+    private int recNumber;
     JLabel posterLabel;
-//    private ImageIcon moviePoster;
 
     private JTextArea textArea;
 
@@ -39,18 +41,14 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
         this.recommendationViewModel = recommendationViewModel;
         this.recommendationViewModel.addPropertyChangeListener(this);
 
-        this.setLayout(new FlowLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+        JPanel buttonsPanel = new JPanel();
+        this.justificationButton = new JButton("Justification");
+        this.nextButton = new JButton("Get another Recommendation");
+        buttonsPanel.add(this.justificationButton);
+        buttonsPanel.add(this.nextButton);
         this.backButton = new JButton(recommendationViewModel.BACK_BUTTON_LABEL);
-        backButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                if (evt.getSource().equals(backButton)) {
-
-                    final RecommendationState currentState = recommendationViewModel.getState();
-//                    recommendationController.switchView();
-                }
-            }
-        });
 
         this.titleLabel = new JLabel(recommendationViewModel.MOVIE_TITLE_INFO);
 
@@ -74,12 +72,46 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
 
         this.moviePoster = new JPanel();
         this.posterLabel = new JLabel();
+        JPanel backPosterTitle = new JPanel();
 
-
-        this.add(backButton);
-        this.add(moviePoster);
-        this.add(titleLabel);
+        backPosterTitle.add(backButton);
+        backPosterTitle.add(moviePoster);
+        backPosterTitle.add(titleLabel);
+        this.add(backPosterTitle);
         this.add(scrollPane);
+        this.add(buttonsPanel);
+
+        backButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(backButton)) {
+                            recommendationController.toSelectView();
+                        }
+                    }
+                });
+
+        nextButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(nextButton)) {
+                            nextHelper();
+                        }
+                    }
+                }
+        );
+
+    }
+
+    private void nextHelper() {
+        if (recNumber + 1 < recommendationViewModel.getState().getRecIDslist().size()) {
+            recNumber++;
+            System.out.println(recNumber);
+            recommendationViewModel.firePropertyChanged();
+        } else {
+            recNumber = 0;
+            System.out.println(recNumber);
+            recommendationViewModel.firePropertyChanged();
+        }
 
     }
 
@@ -94,10 +126,10 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
     public void propertyChange(PropertyChangeEvent evt) {
         final RecommendationState state = (RecommendationState) evt.getNewValue();
 
-        String movie_title = state.getMovieTitles().get(0);
+        String movie_title = state.getMovieTitles().get(recNumber);
         System.out.println("Movietitle: " + movie_title);
-        String plot_info = state.getPlots().get(0);
-        String posterPath = state.getPosterPaths().get(0);
+        String plot_info = state.getPlots().get(recNumber);
+        String posterPath = state.getPosterPaths().get(recNumber);
         System.out.println(posterPath);
 
         titleLabel.setText(RecommendationViewModel.MOVIE_TITLE_INFO + movie_title);

@@ -10,4 +10,6 @@ public interface RecommendationOutputBoundary {
      * @param errorMessage the explanation of the failure
      */
     void prepareFailView(String errorMessage);
+
+    void toSelectView();
 }

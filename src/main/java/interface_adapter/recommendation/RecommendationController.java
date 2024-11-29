@@ -18,4 +18,8 @@ public class RecommendationController {
         System.out.println("execute got called with " + list);
         recommendationInteractor.execute(recommendationInputData);
     }
+
+    public void toSelectView() {
+        recommendationInteractor.toSelectView();
+    }
 }

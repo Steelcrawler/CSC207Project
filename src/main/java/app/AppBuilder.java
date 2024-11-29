@@ -167,7 +167,7 @@ public class AppBuilder {
      *
      */
     public AppBuilder addSelectView() {
-        selectView = new SelectView(selectViewModel);
+        selectView = new SelectView(selectViewModel, viewManagerModel);
         cardPanel.add(selectView, selectView.getViewName());
         return this;
     }
@@ -293,6 +293,7 @@ public class AppBuilder {
         final RecommendationInputBoundary recommendationInputBoundary = new RecommendationInteractor(tmdbDataAccessObject, recommendationOutputBoundary);
         final RecommendationController recommendationController = new RecommendationController(recommendationInputBoundary);
         selectView.setRecommendationController(recommendationController);
+        recommendationView.setRecommendationController(recommendationController);
         return this;
     }
 

@@ -18,6 +18,7 @@ import java.util.List;
 import entity.Movie;
 import interface_adapter.Select.SelectState;
 import interface_adapter.Select.SelectViewModel;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginState;
 //import interface_adapter.moviesearch.MovieSearchController;
@@ -32,6 +33,7 @@ import interface_adapter.watchlist.WatchlistViewModel;
 public class SelectView extends JPanel implements ActionListener, ItemListener, PropertyChangeListener {
     private final String viewName = "Select";
 
+    private final ViewManagerModel viewManagerModel;
     private final SelectViewModel selectViewModel;
     private RecommendationController recommendationController;
     private final JPanel menuPanel;
@@ -41,11 +43,12 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
     private JPanel moviePanel;
     private final JButton recommendationButton;
     private final JPanel eastPanel;
-    private List<Integer> selectedMovies;
+    private List<Integer> selectedMovies = new ArrayList<Integer>();
 
 
-    public SelectView(SelectViewModel selectViewModel) {
+    public SelectView(SelectViewModel selectViewModel, ViewManagerModel viewManagerModel) {
         this.selectViewModel = selectViewModel;
+        this.viewManagerModel = viewManagerModel;
         this.selectViewModel.addPropertyChangeListener(this);
         this.setPreferredSize(new Dimension(800, 800));
 
@@ -79,6 +82,17 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
                     }
                 });
 
+        backButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(backButton)) {
+                            viewManagerModel.setState("Watchlist");
+                            viewManagerModel.firePropertyChanged();
+                        }
+                    }
+                }
+        );
+
         JLabel titleLabel = new JLabel(SelectViewModel.TITLE_LABEL, SwingConstants.CENTER);
         menuPanel.add(titleLabel, BorderLayout.CENTER);
         menuPanel.add(eastPanel, BorderLayout.EAST);
@@ -92,11 +106,10 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
         if (state.isEmptyWatchlist()) {
             System.out.println("uh oh!");
         } else {
-            selectedMovies = new ArrayList<>();
             state.setSelectedMovies(selectedMovies);
         moviePanel = new JPanel(new GridLayout(10, 5, 10, 10));
 
-        for (int i = 1; i < state.getWatchlist().size(); i++) {
+        for (int i = 0; i < state.getWatchlist().size(); i++) {
             JButton movieButton = new JButton(state.getMovieTitles().get(i));
             JCheckBox movieCheckBox = new JCheckBox(state.getMovieTitles().get(i));
             JPanel individualMoviePanel = new JPanel(new BorderLayout());
