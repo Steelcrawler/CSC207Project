@@ -4,64 +4,61 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * A class for Movie objects.
+ * The representation of a movie in our program.
  */
-public class Movie {
-    private final String title;
-    private final int movieID;
-    private final List<String> genres;
-    private final Date releaseDate;
-    private final double rating;
-    private final String plot;
-    private final String posterPath;
-    private final List<String> userReviews;
-    private final String trailerLink;
+public interface Movie {
 
-    public Movie(String title, int movieID, List<String> genres, Date releaseDate, double rating, String plot, String posterPath, List<String> userReviews, String trailerLink) {
-        this.title = title;
-        this.movieID = movieID;
-        this.genres = genres;
-        this.releaseDate = releaseDate;
-        this.rating = rating;
-        this.plot = plot;
-        this.posterPath = posterPath;
-        this.userReviews = userReviews;
-        this.trailerLink = trailerLink;
-    }
+    /**
+     * Returns the title of the movie.
+     * @return the title of the movie.
+     */
+    String getTitle();
 
-    public String getTrailerLink() {
-        return trailerLink;
-    }
+    /**
+     * Returns the ID of the movie.
+     * @return the ID of the movie.
+     */
+    int getMovieID();
 
-    public List<String> getUserReviews() {
-        return userReviews;
-    }
+    /**
+     * Returns the genres of the movie.
+     * @return the genres of the movie.
+     */
+    List<String> getGenres();
 
-    public String getPosterPath() {
-        return posterPath;
-    }
+    /**
+     * Returns the release date of the movie.
+     * @return the release date of the movie.
+     */
+    Date getReleaseDate();
 
-    public String getTitle() {
-        return title;
-    }
+    /**
+     * Returns the rating of the movie.
+     * @return the rating of the movie.
+     */
+    double getRating();
 
-    public List<String> getGenres() {
-        return genres;
-    }
+    /**
+     * Returns the plot of the movie.
+     * @return the plot of the movie.
+     */
+    String getPlot();
 
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
+    /**
+     * Returns the poster path of the movie.
+     * @return the poster path of the movie.
+     */
+    String getPosterPath();
 
-    public double getRating() {
-        return rating;
-    }
+    /**
+     * Returns the user reviews of the movie.
+     * @return the user reviews of the movie.
+     */
+    List<String> getUserReviews();
 
-    public String getPlot() {
-        return plot;
-    }
-
-    public int getMovieID() {
-        return movieID;
-    }
+    /**
+     * Returns the trailer link of the movie.
+     * @return the trailer link of the movie.
+     */
+    String getTrailerLink();
 }

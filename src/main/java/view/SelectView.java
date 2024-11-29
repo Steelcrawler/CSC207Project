@@ -1,10 +1,6 @@
 package view;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,10 +8,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.List;
 
-import entity.Movie;
 import interface_adapter.Select.SelectState;
 import interface_adapter.Select.SelectViewModel;
 import interface_adapter.ViewManagerModel;
@@ -29,6 +23,7 @@ import interface_adapter.signup.SignupViewModel;
 import interface_adapter.open_watchlist.OpenWatchlistController;
 import interface_adapter.watchlist.WatchlistState;
 import interface_adapter.watchlist.WatchlistViewModel;
+import interface_adapter.delete_from_watchlist.DeleteFromWatchlistController;
 
 public class SelectView extends JPanel implements ActionListener, ItemListener, PropertyChangeListener {
     private final String viewName = "Select";
@@ -45,6 +40,7 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
     private final JPanel eastPanel;
     private List<Integer> selectedMovies = new ArrayList<Integer>();
 
+    private DeleteFromWatchlistController deleteFromWatchlistController;
 
     public SelectView(SelectViewModel selectViewModel, ViewManagerModel viewManagerModel) {
         this.selectViewModel = selectViewModel;
@@ -97,14 +93,28 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
         menuPanel.add(titleLabel, BorderLayout.CENTER);
         menuPanel.add(eastPanel, BorderLayout.EAST);
 
+        moviePanel = new JPanel(new GridLayout(10, 5, 10, 10));
+        selectScrollPane = new JScrollPane(moviePanel);
+        selectScrollPane.getVerticalScrollBar().setUnitIncrement(15);
+        this.add(selectScrollPane, BorderLayout.CENTER);
         this.add(menuPanel, BorderLayout.NORTH);
 
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SelectState currentState = selectViewModel.getState();
+                List<Integer> selectedMovies = currentState.getSelectedMovies();
+                deleteFromWatchlistController.execute(selectedMovies);
+            }
+        });
+        this.revalidate();
+        this.repaint();
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
         final SelectState state = (SelectState) evt.getNewValue();
         if (state.isEmptyWatchlist()) {
-            System.out.println("uh oh!");
+            JOptionPane.showMessageDialog(this, "Your watchlist is empty.");
         } else {
             state.setSelectedMovies(selectedMovies);
         moviePanel = new JPanel(new GridLayout(10, 5, 10, 10));
@@ -114,34 +124,38 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
             JCheckBox movieCheckBox = new JCheckBox(state.getMovieTitles().get(i));
             JPanel individualMoviePanel = new JPanel(new BorderLayout());
             JPanel checkboxPanel = new JPanel(new FlowLayout());
+            moviePanel.removeAll();
+            for (int i = 0; i < state.getWatchlist().size(); i++) {
+                JButton movieButton = new JButton(state.getMovieTitles().get(i));
+                JCheckBox movieCheckBox = new JCheckBox(state.getMovieTitles().get(i));
+                JPanel individualMoviePanel = new JPanel(new BorderLayout());
+                JPanel checkboxPanel = new JPanel(new FlowLayout());
 
-            int movieID = state.getWatchlist().get(i);
-//            the actual movie stuff will go in this JPanel, the button is a placeholder
-            movieButton.setPreferredSize(new Dimension(110, 140));
-            individualMoviePanel.add(movieButton);
-            checkboxPanel.add(movieCheckBox);
+                int movieID = state.getWatchlist().get(i);
+//              the actual movie stuff will go in this JPanel, the button is a placeholder
+                movieButton.setPreferredSize(new Dimension(110, 140));
+                individualMoviePanel.add(movieButton);
+                checkboxPanel.add(movieCheckBox);
 
-            movieCheckBox.addItemListener(new ItemListener() {
-                @Override
-                public void itemStateChanged(ItemEvent e) {
-                    if (e.getStateChange() == ItemEvent.SELECTED) {
-                        state.getSelectedMovies().add(movieID);
-                        System.out.println(movieCheckBox.getText() + " selected");
-                        System.out.println(state.getSelectedMovies());
-                    } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                        System.out.println(movieCheckBox.getText() + " deselected");
-                        state.getSelectedMovies().remove((Object) movieID);
-                        System.out.println(state.getSelectedMovies());
+                movieCheckBox.addItemListener(new ItemListener() {
+                    @Override
+                    public void itemStateChanged(ItemEvent e) {
+                        if (e.getStateChange() == ItemEvent.SELECTED) {
+                            state.getSelectedMovies().add(movieID);
+                            System.out.println(movieCheckBox.getText() + " selected");
+                            System.out.println(state.getSelectedMovies());
+                        } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                            System.out.println(movieCheckBox.getText() + " deselected");
+                            state.getSelectedMovies().remove((Object) movieID);
+                            System.out.println(state.getSelectedMovies());
+                        }
                     }
-                }
-            });
-            individualMoviePanel.add(checkboxPanel, BorderLayout.SOUTH);
-            moviePanel.add(individualMoviePanel);
-        }
-
-            selectScrollPane = new JScrollPane(moviePanel);
-            selectScrollPane.getVerticalScrollBar().setUnitIncrement(15);
-            this.add(selectScrollPane, BorderLayout.CENTER);
+                });
+                individualMoviePanel.add(checkboxPanel, BorderLayout.SOUTH);
+                moviePanel.add(individualMoviePanel);
+            }
+            moviePanel.revalidate();
+            moviePanel.repaint();
         }
     }
 
@@ -161,5 +175,9 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
     @Override
     public void itemStateChanged(ItemEvent evt) {
         System.out.println("Click " + evt.getStateChange());
+    }
+
+    public void setDeleteFromWatchlistController(DeleteFromWatchlistController deleteFromWatchlistController) {
+        this.deleteFromWatchlistController = deleteFromWatchlistController;
     }
 }

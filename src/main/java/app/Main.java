@@ -27,6 +27,7 @@ public class Main {
                                             .addSelectView()
                                             .addRecommendationView()
                                             .addRecommendationUseCase()
+                                            .addDeleteFromWatchlistUseCase()
                                             .build();
 
         application.pack();

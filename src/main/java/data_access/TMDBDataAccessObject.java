@@ -1,6 +1,7 @@
 package data_access;
 
 import entity.Movie;
+import entity.MovieFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -45,10 +46,10 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
 
     private final OkHttpClient client = new OkHttpClient();
     private final Map<Integer, String> genreMap = new HashMap<>();
+    private final MovieFactory movieFactory = new MovieFactory();
 
     public TMDBDataAccessObject() {
         populateGenreMap();
-        // System.out.println("Genre Map: " + genreMap);
     }
 
     public void downloadKeywords(String date) {
@@ -104,7 +105,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
         }
     }
 
-
     private void populateGenreMap() {
         Request request = new Request.Builder()
                 .url(BASE_URL + GENRE_LIST_ENDPOINT + "?api_key=" + TMDB_API_KEY)
@@ -115,10 +115,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
                 String responseBody = response.body().string();
-                
-                // Debugging: Print the raw response body
-                // System.out.println("Response Body: " + responseBody);
-                
+
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray genres = jsonObject.getJSONArray("genres");
 
@@ -129,7 +126,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                     genreMap.put(genreId, genreName);
                 }
             } else {
-                // Debugging: Print the response code and message
                 System.out.println("Response Code: " + response.code());
                 System.out.println("Response Message: " + response.message());
             }
@@ -162,16 +158,12 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
                 String responseBody = response.body().string();
-                
-                // Debugging: Print the raw response body
-                // System.out.println("Response Body: " + responseBody);
-                
+
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray results = jsonObject.getJSONArray("results");
 
                 return results.length() > 0;
             } else {
-                // Debugging: Print the response code and message
                 System.out.println("Response Code: " + response.code());
                 System.out.println("Response Message: " + response.message());
             }
@@ -195,10 +187,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
                 String responseBody = response.body().string();
-                
-                // Debugging: Print the raw response body
-                // System.out.println("Response Body: " + responseBody);
-                
+
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray results = jsonObject.getJSONArray("results");
 
@@ -208,7 +197,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                     userReviews.add(reviewContent);
                 }
             } else {
-                // Debugging: Print the response code and message
                 System.out.println("Response Code: " + response.code());
                 System.out.println("Response Message: " + response.message());
             }
@@ -222,8 +210,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
     private String getTrailer(int movieID) {
         String url = BASE_URL + VIDEO_ENDPOINT.replace("{movie_id}", String.valueOf(movieID)) + "?api_key=" + TMDB_API_KEY;
 
-        // System.out.println("Request URL: " + url);
-
         Request request = new Request.Builder()
                 .url(url)
                 .get()
@@ -233,10 +219,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
                 String responseBody = response.body().string();
-                
-                // Debugging: Print the raw response body
-                // System.out.println("Response Body: " + responseBody);
-                
+
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray results = jsonObject.getJSONArray("results");
                 if (results.length() > 0) {
@@ -247,7 +230,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                     System.out.println("No videos found for movie ID: " + movieID);
                 }
             } else {
-                // Debugging: Print the response code and message
                 System.out.println("Response Code: " + response.code());
                 System.out.println("Response Message: " + response.message());
             }
@@ -256,7 +238,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
         }
 
         return "";
-
     }
 
     public Movie getMovieByID(int iD) {
@@ -271,9 +252,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
                 String responseBody = response.body().string();
-
-                // Debugging: Print the raw response body
-                 System.out.println("Response Body: " + responseBody);
 
                 JSONObject jsonObject = new JSONObject(responseBody);
                 String movieTitle = jsonObject.getString("title");
@@ -293,16 +271,12 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                 String posterPath = "https://image.tmdb.org/t/p/w500" + jsonObject.optString("poster_path", "");
                 List<String> userReviews = getUserReviews(movieID);
                 String trailerLink = getTrailer(movieID);
-                Movie movie = new Movie(movieTitle, movieID, genreTitles, releaseDate, rating, plot, posterPath, userReviews, trailerLink);
-                return movie;
+                return movieFactory.create(movieTitle, movieID, genreTitles, releaseDate, rating, plot, posterPath, userReviews, trailerLink);
+            } else {
+                System.out.println("Response Code: " + response.code());
+                System.out.println("Response Message: " + response.message());
             }
-            else {
-                // Debugging: Print the response code and message
-                    System.out.println("Response Code: " + response.code());
-                    System.out.println("Response Message: " + response.message());
-            }
-        }
-        catch (IOException | ParseException e) {
+        } catch (IOException | ParseException e) {
             throw new RuntimeException("Failed to search movies by title", e);
         }
         return null;
@@ -331,7 +305,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                                                 .collect(Collectors.joining(","));
             urlBuilder.append("&with_keywords=").append(keywordIDsString);
         }
-
 
         Request request = new Request.Builder()
                 .url(urlBuilder.toString())
@@ -367,7 +340,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                     List<String> userReviews = getUserReviews(movieID);
                     String trailerLink = getTrailer(movieID);
     
-                    movies.add(new Movie(movieTitle, movieID, genreTitles, releaseDate, ratingValue, plot, posterPath, userReviews, trailerLink));
+                    movies.add(movieFactory.create(movieTitle, movieID, genreTitles, releaseDate, ratingValue, plot, posterPath, userReviews, trailerLink));
                 }
             } else {
                 System.out.println("Response Code: " + response.code());
@@ -393,10 +366,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
                 String responseBody = response.body().string();
-                
-                // Debugging: Print the raw response body
-                // System.out.println("Response Body: " + responseBody);
-                
+
                 JSONObject jsonObject = new JSONObject(responseBody);
                 JSONArray results = jsonObject.getJSONArray("results");
 
@@ -420,10 +390,9 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                     String posterPath = movieJson.optString("poster_path", "");
                     List<String> userReviews = getUserReviews(movieID);
                     String trailerLink = getTrailer(movieID);
-                    movies.add(new Movie(movieTitle, movieID, genreTitles, releaseDate, rating, plot, posterPath, userReviews, trailerLink));
+                    movies.add(movieFactory.create(movieTitle, movieID, genreTitles, releaseDate, rating, plot, posterPath, userReviews, trailerLink));
                 }
             } else {
-                // Debugging: Print the response code and message
                 System.out.println("Response Code: " + response.code());
                 System.out.println("Response Message: " + response.message());
             }
@@ -593,7 +562,6 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
 
         return movies;
     }
-
 
     private Date parseDate(String dateString) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

@@ -1,5 +1,6 @@
 package interface_adapter.Select;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ public class SelectState {
     private List<String> posterPaths;
     private boolean emptyWatchlist;
     private String errorMessage;
-    private List<Integer> selectedMovies;
+    private List<Integer> selectedMovies = new ArrayList<>();
 
     public List<Integer> getWatchlist() {
         return watchlist;

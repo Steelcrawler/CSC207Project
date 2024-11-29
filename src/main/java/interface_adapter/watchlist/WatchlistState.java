@@ -11,6 +11,7 @@ public class WatchlistState {
     private List<String> posterPaths;
     private boolean emptyWatchlist;
     private String errorMessage;
+    private String noSelectedMoviesToDelete;
 
     public List<Integer> getWatchlist() {
         return watchlist;
@@ -50,5 +51,13 @@ public class WatchlistState {
 
     public void setPosterPaths(List<String> posterPaths) {
         this.posterPaths = posterPaths;
+    }
+
+    public void setNoSelectedMoviesToDelete(String errorMessage) {
+        this.noSelectedMoviesToDelete = errorMessage;
+    }
+
+    public String getNoSelectedMoviesToDelete() {
+        return noSelectedMoviesToDelete;
     }
 }

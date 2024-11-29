@@ -18,6 +18,8 @@ import interface_adapter.add_to_watchlist.AddToWatchlistPresenter;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.delete_from_watchlist.DeleteFromWatchlistController;
+import interface_adapter.delete_from_watchlist.DeleteFromWatchlistPresenter;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -47,6 +49,9 @@ import interface_adapter.watchlist.WatchlistViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.delete_from_watchlist.DeleteFromWatchlistInputBoundary;
+import use_case.delete_from_watchlist.DeleteFromWatchlistInteractor;
+import use_case.delete_from_watchlist.DeleteFromWatchlistOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -298,11 +303,25 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Delete From Watchlist Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addDeleteFromWatchlistUseCase() {
+        final DeleteFromWatchlistOutputBoundary deleteFromWatchlistOutputBoundary = new DeleteFromWatchlistPresenter(viewManagerModel,
+                watchlistViewModel, selectViewModel);
+        final TMDBDataAccessObject tmdbDataAccessObject = new TMDBDataAccessObject();
+        final DeleteFromWatchlistInputBoundary deleteFromWatchlistInputBoundary = new DeleteFromWatchlistInteractor(userDataAccessObject, tmdbDataAccessObject, deleteFromWatchlistOutputBoundary);
+        final DeleteFromWatchlistController deleteFromWatchlistController = new DeleteFromWatchlistController(deleteFromWatchlistInputBoundary);
+        selectView.setDeleteFromWatchlistController(deleteFromWatchlistController);
+        return this;
+    }
+
+    /**
      * Creates the JFrame for the application and initially sets the SignupView to be displayed.
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Login Example");
+        final JFrame application = new JFrame("Movie Search / Recommendations");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);

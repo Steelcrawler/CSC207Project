@@ -23,15 +23,14 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
 
     private final MovieInfoViewModel movieInfoViewModel;
 
-    private JButton testButton;
     private JButton backButton;
     private JLabel titleLabel;
     private JLabel ratingLabel;
-    private JLabel plotLabel;
     private JPanel moviePoster;
     private JLabel trailerLabel;
+    private JTextArea reviewText;
+    private JPanel reviewPanel;
     JLabel posterLabel;
-//    private ImageIcon moviePoster;
 
     private JTextArea textArea;
 
@@ -55,38 +54,39 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
                 }
             }
         });
-//        this.testButton = new JButton("Test");
-//        testButton.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent evt) {
-//                if (evt.getSource().equals(testButton)) {
-//
-//                    final MovieInfoState currentState = movieInfoViewModel.getState();
-//                    System.out.println("Currentstatemovieid: " + currentState.getMovieID());
-//                    movieInfoController.execute(currentState.getMovieID());
-//                }
-//            }
-//        });
         this.titleLabel = new JLabel(movieInfoViewModel.MOVIE_TITLE_INFO);
         this.ratingLabel = new JLabel(movieInfoViewModel.RATING_INFO);
 
-        this.plotLabel = new JLabel();
-        // Create the JTextArea
         this.textArea = new JTextArea();
         textArea.setPreferredSize(new Dimension(400, 200));
-        textArea.setLineWrap(true);  // Wrap lines to fit the width
-        textArea.setWrapStyleWord(true); // Wrap lines at word boundaries
-        textArea.setEditable(true);  // Allow editing
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setEditable(true);
 
-        // Add content to the JTextArea (Optional)
         textArea.setText("");
-
-        // Create the JScrollPane and add the JTextArea to it
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(400, 200));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//        this.plotLabel.add(scrollPane);
-//        this.plotLabel.setText(movieInfoViewModel.PLOT_INFO);
+
+        JLabel reviewLabel = new JLabel();
+        reviewLabel.setText("One user said: ");
+        JPanel reviewPanel = new JPanel();
+        reviewPanel.add(reviewLabel);
+
+        this.reviewText = new JTextArea();
+        reviewText.setPreferredSize(new Dimension(600, 200));
+        reviewText.setLineWrap(true);
+        reviewText.setWrapStyleWord(true);
+        reviewText.setEditable(true);
+
+        JScrollPane reviewScrollPane = new JScrollPane(reviewText);
+        reviewScrollPane.setPreferredSize(new Dimension(400, 200));
+        reviewScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        reviewScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        reviewPanel.add(reviewScrollPane);
+
 
         this.moviePoster = new JPanel();
         this.posterLabel = new JLabel();
@@ -94,6 +94,7 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         this.trailerLabel = new JLabel(movieInfoViewModel.TRAILER_INFO);
 
         JPanel titleAndRating = new JPanel();
+        titleAndRating.setLayout(new BoxLayout(titleAndRating, BoxLayout.PAGE_AXIS));
         titleAndRating.add(titleLabel);
         titleAndRating.add(ratingLabel);
 
@@ -101,8 +102,8 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         this.add(moviePoster);
         this.add(titleAndRating);
         this.add(scrollPane);
-
         this.add(trailerLabel);
+        this.add(reviewPanel);
     }
 
     public void setMovieInfoController(MovieInfoController movieInfoController) {
@@ -125,37 +126,33 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         System.out.println(posterPath);
         List<String> userReviews = state.getUserReviews();
 
+
         titleLabel.setText(movieInfoViewModel.MOVIE_TITLE_INFO + movie_title);
         ratingLabel.setText(movieInfoViewModel.RATING_INFO + rating_info);
         textArea.setText(plot_info);
+
+        reviewText.setText(userReviews.get(0));
 
         try {
         URL posterURL = new URL(posterPath);
         ImageIcon posterIcon = new ImageIcon(posterURL);
 
-
-            // Get the original dimensions of the image
             int originalWidth = posterIcon.getIconWidth();
             int originalHeight = posterIcon.getIconHeight();
 
-            // Set max width and height
             int maxWidth = 150;
             int maxHeight = 250;
 
-            // Calculate the scaling factor while maintaining the aspect ratio
             double widthRatio = (double) maxWidth / originalWidth;
             double heightRatio = (double) maxHeight / originalHeight;
-            double scaleRatio = Math.min(widthRatio, heightRatio); // Use the smaller ratio to preserve aspect ratio
+            double scaleRatio = Math.min(widthRatio, heightRatio);
 
-            // Calculate the new width and height based on the scaling factor
             int newWidth = (int) (originalWidth * scaleRatio);
             int newHeight = (int) (originalHeight * scaleRatio);
 
-            // Resize the image
             Image img = posterIcon.getImage();
             Image resizedImg = img.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
 
-            // Create a new ImageIcon from the resized image
             posterIcon = new ImageIcon(resizedImg);
 
             posterLabel.setIcon(posterIcon);
@@ -166,15 +163,10 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
             } else {
                 System.out.println("Image loaded successfully");}
         } catch (MalformedURLException e) {
-            // Handle invalid URL format
             e.printStackTrace();
             System.out.println("Invalid URL format: " + e.getMessage());
         }
-
-
         trailerLabel.setText(movieInfoViewModel.TRAILER_INFO + trailer_link);
-
-
     }
 
     @Override
