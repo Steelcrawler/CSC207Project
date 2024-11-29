@@ -9,6 +9,7 @@ import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import java.util.ArrayList;
 
 import interface_adapter.Select.SelectState;
 import interface_adapter.Select.SelectViewModel;
@@ -34,11 +35,10 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
     private final JPanel menuPanel;
     private final JButton backButton;
     private final JButton deleteButton;
-    private  JScrollPane selectScrollPane;
+    private JScrollPane selectScrollPane;
     private JPanel moviePanel;
     private final JButton recommendationButton;
     private final JPanel eastPanel;
-    private List<Integer> selectedMovies = new ArrayList<Integer>();
 
     private DeleteFromWatchlistController deleteFromWatchlistController;
 
@@ -116,53 +116,45 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
         if (state.isEmptyWatchlist()) {
             JOptionPane.showMessageDialog(this, "Your watchlist is empty.");
         } else {
-            state.setSelectedMovies(selectedMovies);
-        moviePanel = new JPanel(new GridLayout(10, 5, 10, 10));
-
-        for (int i = 0; i < state.getWatchlist().size(); i++) {
-            JButton movieButton = new JButton(state.getMovieTitles().get(i));
-            JCheckBox movieCheckBox = new JCheckBox(state.getMovieTitles().get(i));
-            JPanel individualMoviePanel = new JPanel(new BorderLayout());
-            JPanel checkboxPanel = new JPanel(new FlowLayout());
             moviePanel.removeAll();
-            for (int i = 0; i < state.getWatchlist().size(); i++) {
-                JButton movieButton = new JButton(state.getMovieTitles().get(i));
-                JCheckBox movieCheckBox = new JCheckBox(state.getMovieTitles().get(i));
-                JPanel individualMoviePanel = new JPanel(new BorderLayout());
-                JPanel checkboxPanel = new JPanel(new FlowLayout());
+                for (int i = 0; i < state.getWatchlist().size(); i++) {
+                    JButton movieButton = new JButton(state.getMovieTitles().get(i));
+                    JCheckBox movieCheckBox = new JCheckBox(state.getMovieTitles().get(i));
+                    JPanel individualMoviePanel = new JPanel(new BorderLayout());
+                    JPanel checkboxPanel = new JPanel(new FlowLayout());
 
-                int movieID = state.getWatchlist().get(i);
+                    int movieID = state.getWatchlist().get(i);
 //              the actual movie stuff will go in this JPanel, the button is a placeholder
-                movieButton.setPreferredSize(new Dimension(110, 140));
-                individualMoviePanel.add(movieButton);
-                checkboxPanel.add(movieCheckBox);
+                    movieButton.setPreferredSize(new Dimension(110, 140));
+                    individualMoviePanel.add(movieButton);
+                    checkboxPanel.add(movieCheckBox);
 
-                movieCheckBox.addItemListener(new ItemListener() {
-                    @Override
-                    public void itemStateChanged(ItemEvent e) {
-                        if (e.getStateChange() == ItemEvent.SELECTED) {
-                            state.getSelectedMovies().add(movieID);
-                            System.out.println(movieCheckBox.getText() + " selected");
-                            System.out.println(state.getSelectedMovies());
-                        } else if (e.getStateChange() == ItemEvent.DESELECTED) {
-                            System.out.println(movieCheckBox.getText() + " deselected");
-                            state.getSelectedMovies().remove((Object) movieID);
-                            System.out.println(state.getSelectedMovies());
+                    movieCheckBox.addItemListener(new ItemListener() {
+                        @Override
+                        public void itemStateChanged(ItemEvent e) {
+                            if (e.getStateChange() == ItemEvent.SELECTED) {
+                                state.getSelectedMovies().add(movieID);
+                                System.out.println(movieCheckBox.getText() + " selected");
+                                System.out.println(state.getSelectedMovies());
+                            } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                                System.out.println(movieCheckBox.getText() + " deselected");
+                                state.getSelectedMovies().remove((Object) movieID);
+                                System.out.println(state.getSelectedMovies());
+                            }
                         }
-                    }
-                });
-                individualMoviePanel.add(checkboxPanel, BorderLayout.SOUTH);
-                moviePanel.add(individualMoviePanel);
-            }
-            moviePanel.revalidate();
-            moviePanel.repaint();
+                    });
+                    individualMoviePanel.add(checkboxPanel, BorderLayout.SOUTH);
+                    moviePanel.add(individualMoviePanel);
+                }
+                moviePanel.revalidate();
+                moviePanel.repaint();
         }
     }
-
 
     public String getViewName() {
         return viewName;
     }
+
     public void setRecommendationController(RecommendationController recommendationController) {
         this.recommendationController = recommendationController;
     }
@@ -181,3 +173,4 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
         this.deleteFromWatchlistController = deleteFromWatchlistController;
     }
 }
+

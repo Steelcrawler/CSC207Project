@@ -37,7 +37,7 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
 
     public RecommendationView(RecommendationViewModel recommendationViewModel) {
 
-
+        this.setPreferredSize(new Dimension(800, 800));
         this.recommendationViewModel = recommendationViewModel;
         this.recommendationViewModel.addPropertyChangeListener(this);
 

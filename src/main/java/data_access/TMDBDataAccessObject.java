@@ -443,7 +443,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                     String posterPath = "https://image.tmdb.org/t/p/w500" + movieJson.optString("poster_path", "");
                     List<String> userReviews = getUserReviews(movieID);
                     String trailerLink = getTrailer(movieID);
-                    moviesOutputList.add(new Movie(movieTitle, movieID, genreTitles, releaseDate, rating, plot, posterPath, userReviews, trailerLink));
+                    moviesOutputList.add(movieFactory.create(movieTitle, movieID, genreTitles, releaseDate, rating, plot, posterPath, userReviews, trailerLink));
                 }
             } else {
                 // Debugging: Print the response code and message
@@ -550,7 +550,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                     List<String> userReviews = getUserReviews(movieID);
                     String trailerLink = getTrailer(movieID);
 
-                    movies.add(new Movie(movieTitle, movieID, genreTitles, releaseDate, ratingValue, plot, posterPath, userReviews, trailerLink));
+                    movies.add(movieFactory.create(movieTitle, movieID, genreTitles, releaseDate, ratingValue, plot, posterPath, userReviews, trailerLink));
                 }
             } else {
                 System.out.println("Response Code: " + response.code());
