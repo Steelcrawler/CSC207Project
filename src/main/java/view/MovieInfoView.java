@@ -23,13 +23,12 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
 
     private final MovieInfoViewModel movieInfoViewModel;
 
-    private JButton testButton;
     private JButton backButton;
     private JLabel titleLabel;
     private JLabel ratingLabel;
-    private JLabel plotLabel;
     private JPanel moviePoster;
     private JLabel trailerLabel;
+    private JPanel reviewPanel;
     JLabel posterLabel;
 
     private JTextArea textArea;
@@ -57,8 +56,6 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         this.titleLabel = new JLabel(movieInfoViewModel.MOVIE_TITLE_INFO);
         this.ratingLabel = new JLabel(movieInfoViewModel.RATING_INFO);
 
-        this.plotLabel = new JLabel();
-        // Create the JTextArea
         this.textArea = new JTextArea();
         textArea.setPreferredSize(new Dimension(400, 200));
         textArea.setLineWrap(true);
@@ -107,6 +104,26 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         String posterPath = state.getPosterPath();
         System.out.println(posterPath);
         List<String> userReviews = state.getUserReviews();
+
+        JLabel reviewLabel = new JLabel();
+        reviewLabel.setText("One user said: ");
+        JPanel reviewPanel = new JPanel();
+        reviewPanel.add(reviewLabel);
+
+        JTextArea reviewText = new JTextArea();
+        reviewText.setPreferredSize(new Dimension(600, 200));
+        reviewText.setLineWrap(true);
+        reviewText.setWrapStyleWord(true);
+        reviewText.setEditable(true);
+
+        reviewText.setText(userReviews.get(0));
+        JScrollPane reviewScrollPane = new JScrollPane(reviewText);
+        reviewScrollPane.setPreferredSize(new Dimension(400, 200));
+        reviewScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        reviewScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        reviewPanel.add(reviewScrollPane);
+        this.add(reviewPanel);
 
         titleLabel.setText(movieInfoViewModel.MOVIE_TITLE_INFO + movie_title);
         ratingLabel.setText(movieInfoViewModel.RATING_INFO + rating_info);
