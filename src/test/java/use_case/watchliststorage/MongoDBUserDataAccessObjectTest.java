@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.mongodb.client.model.Filters.eq;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -29,8 +30,8 @@ public class MongoDBUserDataAccessObjectTest {
 
     @After
     public void tearDown() {
-        // Delete all documents in the users collection
-        dao.getUsersCollection().deleteMany(new Document());
+        // Delete the specific user added during the test
+        dao.getUsersCollection().deleteOne(eq("username", user.getName()));
         dao.close();
     }
 
