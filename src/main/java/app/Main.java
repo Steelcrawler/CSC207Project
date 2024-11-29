@@ -18,7 +18,6 @@ public class Main {
                                             .addWatchlistView()
                                             .addMovieInfoView()
                                             .addSignupView()
-
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addMovieSearchUseCase()
