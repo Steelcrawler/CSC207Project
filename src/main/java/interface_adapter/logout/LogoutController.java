@@ -15,6 +15,10 @@ public class LogoutController {
         this.logoutUseCaseInteractor = logoutUseCaseInteractor;
     }
 
+    public void switchToSignUpView() {
+        logoutUseCaseInteractor.switchToSignUpView();
+    }
+
     /**
      * Executes the Logout Use Case.
      * @param username the username of the user logging in

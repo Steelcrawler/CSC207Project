@@ -303,6 +303,18 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Logout Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addLogoutUseCase() {
+        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel, loggedInViewModel, loginViewModel);
+        final LogoutInputBoundary logoutInteractor = new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+        final LogoutController logoutController = new LogoutController(logoutInteractor);
+        movieSearchView.setLogoutController(logoutController);
+        return this;
+    }
+
+     /**
      * Adds the Delete From Watchlist Use Case to the application.
      * @return this builder
      */
@@ -313,6 +325,7 @@ public class AppBuilder {
         final DeleteFromWatchlistInputBoundary deleteFromWatchlistInputBoundary = new DeleteFromWatchlistInteractor(userDataAccessObject, tmdbDataAccessObject, deleteFromWatchlistOutputBoundary);
         final DeleteFromWatchlistController deleteFromWatchlistController = new DeleteFromWatchlistController(deleteFromWatchlistInputBoundary);
         selectView.setDeleteFromWatchlistController(deleteFromWatchlistController);
+
         return this;
     }
 
