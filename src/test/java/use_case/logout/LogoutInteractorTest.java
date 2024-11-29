@@ -1,10 +1,15 @@
 package use_case.logout;
 
-import data_access.InMemoryUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.User;
 import entity.UserFactory;
 import org.junit.jupiter.api.Test;
+import use_case.logout.LogoutInputBoundary;
+import use_case.logout.LogoutInputData;
+import use_case.logout.LogoutInteractor;
+import use_case.logout.LogoutOutputBoundary;
+import use_case.logout.LogoutOutputData;
+import data_access.InMemoryUserDataAccessObject;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,6 +38,11 @@ class LogoutInteractorTest {
             public void prepareFailView(String error) {
                 fail("Use case failure is unexpected.");
             }
+
+            @Override
+            public void switchToSignUpView() {
+                // Implement this method if needed for the test
+            }
         };
 
         LogoutInputBoundary interactor = new LogoutInteractor(userRepository, successPresenter);
@@ -40,5 +50,4 @@ class LogoutInteractorTest {
         // check that the user was logged out
         assertNull(userRepository.getCurrentUsername());
     }
-
 }
