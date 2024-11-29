@@ -53,6 +53,10 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
         menuPanel.add(titleLabel, BorderLayout.CENTER);
         menuPanel.add(eastPanel, BorderLayout.EAST);
 
+        moviePanel = new JPanel(new GridLayout(10, 5, 10, 10));
+        selectScrollPane = new JScrollPane(moviePanel);
+        selectScrollPane.getVerticalScrollBar().setUnitIncrement(15);
+        this.add(selectScrollPane, BorderLayout.CENTER);
         this.add(menuPanel, BorderLayout.NORTH);
 
         deleteButton.addActionListener(new ActionListener() {
@@ -63,7 +67,8 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
                 deleteFromWatchlistController.execute(selectedMovies);
             }
         });
-
+        this.revalidate();
+        this.repaint();
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
@@ -71,8 +76,7 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
         if (state.isEmptyWatchlist()) {
             JOptionPane.showMessageDialog(this, "Your watchlist is empty.");
         } else {
-            moviePanel = new JPanel(new GridLayout(10, 5, 10, 10));
-
+            moviePanel.removeAll();
             for (int i = 0; i < state.getWatchlist().size(); i++) {
                 JButton movieButton = new JButton(state.getMovieTitles().get(i));
                 JCheckBox movieCheckBox = new JCheckBox(state.getMovieTitles().get(i));
@@ -101,10 +105,9 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
                 });
                 individualMoviePanel.add(checkboxPanel, BorderLayout.SOUTH);
                 moviePanel.add(individualMoviePanel);
-                selectScrollPane = new JScrollPane(moviePanel);
-                selectScrollPane.getVerticalScrollBar().setUnitIncrement(15);
-                this.add(selectScrollPane, BorderLayout.CENTER);
             }
+            moviePanel.revalidate();
+            moviePanel.repaint();
         }
     }
 
