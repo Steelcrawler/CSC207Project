@@ -25,5 +25,10 @@ public class LogoutInteractor implements LogoutInputBoundary {
         this.logoutPresenter.prepareSuccessView(logoutOutputData);
 
     }
+
+    @Override
+    public void switchToSignUpView() {
+        logoutPresenter.switchToSignUpView();
+    }
 }
 
