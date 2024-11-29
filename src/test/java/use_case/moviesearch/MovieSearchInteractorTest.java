@@ -1,14 +1,4 @@
 package use_case.moviesearch;
-import data_access.TMDBDataAccessObject;
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import use_case.movie_search.*;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
 
 //class MovieSearchInteractorTest {

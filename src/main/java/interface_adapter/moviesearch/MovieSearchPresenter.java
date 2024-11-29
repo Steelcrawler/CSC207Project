@@ -2,8 +2,8 @@ package interface_adapter.moviesearch;
 
 import entity.Movie;
 import interface_adapter.ViewManagerModel;
-import use_case.movie_search.MovieSearchOutputBoundary;
-import use_case.movie_search.MovieSearchOutputData;
+import use_case.moviesearch.MovieSearchOutputBoundary;
+import use_case.moviesearch.MovieSearchOutputData;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,10 +2,8 @@ package interface_adapter.moviesearch;
 
 import java.util.List;
 
-import use_case.movie_search.MovieSearchInputBoundary;
-import use_case.movie_search.MovieSearchInputData;
-import use_case.signup.SignupInputBoundary;
-import use_case.signup.SignupInputData;
+import use_case.moviesearch.MovieSearchInputBoundary;
+import use_case.moviesearch.MovieSearchInputData;
 
 /**
  * Controller for the Movie Search Use Case.

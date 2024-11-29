@@ -1,6 +1,5 @@
-package use_case.movie_search;
+package use_case.moviesearch;
 
-import java.util.ArrayList;
 import java.util.List;
 import entity.Movie;
 

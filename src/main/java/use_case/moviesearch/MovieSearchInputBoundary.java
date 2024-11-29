@@ -1,4 +1,4 @@
-package use_case.movie_search;
+package use_case.moviesearch;
 
 /**
  * The Movie Search Use Case.
