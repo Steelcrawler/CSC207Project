@@ -24,6 +24,7 @@ public class RecommendationPresenter implements RecommendationOutputBoundary {
         recommendationState.setRecIDslist(outputData.getMovieIDsList());
         recommendationState.setMovieTitles(outputData.getMovieTitlesList());
         recommendationState.setPosterPaths(outputData.getPosterPathsList());
+        recommendationState.setPlots(outputData.getPlotsList());
         recommendationViewModel.firePropertyChanged();
 
         viewManagerModel.setState(recommendationViewModel.getViewName());

@@ -471,7 +471,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                     Date releaseDate = releaseDateString != null && !releaseDateString.isEmpty() ? parseDate(releaseDateString) : null;
                     double rating = movieJson.getDouble("vote_average");
                     String plot = movieJson.getString("overview");
-                    String posterPath = movieJson.optString("poster_path", "");
+                    String posterPath = "https://image.tmdb.org/t/p/w500" + movieJson.optString("poster_path", "");
                     List<String> userReviews = getUserReviews(movieID);
                     String trailerLink = getTrailer(movieID);
                     moviesOutputList.add(new Movie(movieTitle, movieID, genreTitles, releaseDate, rating, plot, posterPath, userReviews, trailerLink));
@@ -577,7 +577,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
                     Date releaseDate = releaseDateString != null && !releaseDateString.isEmpty() ? parseDate(releaseDateString) : null;
                     double ratingValue = movieJson.getDouble("vote_average");
                     String plot = movieJson.getString("overview");
-                    String posterPath = movieJson.optString("poster_path", "");
+                    String posterPath = "https://image.tmdb.org/t/p/w500" + movieJson.optString("poster_path", "");
                     List<String> userReviews = getUserReviews(movieID);
                     String trailerLink = getTrailer(movieID);
 

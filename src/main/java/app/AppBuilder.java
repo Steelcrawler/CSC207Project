@@ -175,7 +175,7 @@ public class AppBuilder {
     public AppBuilder addRecommendationView() {
         recommendationViewModel = new RecommendationViewModel();
         recommendationView = new RecommendationView(recommendationViewModel);
-        cardPanel.add(selectView, selectView.getViewName());
+        cardPanel.add(recommendationView, recommendationView.getViewName());
         return this;
     }
     /**
@@ -288,7 +288,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addRecommendationUseCase() {
-        final RecommendationOutputBoundary recommendationOutputBoundary = new RecommendationPresenter(viewManagerModel, reco);
+        final RecommendationOutputBoundary recommendationOutputBoundary = new RecommendationPresenter(viewManagerModel, recommendationViewModel, selectViewModel);
         final RecommendationDataAccessInterface tmdbDataAccessObject = new TMDBDataAccessObject();
         final RecommendationInputBoundary recommendationInputBoundary = new RecommendationInteractor(tmdbDataAccessObject, recommendationOutputBoundary);
         final RecommendationController recommendationController = new RecommendationController(recommendationInputBoundary);

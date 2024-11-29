@@ -58,7 +58,7 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
 
         eastPanel = new JPanel(new BorderLayout());
         deleteButton = new JButton(SelectViewModel.DELETE_BUTTON_LABEL);
-        recommendationButton = new JButton(SelectViewModel.REC_BUTTON_LABEL); //SelectViewModel isn't implemented yet
+        recommendationButton = new JButton(SelectViewModel.REC_BUTTON_LABEL);
         eastPanel.add(deleteButton, BorderLayout.EAST);
         JPanel spacer = new JPanel();
         spacer.setPreferredSize(new Dimension(20, 20));
