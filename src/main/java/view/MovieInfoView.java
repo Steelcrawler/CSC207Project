@@ -43,6 +43,7 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         this.movieInfoViewModel.addPropertyChangeListener(this);
 
         this.setLayout(new FlowLayout());
+//        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.backButton = new JButton(movieInfoViewModel.BACK_BUTTON_LABEL);
         backButton.addActionListener(new ActionListener() {
@@ -58,33 +59,37 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         this.ratingLabel = new JLabel(movieInfoViewModel.RATING_INFO);
 
         this.textArea = new JTextArea();
-        textArea.setPreferredSize(new Dimension(400, 200));
+        textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setEditable(true);
+//        textArea.setPreferredSize(new Dimension(400, 200));
+        textArea.setColumns(40);
 
         textArea.setText("");
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(400, 200));
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         JLabel reviewLabel = new JLabel();
         reviewLabel.setText("One user said: ");
-        JPanel reviewPanel = new JPanel();
-        reviewPanel.add(reviewLabel);
 
         this.reviewText = new JTextArea();
-        reviewText.setPreferredSize(new Dimension(600, 200));
+        reviewText.setEditable(false);
         reviewText.setLineWrap(true);
         reviewText.setWrapStyleWord(true);
-        reviewText.setEditable(true);
+//        reviewText.setPreferredSize(new Dimension(600, 200));
+        reviewText.setColumns(40);
 
         JScrollPane reviewScrollPane = new JScrollPane(reviewText);
-        reviewScrollPane.setPreferredSize(new Dimension(400, 200));
-        reviewScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        reviewScrollPane.setPreferredSize(new Dimension(600, 200));
+        reviewScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         reviewScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
+
+        reviewPanel = new JPanel();
+        reviewPanel.setLayout(new BoxLayout(reviewPanel, BoxLayout.Y_AXIS));
+        reviewPanel.add(reviewLabel);
         reviewPanel.add(reviewScrollPane);
 
 
@@ -131,7 +136,21 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         ratingLabel.setText(movieInfoViewModel.RATING_INFO + rating_info);
         textArea.setText(plot_info);
 
-        reviewText.setText(userReviews.get(0));
+        if (!userReviews.isEmpty()) {
+            reviewText.setText(userReviews.get(0));
+        }
+        else {
+            reviewText.setText("No reviews available for this movie.");
+        }
+        textArea.revalidate();
+        textArea.repaint();
+        reviewText.revalidate();
+        reviewText.repaint();
+
+        reviewPanel.revalidate();
+        reviewPanel.repaint();
+
+
 
         try {
         URL posterURL = new URL(posterPath);
