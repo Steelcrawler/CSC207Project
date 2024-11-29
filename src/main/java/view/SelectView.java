@@ -23,6 +23,7 @@ import interface_adapter.login.LoginState;
 //import interface_adapter.moviesearch.MovieSearchController;
 //import interface_adapter.moviesearch.MovieSearchState;
 //import interface_adapter.moviesearch.MovieSearchViewModel;
+import interface_adapter.recommendation.RecommendationController;
 import interface_adapter.signup.SignupViewModel;
 import interface_adapter.open_watchlist.OpenWatchlistController;
 import interface_adapter.watchlist.WatchlistState;
@@ -32,6 +33,7 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
     private final String viewName = "Select";
 
     private final SelectViewModel selectViewModel;
+    private RecommendationController recommendationController; // change this to appbuilder
     private final JPanel menuPanel;
     private final JButton backButton;
     private final JButton deleteButton;
@@ -41,7 +43,6 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
     private final JPanel eastPanel;
     private List<Integer> selectedMovies;
 
-    //private SelectController selectController;
 
     public SelectView(SelectViewModel selectViewModel) {
         this.selectViewModel = selectViewModel;
@@ -63,6 +64,21 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
         spacer.setPreferredSize(new Dimension(20, 20));
         eastPanel.add(spacer, BorderLayout.CENTER);
         eastPanel.add(recommendationButton, BorderLayout.WEST);
+
+        recommendationButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        if (evt.getSource().equals(recommendationButton)) {
+                            if (selectViewModel.getState().getSelectedMovies().size() == 0) {
+                                System.out.println("No movies selected");
+                                JOptionPane.showMessageDialog(null, "No movies selected");
+                            } else {
+                                recommendationController.execute(selectViewModel.getState().getSelectedMovies());
+                            }
+                        }
+                    }
+                });
+
         JLabel titleLabel = new JLabel(SelectViewModel.TITLE_LABEL, SwingConstants.CENTER);
         menuPanel.add(titleLabel, BorderLayout.CENTER);
         menuPanel.add(eastPanel, BorderLayout.EAST);
@@ -120,9 +136,9 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
     public String getViewName() {
         return viewName;
     }
-//    public void setSelectController(SelectController selectController) {
-//        this.selectController = selectController;
-//    }
+    public void setRecommendationController(RecommendationController recommendationController) {
+        this.recommendationController = recommendationController;
+    }
 
     @Override
     public void actionPerformed(ActionEvent evt) {
