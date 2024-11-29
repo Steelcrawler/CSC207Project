@@ -15,6 +15,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import use_case.add_to_watchlist.AddToWatchlistDataAccessInterface;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.delete_from_watchlist.DeleteFromWatchlistDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.open_watchlist.OpenWatchlistDataAccessInterface;
@@ -30,7 +31,7 @@ public class MongoDBUserDataAccessObject implements SignupUserDataAccessInterfac
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface,
-        UserWatchlistDataAccessInterface, AddToWatchlistDataAccessInterface, OpenWatchlistDataAccessInterface {
+        UserWatchlistDataAccessInterface, AddToWatchlistDataAccessInterface, OpenWatchlistDataAccessInterface, DeleteFromWatchlistDataAccessInterface {
 
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
