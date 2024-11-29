@@ -2,7 +2,9 @@ package use_case.recommendation;
 import entity.Movie;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -21,7 +23,18 @@ public class RecommendationInteractor implements RecommendationInputBoundary {
     @Override
     public void execute(RecommendationInputData recommendationInputData) {
         if (TMDBDataAccessObject != null) {
-            List<Movie> moviesList = this.TMDBDataAccessObject.searchRecommendations(recommendationInputData.getSelectedMoviesList());
+            List<Movie> moviesList;
+            if (recommendationInputData.getSelectedMoviesList().size() > 1) {
+                List<Integer> keywordsList = new ArrayList<Integer>();
+//                keywordsList = this.TMDBDataAccessObject.getKeywordIDs(recommendationInputData.getSelectedMoviesList().get(0));
+                for (Integer movieID : recommendationInputData.getSelectedMoviesList()) {
+                    keywordsList.addAll(this.TMDBDataAccessObject.getKeywordIDs(movieID));
+                }
+                moviesList = this.TMDBDataAccessObject.searchMoviesByKeywordsHelper(keywordsList);
+            } else {
+                moviesList = this.TMDBDataAccessObject.searchRecommendations(recommendationInputData.getSelectedMoviesList());
+                System.out.println("using similar");
+            }
             List<Integer> movieIDsOutput = new ArrayList<Integer>();
             List<String> movieTitlesOutput = new ArrayList<String>();
             List<String> posterPathsOutput = new ArrayList<String>();
@@ -30,6 +43,9 @@ public class RecommendationInteractor implements RecommendationInputBoundary {
                 movieTitlesOutput.add(movie.getTitle());
                 posterPathsOutput.add(movie.getPosterPath());
             }
+
+
+
 
             RecommendationOutputData recommendationOutputData = new RecommendationOutputData(movieIDsOutput, movieTitlesOutput, posterPathsOutput, false);
             this.recommendationPresenter.prepareSuccessView(recommendationOutputData);

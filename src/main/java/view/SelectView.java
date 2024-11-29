@@ -33,7 +33,7 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
     private final String viewName = "Select";
 
     private final SelectViewModel selectViewModel;
-    private RecommendationController recommendationController; // change this to appbuilder
+    private RecommendationController recommendationController;
     private final JPanel menuPanel;
     private final JButton backButton;
     private final JButton deleteButton;

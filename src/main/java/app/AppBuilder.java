@@ -35,6 +35,7 @@ import interface_adapter.open_watchlist.OpenWatchlistController;
 import interface_adapter.open_watchlist.OpenWatchlistPresenter;
 import interface_adapter.recommendation.RecommendationController;
 import interface_adapter.recommendation.RecommendationPresenter;
+import interface_adapter.recommendation.RecommendationViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -109,6 +110,8 @@ public class AppBuilder {
     private WatchlistViewModel watchlistViewModel;
     private SelectView selectView;
     private SelectViewModel selectViewModel = new SelectViewModel();
+    private RecommendationView recommendationView;
+    private RecommendationViewModel recommendationViewModel;
 
 
     public AppBuilder() {
@@ -165,6 +168,13 @@ public class AppBuilder {
      */
     public AppBuilder addSelectView() {
         selectView = new SelectView(selectViewModel);
+        cardPanel.add(selectView, selectView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addRecommendationView() {
+        recommendationViewModel = new RecommendationViewModel();
+        recommendationView = new RecommendationView(recommendationViewModel);
         cardPanel.add(selectView, selectView.getViewName());
         return this;
     }
@@ -278,7 +288,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addRecommendationUseCase() {
-        final RecommendationOutputBoundary recommendationOutputBoundary = new RecommendationPresenter();
+        final RecommendationOutputBoundary recommendationOutputBoundary = new RecommendationPresenter(viewManagerModel, reco);
         final RecommendationDataAccessInterface tmdbDataAccessObject = new TMDBDataAccessObject();
         final RecommendationInputBoundary recommendationInputBoundary = new RecommendationInteractor(tmdbDataAccessObject, recommendationOutputBoundary);
         final RecommendationController recommendationController = new RecommendationController(recommendationInputBoundary);
