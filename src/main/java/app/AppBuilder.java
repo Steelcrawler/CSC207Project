@@ -35,6 +35,9 @@ import interface_adapter.moviesearch.MovieSearchPresenter;
 import interface_adapter.moviesearch.MovieSearchViewModel;
 import interface_adapter.open_watchlist.OpenWatchlistController;
 import interface_adapter.open_watchlist.OpenWatchlistPresenter;
+import interface_adapter.recommendation.RecommendationController;
+import interface_adapter.recommendation.RecommendationPresenter;
+import interface_adapter.recommendation.RecommendationViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -67,6 +70,10 @@ import use_case.open_watchlist.OpenWatchlistDataAccessInterface;
 import use_case.open_watchlist.OpenWatchlistInputBoundary;
 import use_case.open_watchlist.OpenWatchlistInteractor;
 import use_case.open_watchlist.OpenWatchlistOutputBoundary;
+import use_case.recommendation.RecommendationDataAccessInterface;
+import use_case.recommendation.RecommendationInputBoundary;
+import use_case.recommendation.RecommendationInteractor;
+import use_case.recommendation.RecommendationOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
@@ -108,6 +115,8 @@ public class AppBuilder {
     private WatchlistViewModel watchlistViewModel;
     private SelectView selectView;
     private SelectViewModel selectViewModel = new SelectViewModel();
+    private RecommendationView recommendationView;
+    private RecommendationViewModel recommendationViewModel;
 
 
     public AppBuilder() {
@@ -163,8 +172,15 @@ public class AppBuilder {
      *
      */
     public AppBuilder addSelectView() {
-        selectView = new SelectView(selectViewModel);
+        selectView = new SelectView(selectViewModel, viewManagerModel);
         cardPanel.add(selectView, selectView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addRecommendationView() {
+        recommendationViewModel = new RecommendationViewModel();
+        recommendationView = new RecommendationView(recommendationViewModel);
+        cardPanel.add(recommendationView, recommendationView.getViewName());
         return this;
     }
     /**
@@ -273,6 +289,16 @@ public class AppBuilder {
         final OpenWatchlistController openWatchlistController = new OpenWatchlistController(openWatchlistInputBoundary);
         movieSearchView.setOpenWatchlistController(openWatchlistController);
         watchlistView.setOpenWatchlistController(openWatchlistController);
+        return this;
+    }
+
+    public AppBuilder addRecommendationUseCase() {
+        final RecommendationOutputBoundary recommendationOutputBoundary = new RecommendationPresenter(viewManagerModel, recommendationViewModel, selectViewModel);
+        final RecommendationDataAccessInterface tmdbDataAccessObject = new TMDBDataAccessObject();
+        final RecommendationInputBoundary recommendationInputBoundary = new RecommendationInteractor(tmdbDataAccessObject, recommendationOutputBoundary);
+        final RecommendationController recommendationController = new RecommendationController(recommendationInputBoundary);
+        selectView.setRecommendationController(recommendationController);
+        recommendationView.setRecommendationController(recommendationController);
         return this;
     }
 

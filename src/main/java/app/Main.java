@@ -18,7 +18,6 @@ public class Main {
                                             .addWatchlistView()
                                             .addMovieInfoView()
                                             .addSignupView()
-                                            .addSelectView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addMovieSearchUseCase()
@@ -27,6 +26,8 @@ public class Main {
                                             .addMovieInfoUseCase()
                                             .addLogoutUseCase()
                                             .addSelectView()
+                                            .addRecommendationView()
+                                            .addRecommendationUseCase()
                                             .addDeleteFromWatchlistUseCase()
                                             .build();
 
