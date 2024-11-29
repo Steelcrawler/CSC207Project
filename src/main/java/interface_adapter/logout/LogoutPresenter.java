@@ -66,4 +66,10 @@ public class LogoutPresenter implements LogoutOutputBoundary {
         // No need to add code here. We'll assume that logout can't fail.
         // Thought question: is this a reasonable assumption?
     }
+
+    @Override
+    public void switchToSignUpView() {
+        viewManagerModel.setState("sign up");
+        viewManagerModel.firePropertyChanged();
+    }
 }
