@@ -1,23 +1,19 @@
 package use_case.delete_from_watchlist;
 
+import java.util.List;
+
 /**
  * The Input Data for the Delete From Watchlist Use Case.
  */
 public class DeleteFromWatchlistInputData {
 
-    private final String movieTitle;
-    private final Integer movieID;
+    private final List<Integer> selectedMovies;
 
-    public DeleteFromWatchlistInputData(String movieTitle, Integer movieID) {
-        this.movieTitle = movieTitle;
-        this.movieID = movieID;
+    public DeleteFromWatchlistInputData(List<Integer> selectedMovies) {
+        this.selectedMovies = selectedMovies;
     }
 
-    String getMovieTitle() {
-        return movieTitle;
-    }
-
-    Integer getMovieID() {
-        return movieID;
+    public List<Integer> getSelectedMovies() {
+        return selectedMovies;
     }
 }

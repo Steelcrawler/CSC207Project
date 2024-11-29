@@ -282,7 +282,7 @@ public class AppBuilder {
      */
     public AppBuilder addDeleteFromWatchlistUseCase() {
         final DeleteFromWatchlistOutputBoundary deleteFromWatchlistOutputBoundary = new DeleteFromWatchlistPresenter(viewManagerModel,
-                selectViewModel);
+                watchlistViewModel, selectViewModel);
         final TMDBDataAccessObject tmdbDataAccessObject = new TMDBDataAccessObject();
         final DeleteFromWatchlistInputBoundary deleteFromWatchlistInputBoundary = new DeleteFromWatchlistInteractor(userDataAccessObject, tmdbDataAccessObject, deleteFromWatchlistOutputBoundary);
         final DeleteFromWatchlistController deleteFromWatchlistController = new DeleteFromWatchlistController(deleteFromWatchlistInputBoundary);

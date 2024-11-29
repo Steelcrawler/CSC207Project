@@ -19,5 +19,10 @@ public interface DeleteFromWatchlistDataAccessInterface {
      * @return the watchlist (a list of movieIDs) of the current user.
      */
     List<Integer> getWatchlist(String username);
+
+    /**
+     * Removes the movie with that ID from currentUsername's watchlist.
+     */
+    void removeFromWatchlist(String currentUsername, Integer movieID);
 }
 

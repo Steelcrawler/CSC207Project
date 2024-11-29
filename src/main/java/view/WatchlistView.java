@@ -80,7 +80,11 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
     public void propertyChange(PropertyChangeEvent evt) {
         final WatchlistState state = (WatchlistState) evt.getNewValue();
         if (state.isEmptyWatchlist()) {
-            // display a message that says your watchlist is empty
+           JOptionPane.showMessageDialog(this, "Your watchlist is empty.");
+        } else if (state.getNoSelectedMoviesToDelete() != null) {
+            JOptionPane.showMessageDialog(this, state.getNoSelectedMoviesToDelete());
+            state.setNoSelectedMoviesToDelete(null);
+            watchlistViewModel.firePropertyChanged();
         } else {
             moviePanel = new JPanel(new GridLayout(10, 5, 10, 10));
 
