@@ -73,7 +73,7 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
         } else {
             moviePanel = new JPanel(new GridLayout(10, 5, 10, 10));
 
-            for (int i = 1; i < state.getWatchlist().size(); i++) {
+            for (int i = 0; i < state.getWatchlist().size(); i++) {
                 JButton movieButton = new JButton(state.getMovieTitles().get(i));
                 JCheckBox movieCheckBox = new JCheckBox(state.getMovieTitles().get(i));
                 JPanel individualMoviePanel = new JPanel(new BorderLayout());
