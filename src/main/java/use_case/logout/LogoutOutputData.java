@@ -13,10 +13,18 @@ public class LogoutOutputData {
         this.useCaseFailed = useCaseFailed;
     }
 
+    /**
+     * Returns the username.
+     * @return the current username as a String.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Returns if the use case failed.
+     * @return if the use case failed as a boolean.
+     */
     public boolean isUseCaseFailed() {
         return useCaseFailed;
     }

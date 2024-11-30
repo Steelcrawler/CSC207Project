@@ -13,6 +13,10 @@ public class LoginOutputData {
         this.useCaseFailed = useCaseFailed;
     }
 
+    /**
+     * Returns the username.
+     * @return the username as a string.
+     */
     public String getUsername() {
         return username;
     }

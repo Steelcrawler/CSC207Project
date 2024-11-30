@@ -27,7 +27,7 @@ public class LoginPresenter implements LoginOutputBoundary {
     public void prepareSuccessView(LoginOutputData response) {
         // On success, switch to the movie search view.
 
-        final MovieSearchState movieSearchState =  movieSearchViewModel.getState();
+        final MovieSearchState movieSearchState = movieSearchViewModel.getState();
         this.movieSearchViewModel.setState(movieSearchState);
         this.movieSearchViewModel.firePropertyChanged();
 

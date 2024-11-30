@@ -15,6 +15,9 @@ public class LogoutController {
         this.logoutUseCaseInteractor = logoutUseCaseInteractor;
     }
 
+    /**
+     * Switches to the signup view.
+     */
     public void switchToSignUpView() {
         logoutUseCaseInteractor.switchToSignUpView();
     }
