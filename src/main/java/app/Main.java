@@ -29,6 +29,8 @@ public class Main {
                                             .addRecommendationView()
                                             .addRecommendationUseCase()
                                             .addDeleteFromWatchlistUseCase()
+                                            .addMovieJustifView()
+                                            .addMovieJustifUseCase()
                                             .build();
 
         application.pack();

@@ -14,18 +14,19 @@ public interface MovieJustifDataAccessInterface {
      */
     String testWork() throws JsonProcessingException;
 
-    /**
-     * Returns the list of recommendations for movies generated in searchMoviesByTitle.
-     * @param movies a list of movies that
-     * @return recommendations and justification generated from gemini.
-     */
-    List<String> genRecommendations(List<Movie> movies) throws Exception;
+//    /**
+//     * Returns the list of recommendations for movies generated in searchMoviesByTitle.
+//     * @param movies a list of movies that
+//     * @return recommendations and justification generated from gemini.
+//     */
+//    List<String> genRecommendations(List<Movie> movies) throws Exception;
 
     /**
      * Returns the justification made by Gemini/Chatgpt why the movie is recommended to the user.
-     * @param movie the recommended movie.
+     * @param wantFrom the movies that the user wants to be recommended from.
+     * @param recommended the movie that is recommended to the user.
      * @return the justification made by Gemini/Chatgpt.
      * @throws Exception
      */
-    String getJustification(Movie movie) throws Exception;
+    String getJustification(List<String> wantFrom, String recommended) throws Exception;
 }

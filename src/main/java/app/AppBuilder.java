@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import data_access.GeminiDataAccessObject;
+import data_access.InMemoryUserDataAccessObject;
 import data_access.MongoDBUserDataAccessObject;
 import data_access.TMDBDataAccessObject;
 import entity.CommonUserFactory;
@@ -14,30 +16,43 @@ import interface_adapter.Select.SelectViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.add_to_watchlist.AddToWatchlistController;
 import interface_adapter.add_to_watchlist.AddToWatchlistPresenter;
+import interface_adapter.change_password.ChangePasswordController;
+import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.delete_from_watchlist.DeleteFromWatchlistController;
 import interface_adapter.delete_from_watchlist.DeleteFromWatchlistPresenter;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.logout.LogoutController;
+import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.movie_info.MovieInfoViewModel;
 import interface_adapter.movie_info.MovieInfoController;
 import interface_adapter.movie_info.MovieInfoPresenter;
+import interface_adapter.movie_info.MovieInfoViewModel;
 import interface_adapter.movie_search.MovieSearchViewModel;
 import interface_adapter.movie_search.MovieSearchController;
 import interface_adapter.movie_search.MovieSearchPresenter;
+import interface_adapter.movie_search.MovieSearchViewModel;
 import interface_adapter.open_watchlist.OpenWatchlistController;
 import interface_adapter.open_watchlist.OpenWatchlistPresenter;
 import interface_adapter.recommendation.RecommendationController;
 import interface_adapter.recommendation.RecommendationPresenter;
 import interface_adapter.recommendation.RecommendationViewModel;
+import interface_adapter.movie_justif.MovieJustifController;
+import interface_adapter.movie_justif.MovieJustifPresenter;
+import interface_adapter.movie_justif.MovieJustifViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import use_case.add_to_watchlist.AddToWatchlistDataAccessInterface;
 import use_case.add_to_watchlist.AddToWatchlistInputBoundary;
 import use_case.add_to_watchlist.AddToWatchlistInteractor;
 import use_case.add_to_watchlist.AddToWatchlistOutputBoundary;
 import interface_adapter.watchlist.WatchlistViewModel;
+import use_case.change_password.ChangePasswordInputBoundary;
+import use_case.change_password.ChangePasswordInteractor;
+import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.delete_from_watchlist.DeleteFromWatchlistInputBoundary;
 import use_case.delete_from_watchlist.DeleteFromWatchlistInteractor;
 import use_case.delete_from_watchlist.DeleteFromWatchlistOutputBoundary;
@@ -47,8 +62,6 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
-import interface_adapter.logout.LogoutController;
-import interface_adapter.logout.LogoutPresenter;
 import use_case.movie_info.MovieInfoDataAccessInterface;
 import use_case.movie_info.MovieInfoInputBoundary;
 import use_case.movie_info.MovieInfoOutputBoundary;
@@ -56,7 +69,9 @@ import use_case.movie_search.MovieSearchDataAccessInterface;
 import use_case.movie_search.MovieSearchInputBoundary;
 import use_case.movie_search.MovieSearchInteractor;
 import use_case.movie_search.MovieSearchOutputBoundary;
+import use_case.open_watchlist.OpenWatchlistDataAccessInterface;
 import use_case.movie_info.MovieInfoInteractor;
+
 import use_case.open_watchlist.OpenWatchlistInputBoundary;
 import use_case.open_watchlist.OpenWatchlistInteractor;
 import use_case.open_watchlist.OpenWatchlistOutputBoundary;
@@ -64,6 +79,10 @@ import use_case.recommendation.RecommendationDataAccessInterface;
 import use_case.recommendation.RecommendationInputBoundary;
 import use_case.recommendation.RecommendationInteractor;
 import use_case.recommendation.RecommendationOutputBoundary;
+import use_case.movie_justif.MovieJustifDataAccessInterface;
+import use_case.movie_justif.MovieJustifInteractor;
+import use_case.movie_justif.MovieJustifOutputBoundary;
+import use_case.movie_justif.MovieJustifInputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
@@ -107,6 +126,8 @@ public class AppBuilder {
     private SelectViewModel selectViewModel = new SelectViewModel();
     private RecommendationView recommendationView;
     private RecommendationViewModel recommendationViewModel;
+    private MovieJustifView movieJustifView;
+    private MovieJustifViewModel movieJustifViewModel;
 
 
     public AppBuilder() {
@@ -143,6 +164,13 @@ public class AppBuilder {
         movieInfoViewModel = new MovieInfoViewModel();
         movieInfoView = new MovieInfoView(movieInfoViewModel);
         cardPanel.add(movieInfoView, movieInfoView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addMovieJustifView() {
+        movieJustifViewModel = new MovieJustifViewModel();
+        movieJustifView = new MovieJustifView(movieJustifViewModel);
+        cardPanel.add(movieJustifView, movieJustifView.getViewName());
         return this;
     }
 
@@ -251,6 +279,22 @@ public class AppBuilder {
         MovieInfoController movieInfoController = new MovieInfoController(movieInfoInputBoundary);
         movieInfoView.setMovieInfoController(movieInfoController);
         watchlistView.setMovieInfoController(movieInfoController);
+        return this;
+    }
+
+    /**
+     * movie_justif_view
+     * Adds the Movie Justif Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addMovieJustifUseCase() {
+        final MovieJustifOutputBoundary movieJustifOutputBoundary = new MovieJustifPresenter(viewManagerModel, movieJustifViewModel);
+        final MovieJustifDataAccessInterface geminiDataAccessObject = new GeminiDataAccessObject();
+        final MovieInfoDataAccessInterface tmdbDataAccessObject = new TMDBDataAccessObject();
+        final MovieJustifInputBoundary movieJustifInputBoundary = new MovieJustifInteractor(tmdbDataAccessObject, geminiDataAccessObject, movieJustifOutputBoundary);
+        MovieJustifController movieJustifController = new MovieJustifController(movieJustifInputBoundary);
+        movieJustifView.setMovieJustifController(movieJustifController);
+        recommendationView.setMovieJustifController(movieJustifController);
         return this;
     }
 

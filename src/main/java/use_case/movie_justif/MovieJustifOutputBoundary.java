@@ -12,4 +12,6 @@ public interface MovieJustifOutputBoundary {
      * @param errorMessage the explanation of the failure
      */
     void prepareFailView(String errorMessage);
+
+    void switchToRecView();
 }

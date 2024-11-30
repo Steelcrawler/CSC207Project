@@ -5,10 +5,21 @@ import entity.Movie;
 import java.util.List;
 
 public class MovieJustifInputData {
-    private final List<Movie> movies;
+    private final List<Integer> wantFrom;
+    private final Integer recommended;
 
-    public MovieJustifInputData(List<Movie> movies) {
-        this.movies = movies;
+    public MovieJustifInputData(List<Integer> wantFrom, Integer recommended)
+    {
+        this.wantFrom = wantFrom;
+        this.recommended = recommended;
+    }
+
+    public List<Integer> getWantFrom() {
+        return wantFrom;
+    }
+
+    public int getRecommended() {
+        return recommended;
     }
 
 }

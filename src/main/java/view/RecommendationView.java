@@ -1,5 +1,8 @@
 package view;
 
+
+import interface_adapter.movie_justif.MovieJustifController;
+
 import interface_adapter.movie_info.MovieInfoController;
 import interface_adapter.movie_info.MovieInfoState;
 import interface_adapter.movie_info.MovieInfoViewModel;
@@ -34,6 +37,7 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
     private JTextArea textArea;
 
     private RecommendationController recommendationController;
+    private MovieJustifController movieJustifController;
 
     public RecommendationView(RecommendationViewModel recommendationViewModel) {
 
@@ -105,6 +109,7 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(justificationButton)) {
                             System.out.println(recommendationViewModel.getState().getInputMovieIDs());
+                            movieJustifController.execute(recommendationViewModel.getState().getInputMovieIDs(), recommendationViewModel.getState().getRecIDslist().get(recNumber));
                         }
                     }
                 }
@@ -187,6 +192,10 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
         }
 
 
+    }
+
+    public void setMovieJustifController(MovieJustifController movieJustifController) {
+        this.movieJustifController = movieJustifController;
     }
 
     @Override
