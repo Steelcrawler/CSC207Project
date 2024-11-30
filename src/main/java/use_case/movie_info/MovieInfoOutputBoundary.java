@@ -13,5 +13,8 @@ public interface MovieInfoOutputBoundary {
          */
         void prepareFailView(String errorMessage);
 
+        /**
+         * Prepares the watchlist view to switch back to the watchlist.
+         */
         void switchToWatchlistView();
 }

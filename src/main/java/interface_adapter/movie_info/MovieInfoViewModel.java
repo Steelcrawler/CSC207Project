@@ -1,6 +1,10 @@
 package interface_adapter.movie_info;
- import interface_adapter.ViewModel;
 
+import interface_adapter.ViewModel;
+
+/**
+ * View Model for Movie Info Use Case.
+ */
 public class MovieInfoViewModel extends ViewModel<MovieInfoState> {
     public static final String MOVIE_TITLE_INFO = "Movie Title: ";
     public static final String RATING_INFO = "Rating: ";
@@ -13,5 +17,3 @@ public class MovieInfoViewModel extends ViewModel<MovieInfoState> {
         setState(new MovieInfoState());
     }
 }
-
-

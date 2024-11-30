@@ -14,20 +14,116 @@ public class MovieInfoState {
     private String posterPath;
     private List<String> userReviews;
 
-    public int getMovieID() {return movieID;}
-    public String getMovieTitle() {return movieTitle;}
-    public double getRatingInfo() {return ratingInfo;}
-    public String getPlotInfo() {return plotInfo;}
-    public String getTrailerLink() {return trailerLink;}
-    public String getPosterPath() {return posterPath;}
-    public List<String> getUserReviews() {return userReviews;}
+    /**
+     * Get movie id.
+     * @return movie id integer.
+     */
+    public int getMovieID() {
+        return movieID;
+    }
 
-    public void setMovieID(int movieID) {this.movieID = movieID;}
-    public void setMovieTitle(String movieTitle) {this.movieTitle = movieTitle;}
-    public void setRatingInfo(double ratingInfo) {this.ratingInfo = ratingInfo;}
-    public void setPlotInfo(String plotInfo) {this.plotInfo = plotInfo;}
-    public void setTrailerLink(String trailerLink) {this.trailerLink = trailerLink;}
-    public void setPosterPath(String posterPath) {this.posterPath = posterPath;}
-    public void setUserReviews(List<String> userReviews) {this.userReviews = userReviews;}
+    /**
+     * Get movie title.
+     * @return movie title string.
+     */
+    public String getMovieTitle() {
+        return movieTitle;
+    }
+
+    /**
+     * Get movie rating.
+     * @return movie rating double.
+     */
+    public double getRatingInfo() {
+        return ratingInfo;
+    }
+
+    /**
+     * Get movie ploy.
+     * @return movie plot string.
+     */
+    public String getPlotInfo() {
+        return plotInfo;
+    }
+
+    /**
+     * Get movie trailer.
+     * @return movie trailer string.
+     */
+    public String getTrailerLink() {
+        return trailerLink;
+    }
+
+    /**
+     * Get movie poster.
+     * @return movie poster path string.
+     */
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    /**
+     * Get movie reviews.
+     * @return movie reviews list of strings.
+     */
+    public List<String> getUserReviews() {
+        return userReviews;
+    }
+
+    /**
+     * Set movie id.
+     * @param movieID integer of movie id.
+     */
+    public void setMovieID(int movieID) {
+        this.movieID = movieID;
+    }
+
+    /**
+     * Set movie title.
+     * @param movieTitle string of movie title.
+     */
+    public void setMovieTitle(String movieTitle) {
+        this.movieTitle = movieTitle;
+    }
+
+    /**
+     * Set movie rating.
+     * @param ratingInfo double of movie rating.
+     */
+    public void setRatingInfo(double ratingInfo) {
+        this.ratingInfo = ratingInfo;
+    }
+
+    /**
+     * Set movie plot.
+     * @param plotInfo string of movie plot.
+     */
+    public void setPlotInfo(String plotInfo) {
+        this.plotInfo = plotInfo;
+    }
+
+    /**
+     * Set movie trailer.
+     * @param trailerLink string of movie title.
+     */
+    public void setTrailerLink(String trailerLink) {
+        this.trailerLink = trailerLink;
+    }
+
+    /**
+     * Set movie poster path.
+     * @param posterPath string of movie poster path.
+     */
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
+    }
+
+    /**
+     * Set movie reviews.
+     * @param userReviews list of strings of user reviews.
+     */
+    public void setUserReviews(List<String> userReviews) {
+        this.userReviews = userReviews;
+    }
 
 }
