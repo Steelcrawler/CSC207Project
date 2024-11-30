@@ -14,7 +14,8 @@ public class MovieInfoOutputData {
     private final String movieTrailer;
     private final List<String> movieReviews;
 
-    public MovieInfoOutputData(String movieTitle, double movieRating, String moviePlot, String moviePoster, String movieTrailer, List<String> movieReviews) {
+    public MovieInfoOutputData(String movieTitle, double movieRating, String moviePlot, String moviePoster,
+                               String movieTrailer, List<String> movieReviews) {
         this.movieTitle = movieTitle;
         this.movieRating = movieRating;
         this.moviePlot = moviePlot;
@@ -23,22 +24,52 @@ public class MovieInfoOutputData {
         this.movieReviews = movieReviews;
     }
 
+    /**
+     * Returns movie title.
+     * @return movie title string.
+     */
     public String getMovieTitle() {
         return movieTitle;
     }
 
+    /**
+     * Returns movie rating.
+     * @return movie rating double.
+     */
     public double getMovieRating() {
         return movieRating;
     }
 
+    /**
+     * Returns movie plot.
+     * @return movie plot string.
+     */
     public String getMoviePlot() {
         return moviePlot;
     }
 
-    public String getMovieTrailer() {return movieTrailer;}
+    /**
+     * Returns movie trailer.
+     * @return movie trailer string.
+     */
+    public String getMovieTrailer() {
+        return movieTrailer;
+    }
 
-    public String getMoviePosterPath() {return moviePosterPath;}
+    /**
+     * Returns movie poster path.
+     * @return movie poster path string.
+     */
+    public String getMoviePosterPath() {
+        return moviePosterPath;
+    }
 
-    public List<String> getMovieReviews() {return movieReviews;}
+    /**
+     * Returns movie reviews.
+     * @return movie reviews list of strings.
+     */
+    public List<String> getMovieReviews() {
+        return movieReviews;
+    }
 
 }

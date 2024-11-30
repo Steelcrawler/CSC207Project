@@ -10,6 +10,10 @@ public class MovieInfoInputData {
         this.movieID = movieID;
     }
 
+    /**
+     * Get the movie id.
+     * @return integer movie id.
+     */
     public int getMovieID() {
         return movieID;
     }

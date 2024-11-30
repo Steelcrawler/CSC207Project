@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.Movie;
+import okhttp3.*;
+import org.json.JSONObject;
 import use_case.movie_justif.MovieJustifDataAccessInterface;
 
 import java.net.URI;

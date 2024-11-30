@@ -25,7 +25,7 @@ public class OpenWatchlistInteractor implements OpenWatchlistInputBoundary {
     public void execute() {
         String currentUsername = MongoDBDataAccessObject.getCurrentUsername();
         List<Integer> movieIDsList = MongoDBDataAccessObject.getWatchlist(currentUsername);
-        if (movieIDsList != null) {
+        if (!movieIDsList.isEmpty()) {
             List<String> titlesList = new ArrayList<>();
             List<String> posterPathsList = new ArrayList<>();
             for (Integer movieID : movieIDsList) {

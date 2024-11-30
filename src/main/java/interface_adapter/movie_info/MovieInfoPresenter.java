@@ -21,7 +21,7 @@ public class MovieInfoPresenter implements MovieInfoOutputBoundary {
     @Override
     public void prepareSuccessView(MovieInfoOutputData outputData) {
         this.viewManagerModel.setState("movie info");
-        final MovieInfoState movieInfoState =  movieInfoViewModel.getState();
+        final MovieInfoState movieInfoState = movieInfoViewModel.getState();
         movieInfoState.setMovieTitle(outputData.getMovieTitle());
         movieInfoState.setRatingInfo(outputData.getMovieRating());
         movieInfoState.setPlotInfo(outputData.getMoviePlot());
@@ -36,7 +36,6 @@ public class MovieInfoPresenter implements MovieInfoOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
-        final MovieInfoState movieInfoState = movieInfoViewModel.getState();
         movieInfoViewModel.firePropertyChanged();
     }
 

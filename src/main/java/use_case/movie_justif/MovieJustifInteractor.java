@@ -1,5 +1,6 @@
 package use_case.movie_justif;
 
+
 import entity.Movie;
 import use_case.movie_info.MovieInfoDataAccessInterface;
 import interface_adapter.movie_justif.MovieJustifState;
@@ -7,12 +8,8 @@ import interface_adapter.movie_search.MovieSearchState;
 import view.ButtonEditor;
 import view.ButtonRenderer;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
-import java.util.List;
+public class MovieJustifInteractor {
+
 
 /**
  * The Movie Justif Interactor.

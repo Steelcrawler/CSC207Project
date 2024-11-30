@@ -1,6 +1,8 @@
 package view;
 
+
 import interface_adapter.movie_justif.MovieJustifController;
+
 import interface_adapter.movie_info.MovieInfoController;
 import interface_adapter.movie_info.MovieInfoState;
 import interface_adapter.movie_info.MovieInfoViewModel;

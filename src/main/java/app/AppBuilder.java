@@ -65,12 +65,13 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.movie_info.MovieInfoDataAccessInterface;
 import use_case.movie_info.MovieInfoInputBoundary;
 import use_case.movie_info.MovieInfoOutputBoundary;
-import use_case.movie_info.MovieInfoInteractor;
 import use_case.movie_search.MovieSearchDataAccessInterface;
 import use_case.movie_search.MovieSearchInputBoundary;
 import use_case.movie_search.MovieSearchInteractor;
 import use_case.movie_search.MovieSearchOutputBoundary;
 import use_case.open_watchlist.OpenWatchlistDataAccessInterface;
+import use_case.movie_info.MovieInfoInteractor;
+
 import use_case.open_watchlist.OpenWatchlistInputBoundary;
 import use_case.open_watchlist.OpenWatchlistInteractor;
 import use_case.open_watchlist.OpenWatchlistOutputBoundary;

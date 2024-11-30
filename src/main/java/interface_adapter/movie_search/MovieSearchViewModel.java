@@ -2,6 +2,9 @@ package interface_adapter.movie_search;
 
 import interface_adapter.ViewModel;
 
+/**
+ * The movie search view model class.
+ */
 public class MovieSearchViewModel extends ViewModel<MovieSearchState> {
 
     public static final String TITLE_LABEL = "Movie Search View";
