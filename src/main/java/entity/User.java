@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.List;
+
 /**
  * The representation of a user in our program.
  */
@@ -20,7 +21,7 @@ public interface User {
 
     /**
      * Sets the password of the user.
-     * @return
+     * @param password new password to set.
      */
     void setPassword(String password);
 
@@ -35,6 +36,4 @@ public interface User {
      * @param movieID the ID of the movie to add to the watchlist.
      */
     void addToWatchlist(int movieID);
-    
-
 }

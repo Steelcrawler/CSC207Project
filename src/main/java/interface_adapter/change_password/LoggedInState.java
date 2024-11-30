@@ -30,7 +30,7 @@ public class LoggedInState {
 
     /**
      * Returns the password error.
-     * @return the password error.
+     * @param username the username to set to.
      */
     public void setUsername(String username) {
         this.username = username;
@@ -46,7 +46,7 @@ public class LoggedInState {
 
     /**
      * Returns the password error.
-     * @return the password error.
+     * @param passwordError the password error.
      */
     public void setPasswordError(String passwordError) {
         this.passwordError = passwordError;

@@ -1,5 +1,14 @@
 package data_access;
 
+import static com.mongodb.client.model.Filters.eq;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bson.Document;
+import org.bson.conversions.Bson;
+
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerApi;
@@ -11,8 +20,6 @@ import com.mongodb.client.MongoDatabase;
 import entity.User;
 import entity.UserFactory;
 import io.github.cdimascio.dotenv.Dotenv;
-import org.bson.Document;
-import org.bson.conversions.Bson;
 import use_case.add_to_watchlist.AddToWatchlistDataAccessInterface;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.delete_from_watchlist.DeleteFromWatchlistDataAccessInterface;
@@ -22,16 +29,15 @@ import use_case.open_watchlist.OpenWatchlistDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 import use_case.watchliststorage.UserWatchlistDataAccessInterface;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.mongodb.client.model.Filters.eq;
-
+/**
+ * The MongoDBDAO class.
+ */
 public class MongoDBUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface,
-        UserWatchlistDataAccessInterface, AddToWatchlistDataAccessInterface, OpenWatchlistDataAccessInterface, DeleteFromWatchlistDataAccessInterface {
+        UserWatchlistDataAccessInterface, AddToWatchlistDataAccessInterface,
+        OpenWatchlistDataAccessInterface, DeleteFromWatchlistDataAccessInterface {
 
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
@@ -97,8 +103,10 @@ public class MongoDBUserDataAccessObject implements SignupUserDataAccessInterfac
         try {
             Class<?> clazz = Class.forName(userFactoryClass);
             this.userFactory = (UserFactory) clazz.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to instantiate UserFactory", e);
+        }
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                 | InvocationTargetException | NoSuchMethodException exception) {
+            throw new RuntimeException("Failed to instantiate UserFactory", exception);
         }
     }
 
@@ -177,6 +185,9 @@ public class MongoDBUserDataAccessObject implements SignupUserDataAccessInterfac
         return usersCollection;
     }
 
+    /**
+     * Closes the mongDB connection.
+     */
     public void close() {
         mongoClient.close();
     }
