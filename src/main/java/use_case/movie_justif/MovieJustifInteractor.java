@@ -1,15 +1,10 @@
 package use_case.movie_justif;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import entity.Movie;
 import use_case.movie_info.MovieInfoDataAccessInterface;
-import interface_adapter.movie_justif.MovieJustifState;
-import interface_adapter.movie_search.MovieSearchState;
-import view.ButtonEditor;
-import view.ButtonRenderer;
-
-public class MovieJustifInteractor {
-
 
 /**
  * The Movie Justif Interactor.

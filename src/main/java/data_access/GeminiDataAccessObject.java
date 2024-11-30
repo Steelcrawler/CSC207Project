@@ -164,7 +164,7 @@ public class GeminiDataAccessObject implements MovieJustifDataAccessInterface {
 
         // Define the JSON payload
         // String jsonPayload = """{"contents": [{"parts": [{"text": "Explain how AI works"}]}]}""";
-        String question = "Explain in 30 words: why did someone recommend me " + recommended + " when I want similar movies from ";
+        String question = "Explain in about 100 words: why is " + recommended + " a good movie recommendation when I want similar movies from ";
         for (String want : wantFrom) {
             question += want + " ";
         }
