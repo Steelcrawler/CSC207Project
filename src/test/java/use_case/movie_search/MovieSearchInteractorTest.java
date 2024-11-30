@@ -67,7 +67,7 @@ class MovieSearchInteractorTest {
 
         interactor.execute(inputData);
 
-        verify(mockPresenter).prepareFailView("No movies with that title.");
+        verify(mockPresenter).prepareFailView("No movies found with the given criteria.");
     }
 
     @Test

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
 import entity.Movie;
 
-public interface MovieRecDataAccessInterface {
+public interface MovieJustifDataAccessInterface {
 
     /**
      * Returns a String that is supposed to be similar to 'hello, world!'.

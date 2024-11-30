@@ -3,12 +3,12 @@ package use_case.movie_justif;
 /**
  * The Movie Search Use Case.
  */
-public interface MovieRecInputBoundary {
+public interface MovieJustifInputBoundary {
 
     /**
      * Execute the MovieRec Use Case.
      * @param movieRecInputData the input data for this use case
      */
-    void execute(MovieRecInputData movieRecInputData);
+    void execute(MovieJustifInputBoundary movieRecInputData);
 
 }
