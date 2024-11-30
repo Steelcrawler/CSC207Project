@@ -19,9 +19,18 @@ public class OpenWatchlistController {
         openWatchlistUseCaseInteractor.execute();
     }
 
+    /**
+     * Switches from the WatchlistView to the MovieSearchView.
+     */
     public void switchToMovieSearchView() {
         openWatchlistUseCaseInteractor.switchToMovieSearchView();
     }
 
-    public void switchToMovieInfoView(int movieID) {openWatchlistUseCaseInteractor.switchToMovieInfoView(movieID);}
+    /**
+     * Switches from the WatchlistView to the MovieInfoView.
+     * @param movieID the ID of the movie to display on the movie info view.
+     */
+    public void switchToMovieInfoView(int movieID) {
+        openWatchlistUseCaseInteractor.switchToMovieInfoView(movieID);
+    }
 }

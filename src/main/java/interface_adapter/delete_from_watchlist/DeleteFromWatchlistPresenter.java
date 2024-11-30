@@ -1,5 +1,7 @@
 package interface_adapter.delete_from_watchlist;
 
+import java.util.ArrayList;
+
 import interface_adapter.Select.SelectState;
 import interface_adapter.Select.SelectViewModel;
 import interface_adapter.ViewManagerModel;
@@ -7,8 +9,6 @@ import interface_adapter.watchlist.WatchlistState;
 import interface_adapter.watchlist.WatchlistViewModel;
 import use_case.delete_from_watchlist.DeleteFromWatchlistOutputBoundary;
 import use_case.delete_from_watchlist.DeleteFromWatchlistOutputData;
-
-import java.util.ArrayList;
 
 /**
  * The Presenter for the Delete From Watchlist Use Case.
