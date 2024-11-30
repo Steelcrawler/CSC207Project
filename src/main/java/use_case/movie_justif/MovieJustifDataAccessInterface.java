@@ -1,10 +1,9 @@
-package use_case.movie_rec;
+package use_case.movie_justif;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.util.List;
 import entity.Movie;
-import java.io.IOException;
 
 public interface MovieRecDataAccessInterface {
 

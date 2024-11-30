@@ -1,4 +1,4 @@
-package use_case.movie_rec;
+package use_case.movie_justif;
 
 /**
  * The Movie Search Use Case.

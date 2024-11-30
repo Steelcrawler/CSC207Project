@@ -1,6 +1,4 @@
-package use_case.movie_rec;
-
-import use_case.movie_rec.MovieRecOutputData;
+package use_case.movie_justif;
 
 public interface MovieRecOutputBoundary {
     /**
