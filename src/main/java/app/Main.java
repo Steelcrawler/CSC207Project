@@ -18,12 +18,14 @@ public class Main {
                                             .addWatchlistView()
                                             .addMovieInfoView()
                                             .addSignupView()
+                                            .addSelectView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addMovieSearchUseCase()
                                             .addAddToWatchlistUseCase()
                                             .addOpenWatchlistUseCase()
                                             .addMovieInfoUseCase()
+                                            .addDeleteFromWatchlistUseCase()
                                             .build();
 
         application.pack();

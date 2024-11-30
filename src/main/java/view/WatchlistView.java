@@ -10,11 +10,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import interface_adapter.movieinfo.MovieInfoController;
-import interface_adapter.moviesearch.MovieSearchState;
+import interface_adapter.Select.SelectViewModel;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.open_watchlist.OpenWatchlistController;
 import interface_adapter.watchlist.WatchlistState;
 import interface_adapter.watchlist.WatchlistViewModel;
-import use_case.movieinfo.MovieInfoInputData;
 
 public class WatchlistView extends JPanel implements ActionListener, ItemListener, PropertyChangeListener {
     private final String viewName = "Watchlist";
@@ -26,12 +26,15 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
     private JScrollPane watchlistScrollPane;
     private JPanel moviePanel;
 
+    private ViewManagerModel viewManagerModel;
     private OpenWatchlistController openWatchlistController;
     private MovieInfoController movieInfoController;
+    private SelectViewModel selectViewModel;
 
-    public WatchlistView(WatchlistViewModel watchlistViewModel) {
+    public WatchlistView(WatchlistViewModel watchlistViewModel, ViewManagerModel viewManagerModel) {
         this.watchlistViewModel = watchlistViewModel;
         this.watchlistViewModel.addPropertyChangeListener(this);
+        this.viewManagerModel = viewManagerModel;
 
         this.setLayout(new BorderLayout());
 
@@ -46,26 +49,51 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
         JLabel titleLabel = new JLabel(WatchlistViewModel.TITLE_LABEL, SwingConstants.CENTER);
         menuPanel.add(titleLabel, BorderLayout.CENTER);
 
+        moviePanel = new JPanel(new GridLayout(10, 5, 10, 10));
+        watchlistScrollPane = new JScrollPane(moviePanel);
+        watchlistScrollPane.getVerticalScrollBar().setUnitIncrement(15);
+        this.add(watchlistScrollPane, BorderLayout.CENTER);
         this.add(menuPanel, BorderLayout.NORTH);
 
-        backButton.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(backButton)) {
-                            openWatchlistController.switchToMovieSearchView();
-                        }
-                        }
-                    }
+        selectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(selectButton)) {
+                    selectViewModel.getState().setWatchlist(watchlistViewModel.getState().getWatchlist());
+                    selectViewModel.getState().setMovieTitles(watchlistViewModel.getState().getMovieTitles());
+                    selectViewModel.getState().setPosterPaths(watchlistViewModel.getState().getPosterPaths());
+                    selectViewModel.firePropertyChanged();
+                    viewManagerModel.setState(selectViewModel.getViewName());
+                    viewManagerModel.firePropertyChanged();
+                }
+            }
+        }
         );
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(backButton)) {
+                    openWatchlistController.switchToMovieSearchView();
+                }
+            }
+        }
+        );
+        this.revalidate();
+        this.repaint();
     }
 
     public void propertyChange(PropertyChangeEvent evt) {
         final WatchlistState state = (WatchlistState) evt.getNewValue();
         if (state.isEmptyWatchlist()) {
-            // display a message that says your watchlist is empty
+           JOptionPane.showMessageDialog(this, "Your watchlist is empty.");
+        } else if (state.getNoSelectedMoviesToDelete() != null) {
+            // no movie was selected to delete
+            JOptionPane.showMessageDialog(this, state.getNoSelectedMoviesToDelete());
+            state.setNoSelectedMoviesToDelete(null);
+            watchlistViewModel.firePropertyChanged();
         } else {
-            moviePanel = new JPanel(new GridLayout(10, 5, 10, 10));
-
+            moviePanel.removeAll();
             for (int i = 0; i < state.getWatchlist().size(); i++) {
                 JButton movieButton = new JButton(state.getMovieTitles().get(i));
                 JPanel individualMoviePanel = new JPanel();
@@ -73,15 +101,12 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
                 int movieID = state.getWatchlist().get(i);
                 movieButton.addActionListener(movie_evt -> movieInfoController.execute(movieID));
 
-//            the actual movie stuff will go in this JPanel, the button is a placeholder
                 movieButton.setPreferredSize(new Dimension(110, 140));
                 individualMoviePanel.add(movieButton);
                 moviePanel.add(individualMoviePanel);
             }
-
-            watchlistScrollPane = new JScrollPane(moviePanel);
-            watchlistScrollPane.getVerticalScrollBar().setUnitIncrement(15);
-            this.add(watchlistScrollPane, BorderLayout.CENTER);
+            moviePanel.revalidate();
+            moviePanel.repaint();
         }
     }
 
@@ -91,6 +116,10 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
 
     public void setOpenWatchlistController(OpenWatchlistController openWatchlistController) {
         this.openWatchlistController = openWatchlistController;
+    }
+
+    public void setSelectViewModel(SelectViewModel selectViewModel) {
+        this.selectViewModel = selectViewModel;
     }
 
     public void setMovieInfoController(MovieInfoController movieInfoController) {

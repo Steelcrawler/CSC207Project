@@ -1,17 +1,18 @@
-package interface_adapter.watchlist;
+package interface_adapter.Select;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The state for the Watchlist View Model.
+ * The state for the Select View Model.
  */
-public class WatchlistState {
+public class SelectState {
     private List<Integer> watchlist;
     private List<String> movieTitles;
     private List<String> posterPaths;
     private boolean emptyWatchlist;
     private String errorMessage;
-    private String noSelectedMoviesToDelete;
+    private List<Integer> selectedMovies = new ArrayList<>();
 
     public List<Integer> getWatchlist() {
         return watchlist;
@@ -49,15 +50,13 @@ public class WatchlistState {
         return posterPaths;
     }
 
+    public void setSelectedMovies(List<Integer> selectedMovies) {
+        this.selectedMovies = selectedMovies;
+    }
+
+    public List<Integer> getSelectedMovies() {return selectedMovies;}
+
     public void setPosterPaths(List<String> posterPaths) {
         this.posterPaths = posterPaths;
-    }
-
-    public void setNoSelectedMoviesToDelete(String errorMessage) {
-        this.noSelectedMoviesToDelete = errorMessage;
-    }
-
-    public String getNoSelectedMoviesToDelete() {
-        return noSelectedMoviesToDelete;
     }
 }
