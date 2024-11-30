@@ -1,6 +1,12 @@
 package use_case.movie_search;
 
 import entity.Movie;
+import use_case.movie_search.MovieSearchDataAccessInterface;
+import use_case.movie_search.MovieSearchInputData;
+import use_case.movie_search.MovieSearchInteractor;
+import use_case.movie_search.MovieSearchOutputBoundary;
+import use_case.movie_search.MovieSearchOutputData;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.BufferedReader;
