@@ -61,5 +61,7 @@ public class MovieSearchPresenter implements MovieSearchOutputBoundary {
     public void addAllMovies(List<Movie> movies) {
         this.movieList.addAll(movies);
     }
+
+    
 }
 

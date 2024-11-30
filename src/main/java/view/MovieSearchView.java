@@ -24,6 +24,7 @@ import interface_adapter.movie_search.MovieSearchController;
 import interface_adapter.movie_search.MovieSearchState;
 import interface_adapter.movie_search.MovieSearchViewModel;
 import interface_adapter.open_watchlist.OpenWatchlistController;
+import interface_adapter.logout.LogoutController;
 
 import static javax.swing.BoxLayout.Y_AXIS;
 
@@ -46,6 +47,7 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
     private final JButton searchButton;
     private final JButton resetKeywordsButton;
     private final JButton watchlistButton;
+    private final JButton logoutButton;
     private final JLabel errorMessageField = new JLabel();
     private JTable resultsTable;  // Table to display results
     private JPanel resultsPanel = new JPanel();
@@ -53,6 +55,7 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
     private MovieSearchController movieSearchController;
     private AddToWatchlistController addToWatchlistController;
     private OpenWatchlistController openWatchlistController;
+    private LogoutController logoutController;
 
     public MovieSearchView(MovieSearchViewModel movieSearchViewModel) {
         this.movieSearchViewModel = movieSearchViewModel;
@@ -119,9 +122,11 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         searchButton = new JButton(MovieSearchViewModel.SEARCH_BUTTON_LABEL);
         resetKeywordsButton = new JButton("Reset Keywords");
         watchlistButton = new JButton(MovieSearchViewModel.WATCHLIST_BUTTON_LABEL);
+        logoutButton = new JButton("Logout");
         buttons.add(searchButton);
         buttons.add(resetKeywordsButton);
         buttons.add(watchlistButton);
+        buttons.add(logoutButton);
 
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -159,6 +164,13 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
             @Override
             public void actionPerformed(ActionEvent e) {
                 openWatchlistController.execute();
+            }
+        });
+
+        logoutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                logoutController.switchToSignUpView();
             }
         });
 
@@ -407,6 +419,14 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         this.openWatchlistController = openWatchlistController;
     }
 
+    public void setAddToWatchlistController(AddToWatchlistController addToWatchlistController) {
+        this.addToWatchlistController = addToWatchlistController;
+    }
+
+    public void setLogoutController(LogoutController logoutController) {
+        this.logoutController = logoutController;
+    }
+
     @Override
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
@@ -416,10 +436,4 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
     public void itemStateChanged(ItemEvent evt) {
         System.out.println("Click " + evt.getStateChange());
     }
-    public void setAddToWatchlistController(AddToWatchlistController addToWatchlistController) {
-        this.addToWatchlistController = addToWatchlistController;
-    }
 }
-
-
-

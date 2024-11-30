@@ -1,6 +1,5 @@
-package use_case.movie_rec;
+package use_case.movie_justif;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import data_access.GeminiDataAccessObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +13,6 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;

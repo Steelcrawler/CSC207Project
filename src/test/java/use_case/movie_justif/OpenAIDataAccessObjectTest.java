@@ -1,12 +1,10 @@
-package use_case.movie_rec;
-//
+package use_case.movie_justif;
+
 //import data_access.OpenAIDataAccessObject;
 //
-//import dev.langchain4j.model.chat.ChatLanguageModel;
 //import dev.langchain4j.model.openai.OpenAiChatModel;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.Test;
-//import org.mockito.Mockito;
 //
 //import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.mockito.Mockito.*;
