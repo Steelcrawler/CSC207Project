@@ -3,7 +3,7 @@ package use_case.add_to_watchlist;
 /**
  * The Add To Watchlist Interactor.
  */
-public abstract class AddToWatchlistInteractor implements AddToWatchlistInputBoundary, AddToWatchlistOutputBoundary {
+public class AddToWatchlistInteractor implements AddToWatchlistInputBoundary {
     private final AddToWatchlistDataAccessInterface MongoDBDataAccessObject;
     private final AddToWatchlistOutputBoundary addToWatchlistPresenter;
 
