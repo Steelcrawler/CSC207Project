@@ -1,5 +1,4 @@
-package use_case.movieinfo;
-import entity.Movie;
+package use_case.movie_info;
 
 /**
  * The Input Data for the Movie Info Use Case.

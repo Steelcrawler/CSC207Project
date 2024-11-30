@@ -1,8 +1,7 @@
-package interface_adapter.movieinfo;
+package interface_adapter.movie_info;
 
-import entity.Movie;
-import use_case.movieinfo.MovieInfoInputBoundary;
-import use_case.movieinfo.MovieInfoInputData;
+import use_case.movie_info.MovieInfoInputBoundary;
+import use_case.movie_info.MovieInfoInputData;
 
 
 /**

@@ -1,4 +1,4 @@
-package interface_adapter.moviesearch;
+package interface_adapter.movie_search;
 
 import java.util.ArrayList;
 import java.util.List;

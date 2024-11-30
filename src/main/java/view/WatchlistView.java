@@ -9,7 +9,7 @@ import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import interface_adapter.movieinfo.MovieInfoController;
+import interface_adapter.movie_info.MovieInfoController;
 import interface_adapter.Select.SelectViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.open_watchlist.OpenWatchlistController;

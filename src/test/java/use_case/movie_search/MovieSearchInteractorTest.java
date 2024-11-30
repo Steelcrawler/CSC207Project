@@ -1,10 +1,5 @@
-package use_case.moviesearch;
+package use_case.movie_search;
 
-import use_case.movie_search.MovieSearchDataAccessInterface;
-import use_case.movie_search.MovieSearchOutputBoundary;
-import use_case.movie_search.MovieSearchInteractor;
-import use_case.movie_search.MovieSearchInputData;
-import use_case.movie_search.MovieSearchOutputData;
 import entity.Movie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,11 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;

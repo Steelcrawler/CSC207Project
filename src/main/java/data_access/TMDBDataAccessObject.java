@@ -8,8 +8,8 @@ import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import io.github.cdimascio.dotenv.Dotenv;
-import use_case.moviesearch.MovieSearchDataAccessInterface;
-import use_case.movieinfo.MovieInfoDataAccessInterface;
+import use_case.movie_search.MovieSearchDataAccessInterface;
+import use_case.movie_info.MovieInfoDataAccessInterface;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

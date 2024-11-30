@@ -1,4 +1,4 @@
-package use_case.moviesearch;
+package use_case.movie_search;
 
 import data_access.TMDBDataAccessObject;
 import entity.Movie;
@@ -6,9 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

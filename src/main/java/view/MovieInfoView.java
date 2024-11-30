@@ -1,15 +1,12 @@
 package view;
 
-import interface_adapter.movieinfo.MovieInfoController;
-import interface_adapter.movieinfo.MovieInfoState;
-import interface_adapter.movieinfo.MovieInfoViewModel;
-import interface_adapter.moviesearch.MovieSearchController;
-import interface_adapter.moviesearch.MovieSearchState;
+import interface_adapter.movie_info.MovieInfoController;
+import interface_adapter.movie_info.MovieInfoState;
+import interface_adapter.movie_info.MovieInfoViewModel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.MalformedURLException;

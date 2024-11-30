@@ -1,4 +1,4 @@
-package use_case.moviesearch;
+package use_case.movie_search;
 import entity.Movie;
 
 import java.io.BufferedReader;
