@@ -15,11 +15,13 @@ public class AddToWatchlistInteractor implements AddToWatchlistInputBoundary {
 
     @Override
     public void execute(AddToWatchlistInputData addToWatchlistInputData) {
-        if (!MongoDBDataAccessObject.existsInWatchlist(MongoDBDataAccessObject.getCurrentUsername(), addToWatchlistInputData.getMovieID())) {
-            System.out.println("Movie isn't in watchlist yet");
-            MongoDBDataAccessObject.addToWatchlist(MongoDBDataAccessObject.getCurrentUsername(), addToWatchlistInputData.getMovieID());
+        if (!MongoDBDataAccessObject.existsInWatchlist(MongoDBDataAccessObject.getCurrentUsername(),
+                addToWatchlistInputData.getMovieID())) {
+            MongoDBDataAccessObject.addToWatchlist(MongoDBDataAccessObject.getCurrentUsername(), addToWatchlistInputData
+                    .getMovieID());
 
-            final AddToWatchlistOutputData addToWatchlistOutputData = new AddToWatchlistOutputData(addToWatchlistInputData.getMovieTitle(), false);
+            final AddToWatchlistOutputData addToWatchlistOutputData = new AddToWatchlistOutputData(
+                    addToWatchlistInputData.getMovieTitle(), false);
             this.addToWatchlistPresenter.prepareSuccessView(addToWatchlistOutputData);
             }
         else {

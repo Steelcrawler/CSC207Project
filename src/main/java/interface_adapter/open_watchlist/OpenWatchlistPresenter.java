@@ -43,7 +43,6 @@ public class OpenWatchlistPresenter implements OpenWatchlistOutputBoundary {
     public void prepareFailView(String errorMessage) {
         final WatchlistState watchlistState = watchlistViewModel.getState();
         watchlistState.setEmptyWatchlist(true);
-        watchlistState.setErrorMessage(errorMessage);
         watchlistViewModel.firePropertyChanged();
     }
 
