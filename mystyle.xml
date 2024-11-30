@@ -313,12 +313,12 @@
         </module>
 
         <!-- Class Design -->
-        <module name="DesignForExtension">
-            <property name="ignoredAnnotations"
-                      value="Override, Test, Before, After, BeforeClass, AfterClass"/>
-            <property name="ignoredAnnotations"
-                      value="BeforeAll, AfterAll, BeforeEach, AfterEach"/>
-        </module>
+<!--        <module name="DesignForExtension">-->
+<!--            <property name="ignoredAnnotations"-->
+<!--                      value="Override, Test, Before, After, BeforeClass, AfterClass"/>-->
+<!--            <property name="ignoredAnnotations"-->
+<!--                      value="BeforeAll, AfterAll, BeforeEach, AfterEach"/>-->
+<!--        </module>-->
         <module name="FinalClass"/>
         <module name="InnerTypeLast"/>
         <module name="InterfaceIsType"/>
@@ -335,7 +335,6 @@
         <!-- Coding -->
         <module name="ArrayTrailingComma"/>
         <module name="AvoidDoubleBraceInitialization"/>
-        <module name="AvoidInlineConditionals"/>
         <module name="AvoidNoArgumentSuperConstructorCall"/>
         <module name="CovariantEquals"/>
         <module name="DeclarationOrder"/>
@@ -657,10 +656,6 @@
         <module name="BooleanExpressionComplexity">
             <property name="max" value="7"/>
         </module>
-        <module name="CyclomaticComplexity">
-            <property name="switchBlockAsSingleDecisionPoint" value="true"/>
-        </module>
-        <module name="NPathComplexity"/>
 
         <!-- Misc -->
         <module name="ArrayTypeStyle"/>
@@ -754,7 +749,9 @@
         </module>
         <module name="MethodLength"/>
         <module name="OuterTypeNumber"/>
-        <module name="ParameterNumber"/>
+        <module name="ParameterNumber">
+            <property name="max" value="10"/>
+        </module>
         <module name="RecordComponentNumber"/>
 
         <!-- Whitespace -->
