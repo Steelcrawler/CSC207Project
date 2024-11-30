@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.Movie;
 import okhttp3.*;
 import org.json.JSONObject;
-import use_case.movie_rec.MovieRecDataAccessInterface;
+import use_case.movie_justif.MovieJustifDataAccessInterface;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GeminiDataAccessObject implements MovieRecDataAccessInterface {
+public class GeminiDataAccessObject implements MovieJustifDataAccessInterface {
 
     // private static final String AI_API_URL = "https://api.your-ai-service.com/generate-text";
     // private static final String API_KEY = "your-api-key";

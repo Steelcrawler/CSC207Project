@@ -4,10 +4,10 @@ import entity.Movie;
 
 import java.util.List;
 
-public class MovieRecInputData {
+public class MovieJustifInputData {
     private final List<Movie> movies;
 
-    public MovieRecInputData(List<Movie> movies) {
+    public MovieJustifInputData(List<Movie> movies) {
         this.movies = movies;
     }
 

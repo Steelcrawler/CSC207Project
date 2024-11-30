@@ -1,8 +1,8 @@
 package view;
 
-import interface_adapter.movieinfo.MovieInfoController;
-import interface_adapter.movieinfo.MovieInfoState;
-import interface_adapter.movieinfo.MovieInfoViewModel;
+import interface_adapter.movie_info.MovieInfoController;
+import interface_adapter.movie_info.MovieInfoState;
+import interface_adapter.movie_info.MovieInfoViewModel;
 import interface_adapter.recommendation.RecommendationController;
 import interface_adapter.recommendation.RecommendationState;
 import interface_adapter.recommendation.RecommendationViewModel;
