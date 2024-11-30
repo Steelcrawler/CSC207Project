@@ -10,6 +10,10 @@ public interface MovieInfoInputBoundary {
      * @param movieInfoInputData the input data for this use case
      */
     void execute(MovieInfoInputData movieInfoInputData);
+
+    /**
+     * Switch to Watchlist view.
+     */
     void switchView();
 
 }
