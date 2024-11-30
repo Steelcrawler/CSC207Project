@@ -146,7 +146,7 @@ public class MovieSearchState {
      * @return the row of the ATW button clicked.
      */
     public ArrayList<Integer> getMoviesIDs() {
-        return moviesIDs;
+        return moviesIds;
     }
 
     /**
