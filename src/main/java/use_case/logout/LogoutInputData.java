@@ -11,6 +11,10 @@ public class LogoutInputData {
         this.currentUsername = username;
     }
 
+    /**
+     * Gets the current username.
+     * @return the current username as a string.
+     */
     public String getCurrentUsername() {
         return currentUsername;
     }

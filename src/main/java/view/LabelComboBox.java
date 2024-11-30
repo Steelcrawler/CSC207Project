@@ -1,8 +1,8 @@
 package view;
 
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JComboBox;
 
 /**
  * A panel containing a label and a combo box.

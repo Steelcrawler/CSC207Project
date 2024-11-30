@@ -1,7 +1,7 @@
 package entity;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple implementation of the User interface.
