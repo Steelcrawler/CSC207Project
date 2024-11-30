@@ -1,15 +1,7 @@
-package use_case.movieinfo;
+package use_case.movie_info;
 
 import entity.Movie;
-import interface_adapter.movieinfo.MovieInfoState;
-import interface_adapter.moviesearch.MovieSearchState;
-import view.ButtonEditor;
-import view.ButtonRenderer;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
 import java.util.List;
 
 /**

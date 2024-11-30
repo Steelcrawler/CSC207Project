@@ -20,10 +20,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import interface_adapter.add_to_watchlist.AddToWatchlistController;
-import entity.Movie;
-import interface_adapter.moviesearch.MovieSearchController;
-import interface_adapter.moviesearch.MovieSearchState;
-import interface_adapter.moviesearch.MovieSearchViewModel;
+import interface_adapter.movie_search.MovieSearchController;
+import interface_adapter.movie_search.MovieSearchState;
+import interface_adapter.movie_search.MovieSearchViewModel;
 import interface_adapter.open_watchlist.OpenWatchlistController;
 import interface_adapter.logout.LogoutController;
 

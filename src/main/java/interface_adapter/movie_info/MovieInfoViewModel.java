@@ -1,4 +1,4 @@
-package interface_adapter.movieinfo;
+package interface_adapter.movie_info;
  import interface_adapter.ViewModel;
 
 public class MovieInfoViewModel extends ViewModel<MovieInfoState> {

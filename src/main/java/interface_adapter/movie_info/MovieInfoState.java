@@ -1,6 +1,5 @@
-package interface_adapter.movieinfo;
+package interface_adapter.movie_info;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

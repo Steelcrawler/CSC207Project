@@ -1,16 +1,8 @@
-package interface_adapter.movieinfo;
+package interface_adapter.movie_info;
 
-import entity.Movie;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.login.LoginState;
-import interface_adapter.movieinfo.MovieInfoState;
-import interface_adapter.movieinfo.MovieInfoViewModel;
-import interface_adapter.moviesearch.MovieSearchState;
-import use_case.login.LoginOutputData;
-import use_case.movieinfo.MovieInfoOutputBoundary;
-import use_case.movieinfo.MovieInfoOutputData;
-
-import java.util.ArrayList;
+import use_case.movie_info.MovieInfoOutputBoundary;
+import use_case.movie_info.MovieInfoOutputData;
 
 /**
  * The Presenter for the Movie Info Use Case.

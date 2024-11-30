@@ -1,6 +1,4 @@
-package use_case.movieinfo;
-
-import entity.Movie;
+package use_case.movie_info;
 
 import java.util.List;
 

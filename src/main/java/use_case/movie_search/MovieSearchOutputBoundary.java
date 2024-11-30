@@ -1,7 +1,5 @@
 package use_case.movie_search;
 
-import use_case.movie_search.MovieSearchOutputData;
-
 public interface MovieSearchOutputBoundary {
         /**
          * Prepares the success view for the Movie Search Use Case.

@@ -1,7 +1,7 @@
 package view;
 
-import interface_adapter.moviesearch.MovieSearchState;
-import interface_adapter.moviesearch.MovieSearchViewModel;
+import interface_adapter.movie_search.MovieSearchState;
+import interface_adapter.movie_search.MovieSearchViewModel;
 
 import javax.swing.*;
 import java.awt.*;

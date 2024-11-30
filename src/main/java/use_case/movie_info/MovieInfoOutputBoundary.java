@@ -1,7 +1,4 @@
-package use_case.movieinfo;
-
-import use_case.movie_search.MovieSearchOutputData;
-import use_case.movieinfo.MovieInfoOutputData;
+package use_case.movie_info;
 
 public interface MovieInfoOutputBoundary {
         /**

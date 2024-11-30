@@ -1,12 +1,11 @@
-package use_case.movieinfo;
+package use_case.movie_info;
 
 import data_access.TMDBDataAccessObject;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.movieinfo.MovieInfoPresenter;
-import interface_adapter.movieinfo.MovieInfoViewModel;
+import interface_adapter.movie_info.MovieInfoPresenter;
+import interface_adapter.movie_info.MovieInfoViewModel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import use_case.movieinfo.*;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

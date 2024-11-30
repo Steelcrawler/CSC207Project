@@ -1,9 +1,9 @@
 package interface_adapter.open_watchlist;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.movieinfo.MovieInfoState;
-import interface_adapter.movieinfo.MovieInfoViewModel;
-import interface_adapter.moviesearch.MovieSearchViewModel;
+import interface_adapter.movie_info.MovieInfoState;
+import interface_adapter.movie_info.MovieInfoViewModel;
+import interface_adapter.movie_search.MovieSearchViewModel;
 import interface_adapter.watchlist.WatchlistState;
 import interface_adapter.watchlist.WatchlistViewModel;
 import use_case.open_watchlist.OpenWatchlistOutputBoundary;
