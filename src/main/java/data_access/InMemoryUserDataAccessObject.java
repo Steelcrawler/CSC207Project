@@ -1,10 +1,5 @@
 package data_access;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import entity.User;
 import use_case.add_to_watchlist.AddToWatchlistDataAccessInterface;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
@@ -12,6 +7,12 @@ import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.open_watchlist.OpenWatchlistDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
+import use_case.watchliststorage.UserWatchlistDataAccessInterface;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * In-memory implementation of the DAO for storing user data. This implementation does
@@ -20,11 +21,11 @@ import use_case.signup.SignupUserDataAccessInterface;
 public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterface,
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
-        LogoutUserDataAccessInterface, AddToWatchlistDataAccessInterface, OpenWatchlistDataAccessInterface {
+        LogoutUserDataAccessInterface,
+        UserWatchlistDataAccessInterface, AddToWatchlistDataAccessInterface, OpenWatchlistDataAccessInterface {
 
     private final Map<String, User> users = new HashMap<>();
     private final Map<String, List<Integer>> watchlists = new HashMap<>();
-
     private String currentUsername;
 
     @Override
@@ -35,6 +36,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     @Override
     public void save(User user) {
         users.put(user.getName(), user);
+        watchlists.put(user.getName(), new ArrayList<>());
     }
 
     @Override
@@ -54,33 +56,34 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
     }
 
     @Override
-    public boolean existsInWatchlist(String currentUsername, Integer movieID) {
-        if (watchlists.containsKey(currentUsername)) {
-            return watchlists.get(currentUsername).contains(movieID);
-        }
-        return false;
-    }
-
-    @Override
     public String getCurrentUsername() {
         return this.currentUsername;
     }
 
     @Override
     public List<Integer> getWatchlist(String username) {
-        return watchlists.get(username);
+        return watchlists.getOrDefault(username, new ArrayList<>());
     }
 
     @Override
-    public void addToWatchlist(String currentUsername, Integer movieID) {
-        if (watchlists.containsKey(currentUsername)) {
-            if (!watchlists.get(currentUsername).contains(movieID)) {
-                watchlists.get(currentUsername).add(movieID);
-            }
+    public void addToWatchlist(String username, Integer movieId) {
+        List<Integer> watchlist = watchlists.get(username);
+        if (watchlist != null) {
+            watchlist.add(movieId);
         }
-        else {
-            List<Integer> newWatchlist = new ArrayList<>();
-            newWatchlist.add(movieID);
-            watchlists.put(currentUsername, newWatchlist);
-        }    }
+    }
+
+    @Override
+    public void removeFromWatchlist(String username, Integer movieId) {
+        List<Integer> watchlist = watchlists.get(username);
+        if (watchlist != null) {
+            watchlist.remove(movieId);
+        }
+    }
+
+    @Override
+    public boolean existsInWatchlist(String username, Integer movieID) {
+        List<Integer> userWatchlist = this.getWatchlist(username);
+        return userWatchlist.contains(movieID);
+    }
 }
