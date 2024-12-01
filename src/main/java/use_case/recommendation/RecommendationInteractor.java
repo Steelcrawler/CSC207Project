@@ -1,23 +1,20 @@
 package use_case.recommendation;
-import entity.Movie;
-import interface_adapter.recommendation.RecommendationPresenter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
+import entity.Movie;
 
 /**
  * The Recommendation Interactor.
  */
 public class RecommendationInteractor implements RecommendationInputBoundary {
-    private final RecommendationDataAccessInterface TMDBDataAccessObject;
+    private final RecommendationDataAccessInterface tmdbDataAccessObject;
     private final RecommendationOutputBoundary recommendationPresenter;
 
     public RecommendationInteractor(RecommendationDataAccessInterface recommendationDataAccessInterface,
                                     RecommendationOutputBoundary recommendationOutputBoundary) {
-        this.TMDBDataAccessObject = recommendationDataAccessInterface;
+        this.tmdbDataAccessObject = recommendationDataAccessInterface;
         this.recommendationPresenter = recommendationOutputBoundary;
     }
 
@@ -27,13 +24,16 @@ public class RecommendationInteractor implements RecommendationInputBoundary {
         if (recommendationInputData.getSelectedMoviesList().size() > 1) {
             List<Integer> keywordsList = new ArrayList<Integer>();
             for (Integer movieID : recommendationInputData.getSelectedMoviesList()) {
-                keywordsList.addAll(this.TMDBDataAccessObject.getKeywordIDs(movieID));
+                keywordsList.addAll(this.tmdbDataAccessObject.getKeywordIDs(movieID));
             }
-            moviesList = this.TMDBDataAccessObject.searchMoviesByKeywordsHelper(keywordsList);
-        } else {
+            moviesList = this.tmdbDataAccessObject.searchMoviesByKeywordsHelper(keywordsList);
+        }
+        else {
             try {
-                moviesList = this.TMDBDataAccessObject.searchRecommendations(recommendationInputData.getSelectedMoviesList());
-            } catch (IndexOutOfBoundsException e) {
+                moviesList = this.tmdbDataAccessObject.searchRecommendations(
+                        recommendationInputData.getSelectedMoviesList());
+            }
+            catch (IndexOutOfBoundsException exception) {
                 moviesList = new ArrayList<>();
                 recommendationPresenter.prepareFailView("Movies were not provided");
             }
@@ -50,13 +50,11 @@ public class RecommendationInteractor implements RecommendationInputBoundary {
             posterPathsOutput.add(movie.getPosterPath());
             plotsOutput.add(movie.getPlot());
         }
-        System.out.println(movieIDsOutput);
-        System.out.println(movieTitlesOutput);
-        System.out.println(posterPathsOutput);
-        System.out.println(plotsOutput);
+
         if (movieIDsOutput.size() == 0) {
             recommendationPresenter.prepareFailView("A Recommendation could not be made");
-        } else {
+        }
+        else {
             RecommendationOutputData recommendationOutputData = new RecommendationOutputData(movieIDsOutput,
                     movieTitlesOutput,
                     posterPathsOutput,
@@ -66,6 +64,7 @@ public class RecommendationInteractor implements RecommendationInputBoundary {
             this.recommendationPresenter.prepareSuccessView(recommendationOutputData);
         }
     }
+
     @Override
     public void toSelectView() {
         recommendationPresenter.toSelectView();

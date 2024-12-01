@@ -1,8 +1,14 @@
 package use_case.recommendation;
 
-import use_case.recommendation.RecommendationOutputData;
-
+/**
+ * Interface for the output data for the recommendation use case.
+ */
 public interface RecommendationOutputBoundary {
+
+    /**
+     * Prepares the success view for the recommendation use case.
+     * @param outputData the lists of movie info passed to presenter.
+     */
     void prepareSuccessView(RecommendationOutputData outputData);
 
     /**
@@ -11,5 +17,8 @@ public interface RecommendationOutputBoundary {
      */
     void prepareFailView(String errorMessage);
 
+    /**
+     * Switches to the select view.
+     */
     void toSelectView();
 }

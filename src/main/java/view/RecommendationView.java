@@ -1,16 +1,5 @@
 package view;
 
-
-import interface_adapter.movie_justif.MovieJustifController;
-
-import interface_adapter.movie_info.MovieInfoController;
-import interface_adapter.movie_info.MovieInfoState;
-import interface_adapter.movie_info.MovieInfoViewModel;
-import interface_adapter.recommendation.RecommendationController;
-import interface_adapter.recommendation.RecommendationState;
-import interface_adapter.recommendation.RecommendationViewModel;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,8 +7,17 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
+import javax.swing.*;
+
+import interface_adapter.movie_justif.MovieJustifController;
+import interface_adapter.recommendation.RecommendationController;
+import interface_adapter.recommendation.RecommendationState;
+import interface_adapter.recommendation.RecommendationViewModel;
+
+/**
+ * The view for the recomendation returned by the recommendation use case.
+ */
 public class RecommendationView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "Recommendation";
 
@@ -32,7 +30,7 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
     private JLabel plotLabel;
     private JPanel moviePoster;
     private int recNumber;
-    JLabel posterLabel;
+    private JLabel posterLabel;
 
     private JTextArea textArea;
 
@@ -41,7 +39,8 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
 
     public RecommendationView(RecommendationViewModel recommendationViewModel) {
 
-        this.setPreferredSize(new Dimension(800, 800));
+        this.setPreferredSize(new Dimension(recommendationViewModel.PANE_SIZE,
+                recommendationViewModel.PANE_SIZE));
         this.recommendationViewModel = recommendationViewModel;
         this.recommendationViewModel.addPropertyChangeListener(this);
 
@@ -59,9 +58,10 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
         this.plotLabel = new JLabel();
         // Create the JTextArea
         this.textArea = new JTextArea();
-        textArea.setPreferredSize(new Dimension(400, 200));
-        textArea.setLineWrap(true);  // Wrap lines to fit the width
-        textArea.setWrapStyleWord(true); // Wrap lines at word boundaries
+        textArea.setPreferredSize(new Dimension(recommendationViewModel.TAREA_WIDTH,
+                recommendationViewModel.TAREA_HEIGHT));
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
         textArea.setEditable(false);
 
         // Add content to the JTextArea (Optional)
@@ -69,10 +69,10 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
 
         // Create the JScrollPane and add the JTextArea to it
         JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(400, 200));
+        scrollPane.setPreferredSize(new Dimension(recommendationViewModel.TAREA_WIDTH,
+                recommendationViewModel.TAREA_HEIGHT));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
 
         this.moviePoster = new JPanel();
         this.posterLabel = new JLabel();
@@ -109,7 +109,8 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(justificationButton)) {
                             System.out.println(recommendationViewModel.getState().getInputMovieIDs());
-                            movieJustifController.execute(recommendationViewModel.getState().getInputMovieIDs(), recommendationViewModel.getState().getRecIDslist().get(recNumber));
+                            movieJustifController.execute(recommendationViewModel.getState().getInputMovieIDs(),
+                                    recommendationViewModel.getState().getRecIDslist().get(recNumber));
                         }
                     }
                 }
@@ -122,7 +123,8 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
             recNumber++;
             System.out.println(recNumber);
             recommendationViewModel.firePropertyChanged();
-        } else {
+        }
+        else {
             recNumber = 0;
             System.out.println(recNumber);
             recommendationViewModel.firePropertyChanged();
@@ -134,21 +136,27 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
         this.recommendationController = recommendationController;
 
     }
+
     public String getViewName() {
         return viewName;
     }
 
+    /**
+     * Property change method for retrieving the movie info for the recommendation.
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
     public void propertyChange(PropertyChangeEvent evt) {
         final RecommendationState state = (RecommendationState) evt.getNewValue();
 
-        String movie_title = state.getMovieTitles().get(recNumber);
-        System.out.println("Movietitle: " + movie_title);
-        String plot_info = state.getPlots().get(recNumber);
+        String movieTitle = state.getMovieTitles().get(recNumber);
+        System.out.println("Movietitle: " + movieTitle);
+        String plotInfo = state.getPlots().get(recNumber);
         String posterPath = state.getPosterPaths().get(recNumber);
         System.out.println(posterPath);
 
-        titleLabel.setText(RecommendationViewModel.MOVIE_TITLE_INFO + movie_title);
-        textArea.setText(plot_info);
+        titleLabel.setText(RecommendationViewModel.MOVIE_TITLE_INFO + movieTitle);
+        textArea.setText(plotInfo);
 
         try {
             URL posterURL = new URL(posterPath);
@@ -159,13 +167,13 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
             int originalHeight = posterIcon.getIconHeight();
 
             // Set max width and height
-            int maxWidth = 150;
-            int maxHeight = 250;
+            int maxWidth = recommendationViewModel.MAX_WIDTH;
+            int maxHeight = recommendationViewModel.MAX_HEIGHT;
 
             // Calculate the scaling factor while maintaining the aspect ratio
             double widthRatio = (double) maxWidth / originalWidth;
             double heightRatio = (double) maxHeight / originalHeight;
-            double scaleRatio = Math.min(widthRatio, heightRatio); // Use the smaller ratio to preserve aspect ratio
+            double scaleRatio = Math.min(widthRatio, heightRatio);
 
             // Calculate the new width and height based on the scaling factor
             int newWidth = (int) (originalWidth * scaleRatio);
@@ -183,15 +191,16 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
             moviePoster.add(posterLabel);
             if (posterIcon.getIconWidth() == -1 || posterIcon.getIconHeight() == -1) {
                 System.out.println("Failed to load image");
-            } else {
-                System.out.println("Image loaded successfully");}
-        } catch (MalformedURLException e) {
-            // Handle invalid URL format
-            e.printStackTrace();
-            System.out.println("Invalid URL format: " + e.getMessage());
+            }
+            else {
+                System.out.println("Image loaded successfully");
+            }
         }
-
-
+        catch (MalformedURLException exception) {
+            // Handle invalid URL format
+            exception.printStackTrace();
+            System.out.println("Invalid URL format: " + exception.getMessage());
+        }
     }
 
     public void setMovieJustifController(MovieJustifController movieJustifController) {

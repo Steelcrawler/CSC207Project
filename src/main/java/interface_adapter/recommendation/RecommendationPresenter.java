@@ -1,17 +1,21 @@
 package interface_adapter.recommendation;
 
-import interface_adapter.select.SelectViewModel;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.select.SelectViewModel;
 import use_case.recommendation.RecommendationOutputBoundary;
 import use_case.recommendation.RecommendationOutputData;
 
+/**
+ * Presenter for the recommendation use case.
+ */
 public class RecommendationPresenter implements RecommendationOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
     private final RecommendationViewModel recommendationViewModel;
     private final SelectViewModel selectViewModel;
 
-    public RecommendationPresenter(ViewManagerModel viewManagerModel, RecommendationViewModel recommendationViewModel, SelectViewModel selectViewModel ) {
+    public RecommendationPresenter(ViewManagerModel viewManagerModel, RecommendationViewModel recommendationViewModel,
+                                   SelectViewModel selectViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.recommendationViewModel = recommendationViewModel;
         this.selectViewModel = selectViewModel;
