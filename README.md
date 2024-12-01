@@ -43,8 +43,10 @@ The Movie Search Application is a Java-based application that allows users to se
 1. **Sign Up**: Create a new account by providing a username and password.
 ![Signing up for an account](https://github.com/user-attachments/assets/e63cace3-5bb4-4b03-bd72-655caaf98c95)
 *The sign-up screen showing fields for creating a new account with username and password*
+
 ![Logging in with the new account](https://github.com/user-attachments/assets/010cf848-8cee-4faf-b588-cd2eb931c2a4)
 *The login screen where users can enter their credentials to access their account*
+
 ![The screen once you log in](https://github.com/user-attachments/assets/f0312ace-adac-4d9d-8d40-23d46a211514)
 *The movie search screen once you log in*
 
@@ -56,10 +58,12 @@ The Movie Search Application is a Java-based application that allows users to se
 6. **Manage Watchlist**: Add movies to your watchlist and remove them as needed.
 ![Adding a movie to the watchlist](https://github.com/user-attachments/assets/07a8f1fc-7a0e-493b-916e-dd2774defa37)
 *The popup shown after adding a selected movie to your personal watchlist*
+
 ![Viewing the watchlist](https://github.com/user-attachments/assets/88e3cfb7-38a4-4d09-a9ba-f79c12a4886e)
 *The watchlist view displaying all saved movies in a scrollable list*
+
 ![Pressing select in the watchlist](https://github.com/user-attachments/assets/2e4d755e-f0b3-4f8a-a7f6-6a25f2e5c244)
-*The selection interface within the watchlist for choosing specific movies*
+*The selection interface within the watchlist for choosing specific movies. Pressing the delete button will delete the movie*
 
 8. **Movie Info**: See details about a movie such as rating information, trailer link, and plot summary.
 ![Seeing the movie info from my watchlist](https://github.com/user-attachments/assets/bb583a63-6f8a-4250-8f71-3a5ac552da52)
@@ -68,8 +72,10 @@ The Movie Search Application is a Java-based application that allows users to se
 10. **Movie Recommendation**: Receive a relevant movie based on selected movies from a user's personal watchlist and get an AI-generated justification for the recommendation.
 ![Choosing a specific movie in the watchlist](https://github.com/user-attachments/assets/723c567e-4c8a-49ee-8866-7e806f71255e)
 *Selecting movies from your watchlist for recommendations*
+
 ![Getting a recommendation from said selection](https://github.com/user-attachments/assets/e94e616a-c992-4e34-af69-29ee91666a83)
 *The recommendation screen showing a suggested movie based on your selection*
+
 ![Understanding why you were recommended said movie](https://github.com/user-attachments/assets/e4a6cc1f-bc14-4008-983f-5b52677b6e88)
 *The AI-generated explanation for why this specific movie was recommended*
 ## Usage Guide
