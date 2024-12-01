@@ -53,8 +53,8 @@ public class WatchlistState {
         this.posterPaths = posterPaths;
     }
 
-    public void setNoSelectedMoviesToDelete(String errorMessage) {
-        this.noSelectedMoviesToDelete = errorMessage;
+    public void setNoSelectedMoviesToDelete(String noSelectedMoviesToDeleteMessage) {
+        this.noSelectedMoviesToDelete = noSelectedMoviesToDeleteMessage;
     }
 
     public String getNoSelectedMoviesToDelete() {

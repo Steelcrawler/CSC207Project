@@ -14,10 +14,18 @@ public class ChangePasswordOutputData {
         this.useCaseFailed = useCaseFailed;
     }
 
+    /**
+     * Returns the username.
+     * @return the username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Returns whether the use case failed.
+     * @return whether the use case failed
+     */
     public boolean isUseCaseFailed() {
         return useCaseFailed;
     }

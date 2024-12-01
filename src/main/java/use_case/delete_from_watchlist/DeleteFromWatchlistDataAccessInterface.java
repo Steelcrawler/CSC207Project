@@ -14,7 +14,7 @@ public interface DeleteFromWatchlistDataAccessInterface {
     String getCurrentUsername();
 
     /**
-     * Returns the watchlist of the current username
+     * Returns the watchlist of the current username.
      * @param username The current username
      * @return the watchlist (a list of movieIDs) of the current user.
      */
@@ -22,6 +22,8 @@ public interface DeleteFromWatchlistDataAccessInterface {
 
     /**
      * Removes the movie with that ID from currentUsername's watchlist.
+     * @param currentUsername the current user's username.
+     * @param movieID the ID of the movie to remove from the watchlist.
      */
     void removeFromWatchlist(String currentUsername, Integer movieID);
 }

@@ -1,8 +1,8 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 
 /**
  * A simple implementation of the Movie interface.
@@ -19,7 +19,8 @@ public class NormalMovie implements Movie {
     private final List<String> userReviews;
     private final String trailerLink;
 
-    public NormalMovie(String title, int movieID, List<String> genres, Date releaseDate, double rating, String plot, String posterPath, List<String> userReviews, String trailerLink) {
+    public NormalMovie(String title, int movieID, List<String> genres, Date releaseDate,
+                       double rating, String plot, String posterPath, List<String> userReviews, String trailerLink) {
         this.title = title;
         this.movieID = movieID;
         this.genres = genres;

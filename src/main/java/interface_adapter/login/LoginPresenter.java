@@ -1,10 +1,8 @@
 package interface_adapter.login;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
-import interface_adapter.moviesearch.MovieSearchState;
-import interface_adapter.moviesearch.MovieSearchViewModel;
+import interface_adapter.movie_search.MovieSearchState;
+import interface_adapter.movie_search.MovieSearchViewModel;
 import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
 
@@ -29,7 +27,7 @@ public class LoginPresenter implements LoginOutputBoundary {
     public void prepareSuccessView(LoginOutputData response) {
         // On success, switch to the movie search view.
 
-        final MovieSearchState movieSearchState =  movieSearchViewModel.getState();
+        final MovieSearchState movieSearchState = movieSearchViewModel.getState();
         this.movieSearchViewModel.setState(movieSearchState);
         this.movieSearchViewModel.firePropertyChanged();
 
