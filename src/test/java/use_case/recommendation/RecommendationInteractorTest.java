@@ -56,19 +56,6 @@ public class RecommendationInteractorTest {
 
     @BeforeEach
     void setUp() {
-//        final ViewManagerModel viewManagerModel = new ViewManagerModel();
-//        SelectViewModel selectViewModel = new SelectViewModel();
-//        RecommendationViewModel recommendationViewModel = new RecommendationViewModel();
-//        RecommendationView recommendationView = new RecommendationView(recommendationViewModel);
-//        final RecommendationOutputBoundary recommendationOutputBoundary = new RecommendationPresenter(viewManagerModel, recommendationViewModel, selectViewModel);
-//        final RecommendationDataAccessInterface tmdbDataAccessObject = new TMDBDataAccessObject();
-//        final RecommendationInputBoundary recommendationInputBoundary = new RecommendationInteractor(tmdbDataAccessObject, recommendationOutputBoundary);
-//        final RecommendationController recommendationController = new RecommendationController(recommendationInputBoundary);
-//        SelectView selectView = new SelectView(selectViewModel, viewManagerModel);
-//        selectView.setRecommendationController(recommendationController);
-//        recommendationView.setRecommendationController(recommendationController);
-//        interactor = new RecommendationInteractor()
-//        RecommendationInputData inputData = new RecommendationInputData(671);
         RecommendationDataAccessInterface tmdbDataAccessObject = new TMDBDataAccessObject();
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         RecommendationViewModel recommendationViewModel = new RecommendationViewModel();
@@ -130,19 +117,11 @@ public class RecommendationInteractorTest {
         RecommendationDataAccessInterface tmdbDataAccessObject = new TMDBDataAccessObject();
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         RecommendationViewModel recommendationViewModel = new RecommendationViewModel();
-//        List<Integer> ints = new ArrayList<>();
-//        ints.add(278);
-//        ints.add(238);
-//        RecommendationInputData inputData = new RecommendationInputData(ints);
-//        interactor.execute(inputData);
-//        assertEquals(2,2);
 
         RecommendationOutputBoundary successPresenter = new RecommendationPresenter(viewManagerModel, recommendationViewModel, new SelectViewModel()) {
             @Override
             public void prepareSuccessView(RecommendationOutputData recommendationOutputData) {
                 Assertions.assertEquals(402431, recommendationOutputData.getMovieIDsList().get(0));
-//                Assertions.assertEquals("Harry Potter and the Philosopher's Stone", recommendationOutputData.getMovieIDsList().get(0));
-//                Assertions.assertEquals("", recommendationOutputData.getMovieIDsList().get(1));
             }
 
             @Override
