@@ -98,7 +98,7 @@ The Movie Search Application is a Java-based application that allows users to se
          ```sh
          export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home
          ```
-## Usage
+## Usage Guide
 
 1. **Sign Up**: Create a new account by providing a username and password.
 
@@ -144,7 +144,6 @@ The Movie Search Application is a Java-based application that allows users to se
 
   ![Understanding why you were recommended said movie](https://github.com/user-attachments/assets/e4a6cc1f-bc14-4008-983f-5b52677b6e88)
   *The AI-generated explanation for why this specific movie was recommended*
-## Usage Guide
 
 ## License
 MIT License
