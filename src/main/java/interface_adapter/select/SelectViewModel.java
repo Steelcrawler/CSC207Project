@@ -1,14 +1,15 @@
-package interface_adapter.watchlist;
+package interface_adapter.select;
 
 import interface_adapter.ViewModel;
 
 /**
- * The ViewModel for the Watchlist View.
+ * The view model for the SelectView.
  */
-public class WatchlistViewModel extends ViewModel<WatchlistState> {
-    public static final String TITLE_LABEL = "Your Watchlist";
+public class SelectViewModel extends ViewModel<SelectState> {
+    public static final String TITLE_LABEL = "Select";
     public static final String BACK_BUTTON_LABEL = "Back";
-    public static final String SELECT_BUTTON_LABEL = "Select";
+    public static final String DELETE_BUTTON_LABEL = "Delete";
+    public static final String REC_BUTTON_LABEL = "Get a Recommendation";
     public static final Integer FRAME_DIMENSION = 800;
     public static final Integer SPACER_DIMENSION = 20;
     public static final Integer MOVIE_PANEL_ROW = 10;
@@ -17,8 +18,8 @@ public class WatchlistViewModel extends ViewModel<WatchlistState> {
     public static final Integer MOVIE_BUTTON_WIDTH = 110;
     public static final Integer MOVIE_BUTTON_HEIGHT = 140;
 
-    public WatchlistViewModel() {
-        super("Watchlist");
-        setState(new WatchlistState());
+    public SelectViewModel() {
+        super("Select");
+        setState(new SelectState());
     }
 }

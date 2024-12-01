@@ -10,7 +10,14 @@ public interface OpenWatchlistInputBoundary {
      */
     void execute();
 
+    /**
+     * Switches from the WatchlistView to the MovieSearchView.
+     */
     void switchToMovieSearchView();
 
+    /**
+     * Switches from the WatchlistView to the MovieInfoView.
+     * @param movieID the ID of the movie to display in the MovieInfoView
+     */
     void switchToMovieInfoView(int movieID);
 }
