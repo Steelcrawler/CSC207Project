@@ -20,18 +20,34 @@ public class MovieSearchInputData {
 
     }
 
+    /**
+     * Returns the title of the movie being searched for.
+     * @return the title of the movie being searched for.
+     */
     String getMovieTitle() {
         return movieTitle;
     }
 
+    /**
+     * Returns the genre of the movie being searched for.
+     * @return the genre of the movie being searched for.
+     */
     String getGenre() {
         return genre;
     }
 
+    /**
+     * Returns the rating limit of the movie being searched for.
+     * @return the rating limit of the movie being searched for.
+     */
     String getRating() {
         return rating;
     }
 
+    /**
+     * Returns the list of keyword ids to search for.
+     * @return the list of keyword ids to search for.
+     */
     List<String> getKeywords() {
         return keywords;
     }

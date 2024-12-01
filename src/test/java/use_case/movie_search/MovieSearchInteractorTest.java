@@ -1,6 +1,12 @@
 package use_case.movie_search;
 
 import entity.Movie;
+import use_case.movie_search.MovieSearchDataAccessInterface;
+import use_case.movie_search.MovieSearchInputData;
+import use_case.movie_search.MovieSearchInteractor;
+import use_case.movie_search.MovieSearchOutputBoundary;
+import use_case.movie_search.MovieSearchOutputData;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.BufferedReader;
@@ -61,7 +67,7 @@ class MovieSearchInteractorTest {
 
         interactor.execute(inputData);
 
-        verify(mockPresenter).prepareFailView("No movies with that title.");
+        verify(mockPresenter).prepareFailView("No movies found with the given criteria.");
     }
 
     @Test

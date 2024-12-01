@@ -1,18 +1,19 @@
 package data_access;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import entity.User;
 import use_case.add_to_watchlist.AddToWatchlistDataAccessInterface;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
+import use_case.delete_from_watchlist.DeleteFromWatchlistDataAccessInterface;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.logout.LogoutUserDataAccessInterface;
 import use_case.open_watchlist.OpenWatchlistDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 import use_case.watchliststorage.UserWatchlistDataAccessInterface;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * In-memory implementation of the DAO for storing user data. This implementation does
@@ -22,7 +23,8 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         LoginUserDataAccessInterface,
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface,
-        UserWatchlistDataAccessInterface, AddToWatchlistDataAccessInterface, OpenWatchlistDataAccessInterface {
+        UserWatchlistDataAccessInterface, AddToWatchlistDataAccessInterface, OpenWatchlistDataAccessInterface,
+        DeleteFromWatchlistDataAccessInterface {
 
     private final Map<String, User> users = new HashMap<>();
     private final Map<String, List<Integer>> watchlists = new HashMap<>();

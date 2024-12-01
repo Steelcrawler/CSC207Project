@@ -1,9 +1,9 @@
 package interface_adapter.delete_from_watchlist;
 
+import java.util.List;
+
 import use_case.delete_from_watchlist.DeleteFromWatchlistInputBoundary;
 import use_case.delete_from_watchlist.DeleteFromWatchlistInputData;
-
-import java.util.List;
 
 /**
  * Controller for the Delete From Watchlist Use Case.
@@ -17,9 +17,11 @@ public class DeleteFromWatchlistController {
 
     /**
      * Executes the Delete From Watchlist Use Case.
+     * @param selectedMovies the list of MovieIDs to delete from the watchlist.
      */
     public void execute(List<Integer> selectedMovies) {
-        final DeleteFromWatchlistInputData deleteFromWatchlistInputData = new DeleteFromWatchlistInputData(selectedMovies);
+        final DeleteFromWatchlistInputData deleteFromWatchlistInputData = new DeleteFromWatchlistInputData(
+                selectedMovies);
 
         deleteFromWatchlistUseCaseInteractor.execute(deleteFromWatchlistInputData);
     }

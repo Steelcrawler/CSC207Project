@@ -2,6 +2,9 @@ package interface_adapter.recommendation;
 
 import java.util.List;
 
+/**
+ * State class for the recommendation.
+ */
 public class RecommendationState {
     private List<Integer> recIDslist;
     private List<String> movieTitles;
@@ -27,9 +30,13 @@ public class RecommendationState {
         this.movieTitles = movieTitles;
     }
 
-    public List<String> getPlots() {return plots;}
+    public List<String> getPlots() {
+        return plots;
+    }
 
-    public void setPlots(List<String> plots) {this.plots = plots;}
+    public void setPlots(List<String> plots) {
+        this.plots = plots;
+    }
 
     public boolean isEmptyWatchlist() {
         return emptyWatchlist;

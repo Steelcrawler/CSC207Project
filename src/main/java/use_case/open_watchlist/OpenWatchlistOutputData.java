@@ -7,12 +7,13 @@ import java.util.List;
  */
 public class OpenWatchlistOutputData {
 
-    private List<Integer> movieIDsList;
-    private List<String> movieTitlesList;
-    private List<String> posterPathsList;
+    private final List<Integer> movieIDsList;
+    private final List<String> movieTitlesList;
+    private final List<String> posterPathsList;
     private final boolean useCaseFailed;
 
-    public OpenWatchlistOutputData(List<Integer> movieIDsList, List<String> movieTitlesList, List<String> posterPathsList, boolean useCaseFailed) {
+    public OpenWatchlistOutputData(List<Integer> movieIDsList, List<String> movieTitlesList,
+                                   List<String> posterPathsList, boolean useCaseFailed) {
         this.movieIDsList = movieIDsList;
         this.movieTitlesList = movieTitlesList;
         this.posterPathsList = posterPathsList;

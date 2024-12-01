@@ -1,9 +1,5 @@
 package view;
 
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,23 +15,38 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+
 import interface_adapter.add_to_watchlist.AddToWatchlistController;
+import interface_adapter.logout.LogoutController;
 import interface_adapter.movie_search.MovieSearchController;
 import interface_adapter.movie_search.MovieSearchState;
 import interface_adapter.movie_search.MovieSearchViewModel;
 import interface_adapter.open_watchlist.OpenWatchlistController;
-import interface_adapter.logout.LogoutController;
 
-import static javax.swing.BoxLayout.Y_AXIS;
-
+/**
+ * The Movie Search View.
+ */
 public class MovieSearchView extends JPanel implements ActionListener, ItemListener, PropertyChangeListener {
     private final String viewName = "movie search";
+    private final int width = 800;
+    private final int height = 800;
+    private final int smallerWidth = 700;
+    private final int smallerHeight = 400;
+    private final int emptyBorderWidth = 5;
+    private final int suggestionsMultiplier = 20;
+    private final String addToWatchlist = "Add to Watchlist";
 
     private final MovieSearchViewModel movieSearchViewModel;
     private final JTextField titleTextField = new JTextField(30);
-    String[] genres = {"None", "War", "Music", "Comedy", "Documentary", "History", "Western", "Adventure", "Fantasy", "Science Fiction", "Animation", "Crime", "Mystery", "Drama", "TV Movie", "Thriller", "Horror", "Action", "Romance", "Family"};
+    private String[] genres = {"None", "War", "Music", "Comedy", "Documentary", "History", "Western", "Adventure", 
+        "Fantasy", "Science Fiction", "Animation", "Crime", "Mystery", "Drama", "TV Movie", "Thriller", "Horror", 
+        "Action", "Romance", "Family"};
     private final JComboBox<String> genreComboBox = new JComboBox<>(genres);
-    String[] ratings = {"None", "> 2", "> 4", "> 6", "> 8"};
+    private String[] ratings = {"None", "> 2", "> 4", "> 6", "> 8"};
     private final JComboBox<String> ratingComboBox = new JComboBox<>(ratings);
 
     private final JTextField keywordTextField = new JTextField(30);
@@ -49,7 +60,7 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
     private final JButton watchlistButton;
     private final JButton logoutButton;
     private final JLabel errorMessageField = new JLabel();
-    private JTable resultsTable;  // Table to display results
+    private JTable resultsTable;  
     private JPanel resultsPanel = new JPanel();
 
     private MovieSearchController movieSearchController;
@@ -57,12 +68,16 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
     private OpenWatchlistController openWatchlistController;
     private LogoutController logoutController;
 
+    /**
+     * Constructor for the Movie Search View.
+     * @param movieSearchViewModel the view model for the movie search view
+     */
     public MovieSearchView(MovieSearchViewModel movieSearchViewModel) {
         this.movieSearchViewModel = movieSearchViewModel;
         this.movieSearchViewModel.addPropertyChangeListener(this);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setPreferredSize(new Dimension(800, 800));
+        this.setPreferredSize(new Dimension(width, height));
 
         final JLabel title = new JLabel(movieSearchViewModel.TITLE_LABEL);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -100,8 +115,8 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
         keywordSuggestionsList.setModel(keywordSuggestionsModel);
         keywordSuggestionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        keywordSuggestionsList.addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
+        keywordSuggestionsList.addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {
                 String selectedKeyword = keywordSuggestionsList.getSelectedValue();
                 if (selectedKeyword != null) {
                     addTag(selectedKeyword);
@@ -143,9 +158,9 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
                     String title = currentState.getTitle();
                     String genre = currentState.getGenre();
                     String rating = currentState.getRating();
-                    List<String> keywords = currentState.getKeywords();
+                    List<String> keywords2 = currentState.getKeywords();
 
-                    movieSearchController.execute(title, genre, rating, keywords);
+                    movieSearchController.execute(title, genre, rating, keywords2);
                 }
             }
         });
@@ -176,8 +191,8 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
 
         this.add(buttons);
 
-        resultsPanel.setLayout(new BoxLayout(resultsPanel, Y_AXIS));
-        resultsPanel.setPreferredSize(new Dimension(700, 400));
+        resultsPanel.setLayout(new BoxLayout(resultsPanel, BoxLayout.Y_AXIS));
+        resultsPanel.setPreferredSize(new Dimension(smallerWidth, smallerHeight));
 
         resultsPanel.add(errorMessageField);
         this.add(resultsPanel);
@@ -195,6 +210,9 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         addKeywordListener();
     }
 
+    /**
+     * Load the keywords from the persistent data file.
+     */
     private void loadKeywords() {
         // Get the base directory (current working directory)
         File baseDir = new File(System.getProperty("user.dir"));
@@ -208,55 +226,74 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
                 while ((line = reader.readLine()) != null) {
                     keywords.add(line);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } 
+            catch (IOException exception) {
+                exception.printStackTrace();
             }
-        } else {
+        } 
+        else {
             System.out.println("File not found.");
         }
     }
 
+    /**
+     * Update the keyword suggestions based on the current input.
+     */
     private void updateKeywordSuggestions() {
         String input = keywordTextField.getText();
-        if (input.isEmpty()) {
+        boolean shouldUpdateSuggestions = !input.isEmpty();
+    
+        if (shouldUpdateSuggestions) {
+            List<String> suggestions = keywords.stream()
+                    .filter(keyword -> keyword.toLowerCase().startsWith(input.toLowerCase()))
+                    .collect(Collectors.toList());
+    
             keywordSuggestionsModel.clear();
-            updateKeywordSuggestionsVisibility();
-            return;
+            for (String suggestion : suggestions) {
+                keywordSuggestionsModel.addElement(suggestion);
+            }
+        } 
+        else {
+            keywordSuggestionsModel.clear();
         }
-
-        List<String> suggestions = keywords.stream()
-                .filter(keyword -> keyword.toLowerCase().startsWith(input.toLowerCase()))
-                .collect(Collectors.toList());
-
-        keywordSuggestionsModel.clear();
-        for (String suggestion : suggestions) {
-            keywordSuggestionsModel.addElement(suggestion);
-        }
-
+    
         updateKeywordSuggestionsVisibility();
     }
 
+    /**
+     * Update the visibility of the keyword suggestions list.
+     */
     private void updateKeywordSuggestionsVisibility() {
         if (keywordSuggestionsModel.isEmpty()) {
             keywordSuggestionsList.setVisible(false);
-        } else {
+        } 
+        else {
             keywordSuggestionsList.setVisible(true);
-            keywordSuggestionsList.setPreferredSize(new Dimension(keywordTextField.getWidth(), keywordSuggestionsModel.size() * 20));
+            keywordSuggestionsList.setPreferredSize(new Dimension(keywordTextField.getWidth(), 
+                    keywordSuggestionsModel.size() * suggestionsMultiplier));
         }
         keywordSuggestionsList.revalidate();
         keywordSuggestionsList.repaint();
     }
 
+    /**
+     * Add a tag to the selected keywords.
+     * @param keyword the keyword to add
+     */
     private void addTag(String keyword) {
         JLabel tagLabel = new JLabel(keyword);
         tagLabel.setOpaque(true);
         tagLabel.setBackground(Color.LIGHT_GRAY);
-        tagLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        tagLabel.setBorder(BorderFactory.createEmptyBorder(emptyBorderWidth, emptyBorderWidth, emptyBorderWidth, 
+            emptyBorderWidth));
         tagsPanel.add(tagLabel);
         tagsPanel.revalidate();
         tagsPanel.repaint();
     }
 
+    /**
+     * Add a listener to the title text field.
+     */
     private void addTitleListener() {
         titleTextField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -283,6 +320,9 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         });
     }
 
+    /**
+     * Add a listener to the genre combo box.
+     */
     private void addGenreListener() {
         genreComboBox.addItemListener(new ItemListener() {
 
@@ -301,6 +341,9 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         });
     }
 
+    /**
+     * Add a listener to the rating combo box.
+     */
     private void addRatingListener() {
         ratingComboBox.addItemListener(new ItemListener() {
 
@@ -319,6 +362,9 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         });
     }
 
+    /**
+     * Add a listener to the keyword text field.
+     */
     private void addKeywordListener() {
         keywordTextField.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -349,12 +395,19 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         });
     }
 
+    /**
+     * Update the keyword state.
+     */
     private void updateKeywordState() {
         final MovieSearchState currentState = movieSearchViewModel.getState();
         currentState.getKeywords().clear();
         movieSearchViewModel.setState(currentState);
     }
 
+    /**
+     * Update the view based on the new state.
+     * @param evt the property change event
+     */
     public void propertyChange(PropertyChangeEvent evt) {
         final MovieSearchState state = (MovieSearchState) evt.getNewValue();
         if (resultsTable != null) {
@@ -368,26 +421,25 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
             this.repaint();
         }
 
-        // if movie get search found
-         if (state.getSearchFound()) {
-             errorMessageField.setText("");
-             final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis", "Add to Watchlist"};
+        if (state.getSearchFound()) {
+            errorMessageField.setText("");
+            final String[] columnNames = {"Title", "Genre", "Rating", "Plot Synopsis", addToWatchlist};
 
-             // create a DefaultTableModel to store our data
-             DefaultTableModel resultsModel = new DefaultTableModel(state.getMoviesInfo(), columnNames);
-             // create a JTable with the model
-             resultsTable = new JTable(resultsModel);
+            // create a DefaultTableModel to store our data
+            DefaultTableModel resultsModel = new DefaultTableModel(state.getMoviesInfo(), columnNames);
+            // create a JTable with the model
+            resultsTable = new JTable(resultsModel);
 
-             // create and display an "add to watchlist" button in each cell in the "Add to Watchlist" column
-             resultsTable.getColumn("Add to Watchlist").setCellRenderer(new ButtonRenderer());
-             // create button editor for each cell in the "Add to Watchlist" column
-             resultsTable.getColumn("Add to Watchlist").setCellEditor(new ButtonEditor(new JCheckBox(), state, movieSearchViewModel));
-             resultsPanel.add(resultsTable);
-             resultsPanel.revalidate();
-             resultsPanel.repaint();
-             }
+            // create and display an "add to watchlist" button in each cell in the "Add to Watchlist" column
+            resultsTable.getColumn(addToWatchlist).setCellRenderer(new ButtonRenderer());
+            // create button editor for each cell in the "Add to Watchlist" column
+            resultsTable.getColumn(addToWatchlist).setCellEditor(new ButtonEditor(new JCheckBox(), state, 
+                movieSearchViewModel));
+            resultsPanel.add(resultsTable);
+            resultsPanel.revalidate();
+            resultsPanel.repaint();
+        }
 
-         // if an Add to Watchlist button has been clicked, call the controller on that button's movie
         if (state.getRowOfATWButtonClicked() != -1) {
             // need to know the row of the button that's been clicked to get the movieTitle and movieID
             int rowOfButtonClicked = state.getRowOfATWButtonClicked();
@@ -400,38 +452,66 @@ public class MovieSearchView extends JPanel implements ActionListener, ItemListe
         }
 
         // if a movie's been added to the watchlist or it's already been added, create a pop-up
-        if (state.getMovieAddedToWatchlist() != "") {
+        if (!"".equals(state.getMovieAddedToWatchlist())) {
             JOptionPane.showMessageDialog(this, state.getMovieAddedToWatchlist());
             state.setMovieAddedToWatchlist("");
             movieSearchViewModel.firePropertyChanged();
         }
     }
 
+    /**
+     * Get the name of the view.
+     * @return the name of the view
+     */
     public String getViewName() {
         return viewName;
     }
 
+    /**
+     * Set the movie search controller.
+     * @param movieSearchController the movie search controller
+     */
     public void setMovieSearchController(MovieSearchController movieSearchController) {
         this.movieSearchController = movieSearchController;
     }
 
+    /**
+     * Set the open watchlist controller.
+     * @param openWatchlistController the open watchlist controller
+     */
     public void setOpenWatchlistController(OpenWatchlistController openWatchlistController) {
         this.openWatchlistController = openWatchlistController;
     }
 
+    /**
+     * Set the add to watchlist controller.
+     * @param addToWatchlistController the add to watchlist controller
+     */
     public void setAddToWatchlistController(AddToWatchlistController addToWatchlistController) {
         this.addToWatchlistController = addToWatchlistController;
     }
 
+    /**
+     * Set the logout controller.
+     * @param logoutController the logout controller
+     */
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
     }
 
+    /**
+     * The ActionListener for the Movie Search View.
+     * @param evt the action event
+     */
     @Override
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
     }
 
+    /**
+     * The ItemListener for the Movie Search View.
+     * @param evt the item event
+     */
     @Override
     public void itemStateChanged(ItemEvent evt) {
         System.out.println("Click " + evt.getStateChange());

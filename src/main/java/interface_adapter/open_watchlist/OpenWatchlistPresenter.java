@@ -20,7 +20,8 @@ public class OpenWatchlistPresenter implements OpenWatchlistOutputBoundary {
     private final MovieInfoViewModel movieInfoViewModel;
 
     public OpenWatchlistPresenter(ViewManagerModel viewManagerModel,
-                                  WatchlistViewModel openWatchlistViewModel, MovieSearchViewModel movieSearchViewModel, MovieInfoViewModel movieInfoViewModel) {
+                                  WatchlistViewModel openWatchlistViewModel, MovieSearchViewModel movieSearchViewModel,
+                                  MovieInfoViewModel movieInfoViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.watchlistViewModel = openWatchlistViewModel;
         this.movieSearchViewModel = movieSearchViewModel;
@@ -43,7 +44,6 @@ public class OpenWatchlistPresenter implements OpenWatchlistOutputBoundary {
     public void prepareFailView(String errorMessage) {
         final WatchlistState watchlistState = watchlistViewModel.getState();
         watchlistState.setEmptyWatchlist(true);
-        watchlistState.setErrorMessage(errorMessage);
         watchlistViewModel.firePropertyChanged();
     }
 
@@ -52,6 +52,7 @@ public class OpenWatchlistPresenter implements OpenWatchlistOutputBoundary {
         viewManagerModel.setState(movieSearchViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
+
     @Override
     public void switchToMovieInfoView(int movieID) {
         MovieInfoState movieInfoState = movieInfoViewModel.getState();

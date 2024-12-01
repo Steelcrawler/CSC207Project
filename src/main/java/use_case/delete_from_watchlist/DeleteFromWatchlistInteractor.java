@@ -1,22 +1,23 @@
 package use_case.delete_from_watchlist;
 
-import data_access.TMDBDataAccessObject;
-import entity.Movie;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import data_access.TMDBDataAccessObject;
+import entity.Movie;
 
 /**
  * The Delete From Watchlist Interactor.
  */
 public class DeleteFromWatchlistInteractor implements DeleteFromWatchlistInputBoundary {
-    private final DeleteFromWatchlistDataAccessInterface MongoDBDataAccessObject;
+    private final DeleteFromWatchlistDataAccessInterface mongoDBDataAccessObject;
     private final TMDBDataAccessObject tmdbDataAccessObject;
     private final DeleteFromWatchlistOutputBoundary deleteFromWatchlistPresenter;
 
-    public DeleteFromWatchlistInteractor(DeleteFromWatchlistDataAccessInterface MongoDBDataAccessObject, TMDBDataAccessObject tmdbDataAccessObject,
+    public DeleteFromWatchlistInteractor(DeleteFromWatchlistDataAccessInterface mongoDBDataAccessObject,
+                                         TMDBDataAccessObject tmdbDataAccessObject,
                                          DeleteFromWatchlistOutputBoundary deleteFromWatchlistOutputBoundary) {
-        this.MongoDBDataAccessObject = MongoDBDataAccessObject;
+        this.mongoDBDataAccessObject = mongoDBDataAccessObject;
         this.tmdbDataAccessObject = tmdbDataAccessObject;
         this.deleteFromWatchlistPresenter = deleteFromWatchlistOutputBoundary;
     }
@@ -25,14 +26,14 @@ public class DeleteFromWatchlistInteractor implements DeleteFromWatchlistInputBo
     public void execute(DeleteFromWatchlistInputData deleteFromWatchlistInputData) {
         List<Integer> selectedMoviesList = deleteFromWatchlistInputData.getSelectedMovies();
         if (!selectedMoviesList.isEmpty()) {
-            String currentUsername = MongoDBDataAccessObject.getCurrentUsername();
+            String currentUsername = mongoDBDataAccessObject.getCurrentUsername();
 
             // remove all movies that are selected from the watchlist
             for (Integer movieID : selectedMoviesList) {
-                MongoDBDataAccessObject.removeFromWatchlist(currentUsername, movieID);
+                mongoDBDataAccessObject.removeFromWatchlist(currentUsername, movieID);
             }
 
-            List<Integer> newWatchlist = MongoDBDataAccessObject.getWatchlist(currentUsername);
+            List<Integer> newWatchlist = mongoDBDataAccessObject.getWatchlist(currentUsername);
             List<String> titlesList = new ArrayList<>();
             List<String> posterPathsList = new ArrayList<>();
             for (Integer movieID : newWatchlist) {
@@ -41,11 +42,13 @@ public class DeleteFromWatchlistInteractor implements DeleteFromWatchlistInputBo
                 posterPathsList.add(movie.getPosterPath());
             }
 
-            final DeleteFromWatchlistOutputData deleteFromWatchlistOutputData = new DeleteFromWatchlistOutputData(newWatchlist, titlesList, posterPathsList, false);
+            final DeleteFromWatchlistOutputData deleteFromWatchlistOutputData = new DeleteFromWatchlistOutputData(
+                    newWatchlist, titlesList, posterPathsList, false);
             this.deleteFromWatchlistPresenter.prepareSuccessView(deleteFromWatchlistOutputData);
-        } else {
+        }
+        else {
             this.deleteFromWatchlistPresenter.prepareFailView("You did not select any movie to delete.");
-            }
         }
     }
+}
 

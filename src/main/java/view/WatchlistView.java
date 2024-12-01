@@ -1,6 +1,5 @@
 package view;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,13 +8,18 @@ import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import interface_adapter.movie_info.MovieInfoController;
-import interface_adapter.Select.SelectViewModel;
+import javax.swing.*;
+
 import interface_adapter.ViewManagerModel;
+import interface_adapter.movie_info.MovieInfoController;
 import interface_adapter.open_watchlist.OpenWatchlistController;
+import interface_adapter.select.SelectViewModel;
 import interface_adapter.watchlist.WatchlistState;
 import interface_adapter.watchlist.WatchlistViewModel;
 
+/**
+ * The class for a Watchlist View.
+ */
 public class WatchlistView extends JPanel implements ActionListener, ItemListener, PropertyChangeListener {
     private final String viewName = "Watchlist";
 
@@ -49,9 +53,11 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
         JLabel titleLabel = new JLabel(WatchlistViewModel.TITLE_LABEL, SwingConstants.CENTER);
         menuPanel.add(titleLabel, BorderLayout.CENTER);
 
-        moviePanel = new JPanel(new GridLayout(10, 5, 10, 10));
+        moviePanel = new JPanel(new GridLayout(WatchlistViewModel.MOVIE_PANEL_ROW,
+                WatchlistViewModel.MOVIE_PANEL_COLUMN, WatchlistViewModel.MOVIE_PANEL_ROW,
+                WatchlistViewModel.MOVIE_PANEL_ROW));
         watchlistScrollPane = new JScrollPane(moviePanel);
-        watchlistScrollPane.getVerticalScrollBar().setUnitIncrement(15);
+        watchlistScrollPane.getVerticalScrollBar().setUnitIncrement(WatchlistViewModel.UNIT_INCREMENT);
         this.add(watchlistScrollPane, BorderLayout.CENTER);
         this.add(menuPanel, BorderLayout.NORTH);
 
@@ -83,16 +89,23 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
         this.repaint();
     }
 
+    /**
+     * A property change method.
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
     public void propertyChange(PropertyChangeEvent evt) {
         final WatchlistState state = (WatchlistState) evt.getNewValue();
         if (state.isEmptyWatchlist()) {
-           JOptionPane.showMessageDialog(this, "Your watchlist is empty.");
-        } else if (state.getNoSelectedMoviesToDelete() != null) {
+            JOptionPane.showMessageDialog(this, "Your watchlist is empty.");
+        }
+        else if (state.getNoSelectedMoviesToDelete() != null) {
             // no movie was selected to delete
             JOptionPane.showMessageDialog(this, state.getNoSelectedMoviesToDelete());
             state.setNoSelectedMoviesToDelete(null);
             watchlistViewModel.firePropertyChanged();
-        } else {
+        }
+        else {
             moviePanel.removeAll();
             for (int i = 0; i < state.getWatchlist().size(); i++) {
                 JButton movieButton = new JButton(state.getMovieTitles().get(i));
@@ -101,7 +114,8 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
                 int movieID = state.getWatchlist().get(i);
                 movieButton.addActionListener(movie_evt -> movieInfoController.execute(movieID));
 
-                movieButton.setPreferredSize(new Dimension(110, 140));
+                movieButton.setPreferredSize(new Dimension(WatchlistViewModel.MOVIE_BUTTON_WIDTH,
+                        WatchlistViewModel.MOVIE_BUTTON_HEIGHT));
                 individualMoviePanel.add(movieButton);
                 moviePanel.add(individualMoviePanel);
             }
@@ -136,7 +150,4 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
         System.out.println("Click " + evt.getStateChange());
     }
 }
-
-
-
 

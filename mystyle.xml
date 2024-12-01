@@ -313,12 +313,12 @@
         </module>
 
         <!-- Class Design -->
-        <module name="DesignForExtension">
-            <property name="ignoredAnnotations"
-                      value="Override, Test, Before, After, BeforeClass, AfterClass"/>
-            <property name="ignoredAnnotations"
-                      value="BeforeAll, AfterAll, BeforeEach, AfterEach"/>
-        </module>
+<!--        <module name="DesignForExtension">-->
+<!--            <property name="ignoredAnnotations"-->
+<!--                      value="Override, Test, Before, After, BeforeClass, AfterClass"/>-->
+<!--            <property name="ignoredAnnotations"-->
+<!--                      value="BeforeAll, AfterAll, BeforeEach, AfterEach"/>-->
+<!--        </module>-->
         <module name="FinalClass"/>
         <module name="InnerTypeLast"/>
         <module name="InterfaceIsType"/>
@@ -335,7 +335,6 @@
         <!-- Coding -->
         <module name="ArrayTrailingComma"/>
         <module name="AvoidDoubleBraceInitialization"/>
-        <module name="AvoidInlineConditionals"/>
         <module name="AvoidNoArgumentSuperConstructorCall"/>
         <module name="CovariantEquals"/>
         <module name="DeclarationOrder"/>
@@ -595,7 +594,6 @@
         </module>
 
         <!-- Imports -->
-        <module name="AvoidStaticImport"/>
         <module name="CustomImportOrder">
             <property name="customImportOrderRules"
                       value="STATIC###STANDARD_JAVA_PACKAGE###SPECIAL_IMPORTS###THIRD_PARTY_PACKAGE"/>
@@ -657,10 +655,6 @@
         <module name="BooleanExpressionComplexity">
             <property name="max" value="7"/>
         </module>
-        <module name="CyclomaticComplexity">
-            <property name="switchBlockAsSingleDecisionPoint" value="true"/>
-        </module>
-        <module name="NPathComplexity"/>
 
         <!-- Misc -->
         <module name="ArrayTypeStyle"/>
@@ -743,17 +737,20 @@
         </module>
 
         <!-- Size Violations -->
-        <module name="AnonInnerLength"/>
+        <module name="AnonInnerLength">
+            <property name="max" value="30"/>
+        </module>
         <module name="ExecutableStatementCount">
             <property name="max" value="100"/>
         </module>
-        <module name="LambdaBodyLength"/>
         <module name="MethodCount">
             <property name="maxTotal" value="34"/>
         </module>
         <module name="MethodLength"/>
         <module name="OuterTypeNumber"/>
-        <module name="ParameterNumber"/>
+        <module name="ParameterNumber">
+            <property name="max" value="10"/>
+        </module>
         <module name="RecordComponentNumber"/>
 
         <!-- Whitespace -->

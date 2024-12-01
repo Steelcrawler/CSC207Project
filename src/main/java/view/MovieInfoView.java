@@ -89,7 +89,7 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         reviewText.setLineWrap(true);
         reviewText.setWrapStyleWord(true);
         reviewText.setColumns(columnNum);
-
+      
         JScrollPane reviewScrollPane = new JScrollPane(reviewText);
         reviewScrollPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         reviewScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
