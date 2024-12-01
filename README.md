@@ -63,7 +63,7 @@ The Movie Search Application is a Java-based application that allows users to se
 *The watchlist view displaying all saved movies in a scrollable list*
 
 ![Pressing select in the watchlist](https://github.com/user-attachments/assets/2e4d755e-f0b3-4f8a-a7f6-6a25f2e5c244)
-*The selection interface within the watchlist for choosing specific movies. Pressing the delete button will delete the movie*
+*The selection interface within the watchlist for choosing specific movies. Pressing the delete button will delete the selected movie*
 
 8. **Movie Info**: See details about a movie such as rating information, trailer link, and plot summary.
 ![Seeing the movie info from my watchlist](https://github.com/user-attachments/assets/bb583a63-6f8a-4250-8f71-3a5ac552da52)
