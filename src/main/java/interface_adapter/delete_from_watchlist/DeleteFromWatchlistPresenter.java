@@ -2,9 +2,9 @@ package interface_adapter.delete_from_watchlist;
 
 import java.util.ArrayList;
 
+import interface_adapter.ViewManagerModel;
 import interface_adapter.select.SelectState;
 import interface_adapter.select.SelectViewModel;
-import interface_adapter.ViewManagerModel;
 import interface_adapter.watchlist.WatchlistState;
 import interface_adapter.watchlist.WatchlistViewModel;
 import use_case.delete_from_watchlist.DeleteFromWatchlistOutputBoundary;
