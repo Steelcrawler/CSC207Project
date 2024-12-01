@@ -41,11 +41,11 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
     private JLabel posterLabel;
     private JTextArea textArea;
 
-    private final int COLUMN_NUM = 40;
-    private final int WIDTH = 400;
-    private final int HEIGHT = 200;
-    private final int POSTER_WIDTH = 150;
-    private final int POSTER_LENGTH = 250;
+    private final int columnNum = 40;
+    private final int width = 400;
+    private final int height = 200;
+    private final int posterWidth = 150;
+    private final int posterLength = 250;
 
     private MovieInfoController movieInfoController;
 
@@ -73,7 +73,7 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         textArea.setEditable(false);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setColumns(COLUMN_NUM);
+        textArea.setColumns(columnNum);
 
         textArea.setText("");
         JScrollPane scrollPane = new JScrollPane(textArea);
@@ -88,8 +88,8 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         reviewText.setEditable(false);
         reviewText.setLineWrap(true);
         reviewText.setWrapStyleWord(true);
-        reviewText.setColumns(COLUMN_NUM);
-
+        reviewText.setColumns(columnNum);
+      
         JScrollPane reviewScrollPane = new JScrollPane(reviewText);
         reviewScrollPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
         reviewScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -165,14 +165,14 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         reviewPanel.revalidate();
         reviewPanel.repaint();
         try {
-            URL posterURL = new URL(posterPath);
-            ImageIcon posterIcon = new ImageIcon(posterURL);
+            URL posterUrl = new URL(posterPath);
+            ImageIcon posterIcon = new ImageIcon(posterUrl);
 
             int originalWidth = posterIcon.getIconWidth();
             int originalHeight = posterIcon.getIconHeight();
 
-            int maxWidth = POSTER_WIDTH;
-            int maxHeight = POSTER_LENGTH;
+            int maxWidth = posterWidth;
+            int maxHeight = posterLength;
 
             double widthRatio = (double) maxWidth / originalWidth;
             double heightRatio = (double) maxHeight / originalHeight;
