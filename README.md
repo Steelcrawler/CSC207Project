@@ -41,6 +41,9 @@ The Movie Search Application is a Java-based application that allows users to se
 
 ## Usage
 1. **Sign Up**: Create a new account by providing a username and password.
+![Signing up for an account](https://github.com/user-attachments/assets/e63cace3-5bb4-4b03-bd72-655caaf98c95)
+
+   
 2. **Log In**: Log in to the application using your credentials. Log-ins are universal; that is, with this application, you can log in across devices and maintain the same watchlist.
 3. **Search Movies**: Use the search functionality to find movies by title and filter by genre, rating, and keywords.
 4. **Manage Watchlist**: Add movies to your watchlist and remove them as needed.
