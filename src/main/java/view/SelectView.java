@@ -89,7 +89,7 @@ public class SelectView extends JPanel implements ActionListener, ItemListener, 
         menuPanel.add(eastPanel, BorderLayout.EAST);
 
         moviePanel = new JPanel(new GridLayout(SelectViewModel.MOVIE_PANEL_ROW, SelectViewModel.MOVIE_PANEL_COLUMN,
-                SelectViewModel.MOVIE_PANEL_ROW, SelectViewModel.MOVIE_PANEL_ROW));
+                SelectViewModel.UNIT_INCREMENT, SelectViewModel.UNIT_INCREMENT));
         selectScrollPane = new JScrollPane(moviePanel);
         selectScrollPane.getVerticalScrollBar().setUnitIncrement(SelectViewModel.UNIT_INCREMENT);
         this.add(selectScrollPane, BorderLayout.CENTER);
