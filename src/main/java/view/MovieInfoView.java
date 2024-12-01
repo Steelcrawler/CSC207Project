@@ -77,7 +77,7 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
 
         textArea.setText("");
         JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        scrollPane.setPreferredSize(new Dimension(width, height));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -91,7 +91,7 @@ public class MovieInfoView extends JPanel implements ActionListener, PropertyCha
         reviewText.setColumns(columnNum);
       
         JScrollPane reviewScrollPane = new JScrollPane(reviewText);
-        reviewScrollPane.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        reviewScrollPane.setPreferredSize(new Dimension(width, height));
         reviewScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         reviewScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
