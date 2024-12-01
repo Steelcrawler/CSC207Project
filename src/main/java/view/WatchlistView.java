@@ -54,8 +54,8 @@ public class WatchlistView extends JPanel implements ActionListener, ItemListene
         menuPanel.add(titleLabel, BorderLayout.CENTER);
 
         moviePanel = new JPanel(new GridLayout(WatchlistViewModel.MOVIE_PANEL_ROW,
-                WatchlistViewModel.MOVIE_PANEL_COLUMN, WatchlistViewModel.MOVIE_PANEL_ROW,
-                WatchlistViewModel.MOVIE_PANEL_ROW));
+                WatchlistViewModel.MOVIE_PANEL_COLUMN, WatchlistViewModel.UNIT_INCREMENT,
+                WatchlistViewModel.UNIT_INCREMENT));
         watchlistScrollPane = new JScrollPane(moviePanel);
         watchlistScrollPane.getVerticalScrollBar().setUnitIncrement(WatchlistViewModel.UNIT_INCREMENT);
         this.add(watchlistScrollPane, BorderLayout.CENTER);

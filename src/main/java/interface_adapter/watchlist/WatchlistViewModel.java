@@ -11,10 +11,10 @@ public class WatchlistViewModel extends ViewModel<WatchlistState> {
     public static final String SELECT_BUTTON_LABEL = "Select";
     public static final Integer FRAME_DIMENSION = 800;
     public static final Integer SPACER_DIMENSION = 20;
-    public static final Integer MOVIE_PANEL_ROW = 10;
-    public static final Integer MOVIE_PANEL_COLUMN = 5;
+    public static final Integer MOVIE_PANEL_ROW = 0;
+    public static final Integer MOVIE_PANEL_COLUMN = 3;
     public static final Integer UNIT_INCREMENT = 15;
-    public static final Integer MOVIE_BUTTON_WIDTH = 110;
+    public static final Integer MOVIE_BUTTON_WIDTH = 350;
     public static final Integer MOVIE_BUTTON_HEIGHT = 140;
 
     public WatchlistViewModel() {
