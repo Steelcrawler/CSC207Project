@@ -585,7 +585,7 @@ public class TMDBDataAccessObject implements MovieSearchDataAccessInterface, Mov
 
                 for (int i = 0; i < results.length(); i++) {
                     JSONObject keywordsJson = results.getJSONObject(i);
-                    Integer keywordID = (Integer) keywordsJson.get(ID);
+                    Integer keywordID = (Integer) keywordsJson.get("id");
                     keywordIDs.add(keywordID);
                 }
             } 

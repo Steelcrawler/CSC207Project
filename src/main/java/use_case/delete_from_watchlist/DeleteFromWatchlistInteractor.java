@@ -10,14 +10,14 @@ import entity.Movie;
  * The Delete From Watchlist Interactor.
  */
 public class DeleteFromWatchlistInteractor implements DeleteFromWatchlistInputBoundary {
-    private final DeleteFromWatchlistDataAccessInterface mongoDBDataAccessObject;
+    private final DeleteFromWatchlistDataAccessInterface dataAccessObject;
     private final TMDBDataAccessObject tmdbDataAccessObject;
     private final DeleteFromWatchlistOutputBoundary deleteFromWatchlistPresenter;
 
-    public DeleteFromWatchlistInteractor(DeleteFromWatchlistDataAccessInterface mongoDBDataAccessObject,
+    public DeleteFromWatchlistInteractor(DeleteFromWatchlistDataAccessInterface dataAccessObject,
                                          TMDBDataAccessObject tmdbDataAccessObject,
                                          DeleteFromWatchlistOutputBoundary deleteFromWatchlistOutputBoundary) {
-        this.mongoDBDataAccessObject = mongoDBDataAccessObject;
+        this.dataAccessObject = dataAccessObject;
         this.tmdbDataAccessObject = tmdbDataAccessObject;
         this.deleteFromWatchlistPresenter = deleteFromWatchlistOutputBoundary;
     }
@@ -26,14 +26,14 @@ public class DeleteFromWatchlistInteractor implements DeleteFromWatchlistInputBo
     public void execute(DeleteFromWatchlistInputData deleteFromWatchlistInputData) {
         List<Integer> selectedMoviesList = deleteFromWatchlistInputData.getSelectedMovies();
         if (!selectedMoviesList.isEmpty()) {
-            String currentUsername = mongoDBDataAccessObject.getCurrentUsername();
+            String currentUsername = dataAccessObject.getCurrentUsername();
 
             // remove all movies that are selected from the watchlist
             for (Integer movieID : selectedMoviesList) {
-                mongoDBDataAccessObject.removeFromWatchlist(currentUsername, movieID);
+                dataAccessObject.removeFromWatchlist(currentUsername, movieID);
             }
 
-            List<Integer> newWatchlist = mongoDBDataAccessObject.getWatchlist(currentUsername);
+            List<Integer> newWatchlist = dataAccessObject.getWatchlist(currentUsername);
             List<String> titlesList = new ArrayList<>();
             List<String> posterPathsList = new ArrayList<>();
             for (Integer movieID : newWatchlist) {
