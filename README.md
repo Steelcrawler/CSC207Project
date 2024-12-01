@@ -42,14 +42,25 @@ The Movie Search Application is a Java-based application that allows users to se
 ## Usage
 1. **Sign Up**: Create a new account by providing a username and password.
 ![Signing up for an account](https://github.com/user-attachments/assets/e63cace3-5bb4-4b03-bd72-655caaf98c95)
+![Logging in with the new account](https://github.com/user-attachments/assets/010cf848-8cee-4faf-b588-cd2eb931c2a4)
+![The screen once you log in](https://github.com/user-attachments/assets/f0312ace-adac-4d9d-8d40-23d46a211514)
 
-   
-2. **Log In**: Log in to the application using your credentials. Log-ins are universal; that is, with this application, you can log in across devices and maintain the same watchlist.
-3. **Search Movies**: Use the search functionality to find movies by title and filter by genre, rating, and keywords.
-4. **Manage Watchlist**: Add movies to your watchlist and remove them as needed.
-5. **Movie Info**: See details about a movie such as rating information, trailer link, and plot summary.
-6. **Movie Recommendation**: Receive a relevant movie based on selected movies from a user's personal watchlist and get an AI-generated justification for the recommendation.
+3. **Log In**: Log in to the application using your credentials. Log-ins are universal; that is, with this application, you can log in across devices and maintain the same watchlist.
+4. **Search Movies**: Use the search functionality to find movies by title and filter by genre, rating, and keywords.
+![Searching for a movie by title](https://github.com/user-attachments/assets/6c87f7f1-2bd4-4670-8ab2-1fdecb5faedd)
 
+5. **Manage Watchlist**: Add movies to your watchlist and remove them as needed.
+![Adding a movie to the watchlist](https://github.com/user-attachments/assets/07a8f1fc-7a0e-493b-916e-dd2774defa37)
+![Viewing the watchlist](https://github.com/user-attachments/assets/88e3cfb7-38a4-4d09-a9ba-f79c12a4886e)
+![Pressing select in the watchlist](https://github.com/user-attachments/assets/2e4d755e-f0b3-4f8a-a7f6-6a25f2e5c244)
+
+6. **Movie Info**: See details about a movie such as rating information, trailer link, and plot summary.
+![Seeing the movie info from my watchlist](https://github.com/user-attachments/assets/bb583a63-6f8a-4250-8f71-3a5ac552da52)
+
+7. **Movie Recommendation**: Receive a relevant movie based on selected movies from a user's personal watchlist and get an AI-generated justification for the recommendation.
+![Choosing a specific movie in the watchlist](https://github.com/user-attachments/assets/723c567e-4c8a-49ee-8866-7e806f71255e)
+![Getting a recommendation from said selection](https://github.com/user-attachments/assets/e94e616a-c992-4e34-af69-29ee91666a83)
+![Understanding why you were recommended said movie](https://github.com/user-attachments/assets/e4a6cc1f-bc14-4008-983f-5b52677b6e88)
 ## Usage Guide
 
 ## License
