@@ -54,7 +54,9 @@ public class SelectState {
         this.selectedMovies = selectedMovies;
     }
 
-    public List<Integer> getSelectedMovies() {return selectedMovies;}
+    public List<Integer> getSelectedMovies() {
+        return selectedMovies;
+    }
 
     public void setPosterPaths(List<String> posterPaths) {
         this.posterPaths = posterPaths;

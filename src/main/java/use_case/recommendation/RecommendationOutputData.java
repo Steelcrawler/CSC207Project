@@ -2,6 +2,9 @@ package use_case.recommendation;
 
 import java.util.List;
 
+/**
+ * The output data for the recommendation use case.
+ */
 public class RecommendationOutputData {
     private List<Integer> movieIDsList;
     private List<String> movieTitlesList;
@@ -10,7 +13,9 @@ public class RecommendationOutputData {
     private List<Integer> selectedIDsOutput;
     private final boolean useCaseFailed;
 
-    public RecommendationOutputData(List<Integer> movieIDsList, List<String> movieTitlesList, List<String> posterPathsList, List<String> plotsList, List<Integer> selectedIDsOutput, boolean useCaseFailed) {
+    public RecommendationOutputData(List<Integer> movieIDsList, List<String> movieTitlesList,
+                                    List<String> posterPathsList, List<String> plotsList,
+                                    List<Integer> selectedIDsOutput, boolean useCaseFailed) {
         this.movieIDsList = movieIDsList;
         this.movieTitlesList = movieTitlesList;
         this.posterPathsList = posterPathsList;
@@ -35,7 +40,11 @@ public class RecommendationOutputData {
         return posterPathsList;
     }
 
-    public List<String> getPlotsList() {return plotsList;}
+    public List<String> getPlotsList() {
+        return plotsList;
+    }
 
-    public List<Integer> getSelectedIDsOutput() {return selectedIDsOutput;}
+    public List<Integer> getSelectedIDsOutput() {
+        return selectedIDsOutput;
+    }
 }
