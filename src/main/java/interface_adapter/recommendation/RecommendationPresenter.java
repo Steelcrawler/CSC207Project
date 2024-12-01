@@ -1,8 +1,7 @@
 package interface_adapter.recommendation;
 
-import interface_adapter.Select.SelectViewModel;
+import interface_adapter.select.SelectViewModel;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.watchlist.WatchlistState;
 import use_case.recommendation.RecommendationOutputBoundary;
 import use_case.recommendation.RecommendationOutputData;
 

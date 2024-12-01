@@ -1,4 +1,4 @@
-package interface_adapter.Select;
+package interface_adapter.select;
 
 import java.util.ArrayList;
 import java.util.List;
