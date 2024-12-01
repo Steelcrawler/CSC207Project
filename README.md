@@ -16,29 +16,88 @@ Zheyuan Zhang: love2know <br />
 ## Introduction
 The Movie Search Application is a Java-based application that allows users to search for movies, view details, and manage their watchlist. This app was created to address the common challenge of finding movies to watch and managing personal movie preferences. It recognizes that users often struggle to discover new films that align with their interests or keep track of movies they want to watch. The application uses the TMDB API to fetch movie data and provides a user-friendly interface for searching and managing movies. The application also provides an interface for the user to get new movie reccomendations based on movies currently in their watchlist, and get reasoning as to why they are benig recommended said movies. 
 
-## Features
-- **User Authentication**: Users can sign up and log in to the application.
-- **Movie Search**: Search for movies by title or filter by genre, rating, and keywords.
-- **Watchlist Management**: Add and remove movies from your watchlist.
-- **Recomendation System**: Users can get recommendations from their watchlist, and get AI-generated reasons for why they are being recommended that movie.
+## Installation Requirements
 
-## Installation
+### System Requirements
+- Operating System: Windows, macOS, or Linux
+- Java Development Kit (JDK) 11 or higher
+- Maven 3.6.0 or higher
+- 500MB free disk space
+
+### Required Software
+1. **Java JDK 11+**
+   - Download from: [Oracle JDK](https://www.oracle.com/java/technologies/downloads/) or [OpenJDK](https://adoptium.net/)
+   - Verify installation:
+     ```sh
+     java -version
+     ```
+
+2. **Maven**
+   - Download from: [Maven Official Site](https://maven.apache.org/download.cgi)
+   - Installation guide: [Maven Installation Instructions](https://maven.apache.org/install.html)
+   - Verify installation:
+     ```sh
+     mvn -version
+     ```
+
+### Installation Steps
+
 1. **Clone the repository**:
     ```sh
     git clone https://github.com/Steelcrawler/CSC207Project.git
+    cd CSC207Project
     ```
 
-2. **Build the project (if necessary)**:
+2. **Configure Dependencies**:
+   The project uses Maven for dependency management. Key dependencies include:
+   - Spring Boot 2.7.0
+   - H2 Database
+   - JUnit 5 for testing
+
+   All dependencies are defined in `pom.xml`. Maven will automatically download them during the build.
+
+3. **Build the project**:
     ```sh
     mvn clean install
     ```
 
-3. **Run the application**:
-    Run the file found at:
-    ```
+4. **Run the application**:
+   Navigate to and run:
+    ```sh
     src/main/java/app/Main.java
     ```
 
+### Common Installation Issues
+
+1. **Maven Build Fails**
+   - **Issue**: Missing dependencies or incorrect Maven configuration
+   - **Solution**: 
+     - Verify your `settings.xml` file
+     - Try running with `-X` flag for debug output:
+       ```sh
+       mvn clean install -X
+       ```
+     - Clear Maven cache:
+       ```sh
+       mvn dependency:purge-local-repository
+       ```
+
+2. **Java Version Mismatch**
+   - **Issue**: Incorrect Java version
+   - **Solution**: 
+     - Verify Java version:
+       ```sh
+       java -version
+       ```
+     - Set JAVA_HOME environment variable:
+       - Windows:
+         ```cmd
+         set JAVA_HOME=C:\Program Files\Java\jdk-11
+         ```
+       - Unix/MacOS:
+         ```sh
+         export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-11.jdk/Contents/Home
+         ```
 ## Usage
 1. **Sign Up**: Create a new account by providing a username and password.
 ![Signing up for an account](https://github.com/user-attachments/assets/e63cace3-5bb4-4b03-bd72-655caaf98c95)
