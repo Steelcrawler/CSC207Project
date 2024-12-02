@@ -20,6 +20,7 @@ import com.mongodb.client.MongoDatabase;
 import entity.User;
 import entity.UserFactory;
 import io.github.cdimascio.dotenv.Dotenv;
+import use_case.add_recommended_to_watchlist.AddRecommendedToWatchlistDataAccessInterface;
 import use_case.add_to_watchlist.AddToWatchlistDataAccessInterface;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.delete_from_watchlist.DeleteFromWatchlistDataAccessInterface;
@@ -37,7 +38,8 @@ public class MongoDBUserDataAccessObject implements SignupUserDataAccessInterfac
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         UserWatchlistDataAccessInterface, AddToWatchlistDataAccessInterface,
-        OpenWatchlistDataAccessInterface, DeleteFromWatchlistDataAccessInterface {
+        OpenWatchlistDataAccessInterface, DeleteFromWatchlistDataAccessInterface,
+        AddRecommendedToWatchlistDataAccessInterface {
 
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";

@@ -3,13 +3,10 @@ package view;
 import interface_adapter.movie_justif.MovieJustifController;
 import interface_adapter.movie_justif.MovieJustifState;
 import interface_adapter.movie_justif.MovieJustifViewModel;
-import interface_adapter.movie_search.MovieSearchController;
-import interface_adapter.movie_search.MovieSearchState;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.MalformedURLException;
@@ -38,7 +35,6 @@ public class MovieJustifView extends JPanel implements ActionListener, PropertyC
 
     public MovieJustifView(MovieJustifViewModel movieJustifViewModel) {
 
-
         this.movieJustifViewModel = movieJustifViewModel;
         this.movieJustifViewModel.addPropertyChangeListener(this);
 
@@ -48,12 +44,12 @@ public class MovieJustifView extends JPanel implements ActionListener, PropertyC
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 if (evt.getSource().equals(backButton)) {
-
                     final MovieJustifState currentState = movieJustifViewModel.getState();
                     movieJustifController.switchView();
                 }
             }
         });
+
         this.titleLabel = new JLabel(movieJustifViewModel.MOVIE_TITLE_INFO);
         this.ratingLabel = new JLabel(movieJustifViewModel.RATING_INFO);
 
