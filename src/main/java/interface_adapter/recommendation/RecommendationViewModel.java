@@ -16,6 +16,7 @@ public class RecommendationViewModel extends ViewModel<RecommendationState> {
     public static final Integer TAREA_HEIGHT = 200;
     public static final Integer MAX_WIDTH = 150;
     public static final Integer MAX_HEIGHT = 250;
+    public static final String ADD_TO_WATCHLIST_BUTTON_LABEL = "Add to Watchlist";
 
     public RecommendationViewModel() {
         super("Recommendation");

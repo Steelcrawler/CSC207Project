@@ -22,6 +22,7 @@ public class Main {
                                             .addLoginUseCase()
                                             .addMovieSearchUseCase()
                                             .addAddToWatchlistUseCase()
+                                            .addAddRecommendedToWatchlistUseCase()
                                             .addOpenWatchlistUseCase()
                                             .addMovieInfoUseCase()
                                             .addLogoutUseCase()

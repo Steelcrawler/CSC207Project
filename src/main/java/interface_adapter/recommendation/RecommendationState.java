@@ -13,6 +13,7 @@ public class RecommendationState {
     private List<Integer> inputMovieIDs;
     private boolean emptyWatchlist;
     private String errorMessage;
+    private String movieAddedToWatchlist = "";
 
     public List<Integer> getRecIDslist() {
         return recIDslist;
@@ -68,5 +69,13 @@ public class RecommendationState {
 
     public void setInputMovieIDs(List<Integer> inputMovieIDs) {
         this.inputMovieIDs = inputMovieIDs;
+    }
+
+    public String getMovieAddedToWatchlist() {
+        return movieAddedToWatchlist;
+    }
+
+    public void setMovieAddedToWatchlist(String movieAddedToWatchlist) {
+        this.movieAddedToWatchlist = movieAddedToWatchlist;
     }
 }
