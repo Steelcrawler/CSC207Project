@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import entity.User;
+import use_case.add_recommended_to_watchlist.AddRecommendedToWatchlistDataAccessInterface;
 import use_case.add_to_watchlist.AddToWatchlistDataAccessInterface;
 import use_case.change_password.ChangePasswordUserDataAccessInterface;
 import use_case.delete_from_watchlist.DeleteFromWatchlistDataAccessInterface;
@@ -24,7 +25,7 @@ public class InMemoryUserDataAccessObject implements SignupUserDataAccessInterfa
         ChangePasswordUserDataAccessInterface,
         LogoutUserDataAccessInterface,
         UserWatchlistDataAccessInterface, AddToWatchlistDataAccessInterface, OpenWatchlistDataAccessInterface,
-        DeleteFromWatchlistDataAccessInterface {
+        DeleteFromWatchlistDataAccessInterface, AddRecommendedToWatchlistDataAccessInterface {
 
     private final Map<String, User> users = new HashMap<>();
     private final Map<String, List<Integer>> watchlists = new HashMap<>();
