@@ -49,10 +49,7 @@ The Movie Search Application is a Java-based application that allows users to se
     ```
 
 2. **Configure Dependencies**:
-   The project uses Maven for dependency management. Key dependencies include:
-   - Spring Boot 2.7.0
-   - H2 Database
-   - JUnit 5 for testing
+   The project uses Maven for dependency management.
 
    All dependencies are defined in `pom.xml`. Maven will automatically download them during the build.
 
