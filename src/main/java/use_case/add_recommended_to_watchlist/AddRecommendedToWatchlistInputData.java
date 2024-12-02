@@ -7,10 +7,12 @@ public class AddRecommendedToWatchlistInputData {
 
     private final String movieTitle;
     private final Integer movieID;
+    private final String posterPath;
 
-    public AddRecommendedToWatchlistInputData(String movieTitle, Integer movieID) {
+    public AddRecommendedToWatchlistInputData(String movieTitle, Integer movieID, String posterPath) {
         this.movieTitle = movieTitle;
         this.movieID = movieID;
+        this.posterPath = posterPath;
     }
 
     String getMovieTitle() {
@@ -19,5 +21,9 @@ public class AddRecommendedToWatchlistInputData {
 
     Integer getMovieID() {
         return movieID;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
     }
 }

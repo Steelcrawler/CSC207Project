@@ -10,7 +10,7 @@ class AddRecommendedToWatchlistInteractorTest {
     @Test
     void addRecommendedToWatchlistTest() {
         AddRecommendedToWatchlistInputData inputData = new AddRecommendedToWatchlistInputData(
-                "Venom: The Last Dance", 912649);
+                "Venom: The Last Dance", 912649, "mockPosterPath");
         InMemoryUserDataAccessObject inMemoryUserDataAccessObject = new InMemoryUserDataAccessObject();
         User newUser = new CommonUserFactory().create("alaya", "yay");
         inMemoryUserDataAccessObject.save(newUser);
@@ -25,7 +25,7 @@ class AddRecommendedToWatchlistInteractorTest {
             }
             @Override
             public void prepareFailView(String message) {
-                Assertions.assertEquals("This movie is already in your watchlist.", message);
+                Assertions.fail("Use case failure is unexpected.");
             }
         };
 
@@ -37,7 +37,7 @@ class AddRecommendedToWatchlistInteractorTest {
     @Test
     void alreadyInWatchlistTest() {
         AddRecommendedToWatchlistInputData inputData = new AddRecommendedToWatchlistInputData(
-                "Venom: The Last Dance", 912649);
+                "Venom: The Last Dance", 912649, "mockPosterPath");
         InMemoryUserDataAccessObject inMemoryUserDataAccessObject = new InMemoryUserDataAccessObject();
         User newUser = new CommonUserFactory().create("le", "yay");
         inMemoryUserDataAccessObject.save(newUser);
@@ -48,7 +48,7 @@ class AddRecommendedToWatchlistInteractorTest {
         AddRecommendedToWatchlistOutputBoundary successPresenter = new AddRecommendedToWatchlistOutputBoundary() {
             @Override
             public void prepareSuccessView(AddRecommendedToWatchlistOutputData outputData) {
-                Assertions.fail("Use case failure is unexpected.");
+                Assertions.fail("Use case success is unexpected.");
             }
             @Override
             public void prepareFailView(String message) {

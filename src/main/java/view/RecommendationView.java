@@ -66,7 +66,8 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
                     final RecommendationState currentState = recommendationViewModel.getState();
                     String movieTitle = currentState.getMovieTitles().get(recNumber);
                     Integer movieID = currentState.getRecIDslist().get(recNumber);
-                    addRecommendedToWatchlistController.execute(movieTitle, movieID);
+                    String posterPath = currentState.getPosterPaths().get(recNumber);
+                    addRecommendedToWatchlistController.execute(movieTitle, movieID, posterPath);
                 }
             }
         });

@@ -21,7 +21,8 @@ public class AddRecommendedToWatchlistInteractor implements AddRecommendedToWatc
                     addRecommendedToWatchlistInputData.getMovieID());
 
             final AddRecommendedToWatchlistOutputData addRecommendedToWatchlistOutputData = new AddRecommendedToWatchlistOutputData(
-                    addRecommendedToWatchlistInputData.getMovieTitle(), false);
+                    addRecommendedToWatchlistInputData.getMovieTitle(), addRecommendedToWatchlistInputData.getMovieID(),
+                    addRecommendedToWatchlistInputData.getPosterPath(), false);
             this.addRecommendedToWatchlistPresenter.prepareSuccessView(addRecommendedToWatchlistOutputData);
         }
         else {

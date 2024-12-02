@@ -328,7 +328,8 @@ public class AppBuilder {
      */
     public AppBuilder addAddRecommendedToWatchlistUseCase() {
         final AddRecommendedToWatchlistOutputBoundary addRecommendedToWatchlistOutputBoundary =
-                new AddRecommendedToWatchlistPresenter(viewManagerModel, recommendationViewModel);
+                new AddRecommendedToWatchlistPresenter(viewManagerModel, recommendationViewModel, watchlistViewModel,
+                        selectViewModel);
         final AddRecommendedToWatchlistInputBoundary addRecommendedToWatchlistInputBoundary =
                 new AddRecommendedToWatchlistInteractor(userDataAccessObject, addRecommendedToWatchlistOutputBoundary);
         final AddRecommendedToWatchlistController addRecommendedToWatchlistController =
