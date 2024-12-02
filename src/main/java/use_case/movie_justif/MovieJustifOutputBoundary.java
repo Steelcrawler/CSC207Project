@@ -1,5 +1,8 @@
 package use_case.movie_justif;
 
+/**
+ * Output Boundary for movie justification use case.
+ */
 public interface MovieJustifOutputBoundary {
     /**
      * Prepares the success view for the Movie Rec Use Case.
@@ -13,5 +16,8 @@ public interface MovieJustifOutputBoundary {
      */
     void prepareFailView(String errorMessage);
 
+    /**
+     * Switch the page back to Recommendation page.
+     */
     void switchToRecView();
 }

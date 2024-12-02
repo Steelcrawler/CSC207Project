@@ -1,16 +1,8 @@
 package interface_adapter.movie_justif;
 
-import entity.Movie;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.login.LoginState;
-import interface_adapter.movie_justif.MovieJustifState;
-import interface_adapter.movie_justif.MovieJustifViewModel;
-import interface_adapter.movie_search.MovieSearchState;
-import use_case.login.LoginOutputData;
 import use_case.movie_justif.MovieJustifOutputBoundary;
 import use_case.movie_justif.MovieJustifOutputData;
-
-import java.util.ArrayList;
 
 /**
  * The Presenter for the Movie Justif Use Case.
@@ -28,7 +20,7 @@ public class MovieJustifPresenter implements MovieJustifOutputBoundary {
 
     @Override
     public void prepareSuccessView(MovieJustifOutputData outputData) {
-        final MovieJustifState movieJustifState =  movieJustifViewModel.getState();
+        final MovieJustifState movieJustifState = movieJustifViewModel.getState();
         movieJustifState.setMovieTitle(outputData.getMovieTitle());
         movieJustifState.setRatingInfo(outputData.getMovieRating());
         movieJustifState.setJustifInfo(outputData.getJustification());
@@ -49,7 +41,8 @@ public class MovieJustifPresenter implements MovieJustifOutputBoundary {
 
     @Override
     public void switchToRecView() {
-        this.viewManagerModel.setState("Recommendation"); // change the state to recommendation
+        // change the state to recommendation
+        this.viewManagerModel.setState("Recommendation");
         this.viewManagerModel.firePropertyChanged();
     }
 }
