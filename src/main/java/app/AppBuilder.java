@@ -11,6 +11,8 @@ import data_access.MongoDBUserDataAccessObject;
 import data_access.TMDBDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
+import interface_adapter.add_recommended_to_watchlist.AddRecommendedToWatchlistController;
+import interface_adapter.add_recommended_to_watchlist.AddRecommendedToWatchlistPresenter;
 import interface_adapter.select.SelectViewModel;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.add_to_watchlist.AddToWatchlistController;
@@ -40,6 +42,9 @@ import interface_adapter.movie_justif.MovieJustifViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import use_case.add_recommended_to_watchlist.AddRecommendedToWatchlistInputBoundary;
+import use_case.add_recommended_to_watchlist.AddRecommendedToWatchlistInteractor;
+import use_case.add_recommended_to_watchlist.AddRecommendedToWatchlistOutputBoundary;
 import use_case.add_to_watchlist.AddToWatchlistInputBoundary;
 import use_case.add_to_watchlist.AddToWatchlistInteractor;
 import use_case.add_to_watchlist.AddToWatchlistOutputBoundary;
@@ -61,7 +66,6 @@ import use_case.movie_search.MovieSearchInputBoundary;
 import use_case.movie_search.MovieSearchInteractor;
 import use_case.movie_search.MovieSearchOutputBoundary;
 import use_case.movie_info.MovieInfoInteractor;
-
 import use_case.open_watchlist.OpenWatchlistInputBoundary;
 import use_case.open_watchlist.OpenWatchlistInteractor;
 import use_case.open_watchlist.OpenWatchlistOutputBoundary;
@@ -191,6 +195,7 @@ public class AppBuilder {
         cardPanel.add(recommendationView, recommendationView.getViewName());
         return this;
     }
+
     /**
      * Adds the Login View to the application.
      * @return this builder
@@ -295,9 +300,26 @@ public class AppBuilder {
     public AppBuilder addAddToWatchlistUseCase() {
         final AddToWatchlistOutputBoundary addToWatchlistOutputBoundary = new AddToWatchlistPresenter(viewManagerModel,
                 movieSearchViewModel);
-        final AddToWatchlistInputBoundary addToWatchlistInputBoundary = new AddToWatchlistInteractor(userDataAccessObject, addToWatchlistOutputBoundary);
-        final AddToWatchlistController addToWatchlistController = new AddToWatchlistController(addToWatchlistInputBoundary);
+        final AddToWatchlistInputBoundary addToWatchlistInputBoundary = new AddToWatchlistInteractor(
+                userDataAccessObject, addToWatchlistOutputBoundary);
+        final AddToWatchlistController addToWatchlistController = new AddToWatchlistController(
+                addToWatchlistInputBoundary);
         movieSearchView.setAddToWatchlistController(addToWatchlistController);
+        return this;
+    }
+
+    /**
+     * Adds the Add Recommended To Watchlist Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addAddRecommendedToWatchlistUseCase() {
+        final AddRecommendedToWatchlistOutputBoundary addRecommendedToWatchlistOutputBoundary =
+                new AddRecommendedToWatchlistPresenter(viewManagerModel, recommendationViewModel);
+        final AddRecommendedToWatchlistInputBoundary addRecommendedToWatchlistInputBoundary =
+                new AddRecommendedToWatchlistInteractor(userDataAccessObject, addRecommendedToWatchlistOutputBoundary);
+        final AddRecommendedToWatchlistController addRecommendedToWatchlistController =
+                new AddRecommendedToWatchlistController(addRecommendedToWatchlistInputBoundary);
+        recommendationView.setAddRecommendedToWatchlistController(addRecommendedToWatchlistController);
         return this;
     }
 
@@ -317,10 +339,14 @@ public class AppBuilder {
     }
 
     public AppBuilder addRecommendationUseCase() {
-        final RecommendationOutputBoundary recommendationOutputBoundary = new RecommendationPresenter(viewManagerModel, recommendationViewModel, selectViewModel);
+        final RecommendationOutputBoundary recommendationOutputBoundary = new RecommendationPresenter(viewManagerModel,
+                recommendationViewModel, selectViewModel);
         final RecommendationDataAccessInterface tmdbDataAccessObject = new TMDBDataAccessObject();
-        final RecommendationInputBoundary recommendationInputBoundary = new RecommendationInteractor(tmdbDataAccessObject, recommendationOutputBoundary);
-        final RecommendationController recommendationController = new RecommendationController(recommendationInputBoundary);
+        final RecommendationInputBoundary recommendationInputBoundary = new RecommendationInteractor(
+                tmdbDataAccessObject, recommendationOutputBoundary);
+        final RecommendationController recommendationController = new RecommendationController(
+                recommendationInputBoundary);
+
         selectView.setRecommendationController(recommendationController);
         recommendationView.setRecommendationController(recommendationController);
         return this;

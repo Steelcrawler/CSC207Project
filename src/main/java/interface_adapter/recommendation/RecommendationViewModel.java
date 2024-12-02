@@ -9,7 +9,7 @@ public class RecommendationViewModel extends ViewModel<RecommendationState> {
     public static final String MOVIE_TITLE_INFO = "Movie Title: ";
     public static final String JUST_BUTTON = "Justification";
     public static final String NEXT_BUTTON = "Get Another Recommendation";
-
+    public static final String ADD_TO_WATCHLIST_BUTTON_LABEL = "Add to Watchlist";
 
     public RecommendationViewModel() {
         super("Recommendation");

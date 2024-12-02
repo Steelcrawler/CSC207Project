@@ -10,6 +10,7 @@ public class RecommendationState {
     private List<Integer> inputMovieIDs;
     private boolean emptyWatchlist;
     private String errorMessage;
+    private String movieAddedToWatchlist = "";
 
     public List<Integer> getRecIDslist() {
         return recIDslist;
@@ -27,9 +28,13 @@ public class RecommendationState {
         this.movieTitles = movieTitles;
     }
 
-    public List<String> getPlots() {return plots;}
+    public List<String> getPlots() {
+        return plots;
+    }
 
-    public void setPlots(List<String> plots) {this.plots = plots;}
+    public void setPlots(List<String> plots) {
+        this.plots = plots;
+    }
 
     public boolean isEmptyWatchlist() {
         return emptyWatchlist;
@@ -61,5 +66,13 @@ public class RecommendationState {
 
     public void setInputMovieIDs(List<Integer> inputMovieIDs) {
         this.inputMovieIDs = inputMovieIDs;
+    }
+
+    public String getMovieAddedToWatchlist() {
+        return movieAddedToWatchlist;
+    }
+
+    public void setMovieAddedToWatchlist(String movieAddedToWatchlist) {
+        this.movieAddedToWatchlist = movieAddedToWatchlist;
     }
 }

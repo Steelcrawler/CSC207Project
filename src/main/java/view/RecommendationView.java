@@ -1,11 +1,9 @@
 package view;
 
 
+import interface_adapter.add_recommended_to_watchlist.AddRecommendedToWatchlistController;
 import interface_adapter.movie_justif.MovieJustifController;
 
-import interface_adapter.movie_info.MovieInfoController;
-import interface_adapter.movie_info.MovieInfoState;
-import interface_adapter.movie_info.MovieInfoViewModel;
 import interface_adapter.recommendation.RecommendationController;
 import interface_adapter.recommendation.RecommendationState;
 import interface_adapter.recommendation.RecommendationViewModel;
@@ -18,7 +16,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
 
 public class RecommendationView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "Recommendation";
@@ -28,6 +25,7 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
     private final JButton nextButton;
     private JButton backButton;
     private JButton justificationButton;
+    private JButton addToWatchlistButton;
     private JLabel titleLabel;
     private JLabel plotLabel;
     private JPanel moviePoster;
@@ -38,6 +36,7 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
 
     private RecommendationController recommendationController;
     private MovieJustifController movieJustifController;
+    private AddRecommendedToWatchlistController addRecommendedToWatchlistController;
 
     public RecommendationView(RecommendationViewModel recommendationViewModel) {
 
@@ -48,11 +47,26 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JPanel buttonsPanel = new JPanel();
+
         this.justificationButton = new JButton(recommendationViewModel.JUST_BUTTON);
         this.nextButton = new JButton(recommendationViewModel.NEXT_BUTTON);
+        this.addToWatchlistButton = new JButton(RecommendationViewModel.ADD_TO_WATCHLIST_BUTTON_LABEL);
+        this.backButton = new JButton(recommendationViewModel.BACK_BUTTON_LABEL);
+
         buttonsPanel.add(this.justificationButton);
         buttonsPanel.add(this.nextButton);
-        this.backButton = new JButton(recommendationViewModel.BACK_BUTTON_LABEL);
+        buttonsPanel.add(this.addToWatchlistButton);
+
+        addToWatchlistButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                if (evt.getSource().equals(addToWatchlistButton)) {
+                    final RecommendationState currentState = recommendationViewModel.getState();
+                    String movieTitle = currentState.getMovieTitles().get(recNumber);
+                    Integer movieID = currentState.getRecIDslist().get(recNumber);
+                    addRecommendedToWatchlistController.execute(movieTitle, movieID);
+                }
+            }
+        });
 
         this.titleLabel = new JLabel(recommendationViewModel.MOVIE_TITLE_INFO);
 
@@ -72,7 +86,6 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
         scrollPane.setPreferredSize(new Dimension(400, 200));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
 
         this.moviePoster = new JPanel();
         this.posterLabel = new JLabel();
@@ -132,8 +145,8 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
 
     public void setRecommendationController(RecommendationController recommendationController) {
         this.recommendationController = recommendationController;
-
     }
+
     public String getViewName() {
         return viewName;
     }
@@ -191,7 +204,11 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
             System.out.println("Invalid URL format: " + e.getMessage());
         }
 
-
+        if (!state.getMovieAddedToWatchlist().isEmpty()) {
+            JOptionPane.showMessageDialog(this, state.getMovieAddedToWatchlist());
+            state.setMovieAddedToWatchlist("");
+            recommendationViewModel.firePropertyChanged();
+        }
     }
 
     public void setMovieJustifController(MovieJustifController movieJustifController) {
@@ -201,6 +218,11 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
     @Override
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
+    }
+
+    public void setAddRecommendedToWatchlistController(
+            AddRecommendedToWatchlistController addRecommendedToWatchlistController) {
+        this.addRecommendedToWatchlistController = addRecommendedToWatchlistController;
     }
 }
 
