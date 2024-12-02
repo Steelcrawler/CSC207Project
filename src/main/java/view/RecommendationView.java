@@ -49,12 +49,12 @@ public class RecommendationView extends JPanel implements ActionListener, Proper
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JPanel buttonsPanel = new JPanel();
-
         this.justificationButton = new JButton(recommendationViewModel.JUST_BUTTON);
         this.nextButton = new JButton(recommendationViewModel.NEXT_BUTTON);
         this.addToWatchlistButton = new JButton(RecommendationViewModel.ADD_TO_WATCHLIST_BUTTON_LABEL);
         this.backButton = new JButton(recommendationViewModel.BACK_BUTTON_LABEL);
+
+        JPanel buttonsPanel = new JPanel();
 
         buttonsPanel.add(this.justificationButton);
         buttonsPanel.add(this.nextButton);

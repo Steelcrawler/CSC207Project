@@ -7,8 +7,9 @@ public class AddRecommendedToWatchlistInteractor implements AddRecommendedToWatc
     private final AddRecommendedToWatchlistDataAccessInterface mongoDBDataAccessObject;
     private final AddRecommendedToWatchlistOutputBoundary addRecommendedToWatchlistPresenter;
 
-    public AddRecommendedToWatchlistInteractor(AddRecommendedToWatchlistDataAccessInterface mongoDBDataAccessObject,
-                                               AddRecommendedToWatchlistOutputBoundary addRecommendedToWatchlistOutputBoundary) {
+    public AddRecommendedToWatchlistInteractor(
+            AddRecommendedToWatchlistDataAccessInterface mongoDBDataAccessObject,
+            AddRecommendedToWatchlistOutputBoundary addRecommendedToWatchlistOutputBoundary) {
         this.mongoDBDataAccessObject = mongoDBDataAccessObject;
         this.addRecommendedToWatchlistPresenter = addRecommendedToWatchlistOutputBoundary;
     }
@@ -20,7 +21,8 @@ public class AddRecommendedToWatchlistInteractor implements AddRecommendedToWatc
             mongoDBDataAccessObject.addToWatchlist(mongoDBDataAccessObject.getCurrentUsername(),
                     addRecommendedToWatchlistInputData.getMovieID());
 
-            final AddRecommendedToWatchlistOutputData addRecommendedToWatchlistOutputData = new AddRecommendedToWatchlistOutputData(
+            final AddRecommendedToWatchlistOutputData addRecommendedToWatchlistOutputData =
+                    new AddRecommendedToWatchlistOutputData(
                     addRecommendedToWatchlistInputData.getMovieTitle(), addRecommendedToWatchlistInputData.getMovieID(),
                     addRecommendedToWatchlistInputData.getPosterPath(), false);
             this.addRecommendedToWatchlistPresenter.prepareSuccessView(addRecommendedToWatchlistOutputData);
