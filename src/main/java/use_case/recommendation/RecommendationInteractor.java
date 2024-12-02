@@ -51,7 +51,7 @@ public class RecommendationInteractor implements RecommendationInputBoundary {
             plotsOutput.add(movie.getPlot());
         }
 
-        if (movieIDsOutput.size() == 0) {
+        if (movieIDsOutput.isEmpty()) {
             recommendationPresenter.prepareFailView("A Recommendation could not be made");
         }
         else {
