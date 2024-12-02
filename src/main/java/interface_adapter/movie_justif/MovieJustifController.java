@@ -1,11 +1,9 @@
 package interface_adapter.movie_justif;
 
-import entity.Movie;
-import use_case.movie_justif.MovieJustifInputBoundary;
-import use_case.movie_justif.MovieJustifInputData;
-import java.util.ArrayList;
 import java.util.List;
 
+import use_case.movie_justif.MovieJustifInputBoundary;
+import use_case.movie_justif.MovieJustifInputData;
 
 /**
  * The controller for the Movie Justif Use Case.
@@ -19,6 +17,8 @@ public class MovieJustifController {
 
     /**
      * Executes the Movie Justif Use Case.
+     * @param wantFrom is the ids of movies that the user wanted to be recommended from.
+     * @param recommended is the id of the movie that is recommended to the user.
      */
     public void execute(List<Integer> wantFrom, int recommended) {
         final MovieJustifInputData movieJustifInputData = new MovieJustifInputData(wantFrom, recommended);
@@ -29,6 +29,9 @@ public class MovieJustifController {
         movieJustifUseCaseInteractor.execute(movieJustifInputData);
     }
 
+    /**
+     * Switch screen to the next page.
+     */
     public void switchView() {
         movieJustifUseCaseInteractor.switchView();
     }

@@ -11,6 +11,8 @@ public interface MovieJustifInputBoundary {
      */
     void execute(MovieJustifInputData movieJustifInputData);
 
-
+    /**
+     * Switch to the next page.
+     */
     void switchView();
 }

@@ -1,9 +1,5 @@
 package view;
 
-import interface_adapter.movie_justif.MovieJustifController;
-import interface_adapter.movie_justif.MovieJustifState;
-import interface_adapter.movie_justif.MovieJustifViewModel;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,10 +11,24 @@ import java.util.List;
 
 import javax.swing.*;
 
+import interface_adapter.movie_justif.MovieJustifController;
+import interface_adapter.movie_justif.MovieJustifState;
+import interface_adapter.movie_justif.MovieJustifViewModel;
+
+/**
+ * Movie Justification use case view.
+ */
 public class MovieJustifView extends JPanel implements ActionListener, PropertyChangeListener {
     private final String viewName = "movie justification";
+    private final Integer fourHundred = 400;
+    private final Integer twoHundred = 200;
+    private final Integer sixHundred = 600;
+    private final Integer oneFifty = 150;
+    private final Integer twoFifty = 250;
 
     private final MovieJustifViewModel movieJustifViewModel;
+
+    private JLabel posterLabel;
 
     private JButton backButton;
     private JLabel titleLabel;
@@ -27,7 +37,6 @@ public class MovieJustifView extends JPanel implements ActionListener, PropertyC
     private JLabel trailerLabel;
     private JTextArea reviewText;
     private JPanel reviewPanel;
-    JLabel posterLabel;
 
     private JTextArea textArea;
 
@@ -44,45 +53,44 @@ public class MovieJustifView extends JPanel implements ActionListener, PropertyC
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 if (evt.getSource().equals(backButton)) {
+
                     final MovieJustifState currentState = movieJustifViewModel.getState();
                     movieJustifController.switchView();
                 }
             }
         });
-
         this.titleLabel = new JLabel(movieJustifViewModel.MOVIE_TITLE_INFO);
         this.ratingLabel = new JLabel(movieJustifViewModel.RATING_INFO);
 
         this.textArea = new JTextArea();
-        textArea.setPreferredSize(new Dimension(400, 200));
+        textArea.setPreferredSize(new Dimension(fourHundred, twoHundred));
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
         textArea.setEditable(true);
 
         textArea.setText("");
         JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(400, 200));
+        scrollPane.setPreferredSize(new Dimension(fourHundred, twoHundred));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         JLabel reviewLabel = new JLabel();
         reviewLabel.setText("One user said: ");
-        JPanel reviewPanel = new JPanel();
+        reviewPanel = new JPanel();
         reviewPanel.add(reviewLabel);
 
         this.reviewText = new JTextArea();
-        reviewText.setPreferredSize(new Dimension(600, 200));
+        reviewText.setPreferredSize(new Dimension(sixHundred, twoHundred));
         reviewText.setLineWrap(true);
         reviewText.setWrapStyleWord(true);
         reviewText.setEditable(true);
 
         JScrollPane reviewScrollPane = new JScrollPane(reviewText);
-        reviewScrollPane.setPreferredSize(new Dimension(400, 200));
+        reviewScrollPane.setPreferredSize(new Dimension(fourHundred, twoHundred));
         reviewScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         reviewScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         reviewPanel.add(reviewScrollPane);
-
 
         this.moviePoster = new JPanel();
         this.posterLabel = new JLabel();
@@ -102,32 +110,53 @@ public class MovieJustifView extends JPanel implements ActionListener, PropertyC
         this.add(reviewPanel);
     }
 
+    /**
+     * Go to set controller.
+     * @param movieJustifController controller for the view.
+     */
     public void setMovieJustifController(MovieJustifController movieJustifController) {
         this.movieJustifController = movieJustifController;
 
     }
+
+    /**
+     * Get the name of the view.
+     * @return name of the view.
+     */
     public String getViewName() {
         return viewName;
     }
 
+    /**
+     * Change the property of the view.
+     * @param evt A PropertyChangeEvent object describing the event source
+     *          and the property that has changed.
+     */
     public void propertyChange(PropertyChangeEvent evt) {
         final MovieJustifState state = (MovieJustifState) evt.getNewValue();
 
-        String movie_title = state.getMovieTitle();
-        System.out.println("Movie title: " + movie_title);
-        double rating_info = state.getRatingInfo();
-        String justif_info = state.getJustifInfo();
-        String trailer_link = state.getTrailerLink();
+        String movieTitle = state.getMovieTitle();
+
+        System.out.println("Movie title: " + movieTitle);
+
+        double ratingInfo = state.getRatingInfo();
+
         String posterPath = state.getPosterPath();
+
         System.out.println(posterPath);
+
+        titleLabel.setText(movieJustifViewModel.MOVIE_TITLE_INFO + movieTitle);
+        ratingLabel.setText(movieJustifViewModel.RATING_INFO + ratingInfo);
+
+        String justifInfo = state.getJustifInfo();
+
+        textArea.setText(movieJustifViewModel.JUSTIF_INFO + justifInfo);
+
         List<String> userReviews = state.getUserReviews();
 
-
-        titleLabel.setText(movieJustifViewModel.MOVIE_TITLE_INFO + movie_title);
-        ratingLabel.setText(movieJustifViewModel.RATING_INFO + rating_info);
-        textArea.setText(justif_info);
-
-        reviewText.setText(userReviews.get(0));
+        if (!userReviews.isEmpty()) {
+            reviewText.setText(userReviews.get(0));
+        }
 
         try {
             URL posterURL = new URL(posterPath);
@@ -136,8 +165,8 @@ public class MovieJustifView extends JPanel implements ActionListener, PropertyC
             int originalWidth = posterIcon.getIconWidth();
             int originalHeight = posterIcon.getIconHeight();
 
-            int maxWidth = 150;
-            int maxHeight = 250;
+            int maxWidth = oneFifty;
+            int maxHeight = twoFifty;
 
             double widthRatio = (double) maxWidth / originalWidth;
             double heightRatio = (double) maxHeight / originalHeight;
@@ -156,13 +185,18 @@ public class MovieJustifView extends JPanel implements ActionListener, PropertyC
             moviePoster.add(posterLabel);
             if (posterIcon.getIconWidth() == -1 || posterIcon.getIconHeight() == -1) {
                 System.out.println("Failed to load image");
-            } else {
-                System.out.println("Image loaded successfully");}
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            System.out.println("Invalid URL format: " + e.getMessage());
+            }
+            else {
+                System.out.println("Image loaded successfully");
+            }
         }
-        trailerLabel.setText(movieJustifViewModel.TRAILER_INFO + trailer_link);
+        catch (MalformedURLException exmalE) {
+            exmalE.printStackTrace();
+            System.out.println("Invalid URL format: " + exmalE.getMessage());
+        }
+        String trailerLink = state.getTrailerLink();
+
+        trailerLabel.setText(movieJustifViewModel.TRAILER_INFO + trailerLink);
     }
 
     @Override
