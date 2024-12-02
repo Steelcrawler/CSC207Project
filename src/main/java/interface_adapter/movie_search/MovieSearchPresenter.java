@@ -16,7 +16,7 @@ public class MovieSearchPresenter implements MovieSearchOutputBoundary {
 
     private final MovieSearchViewModel movieSearchViewModel;
     private final ViewManagerModel viewManagerModel;
-    private final List<Movie> movieList;
+    private List<Movie> movieList;
 
     public MovieSearchPresenter(ViewManagerModel viewManagerModel,
                            MovieSearchViewModel movieSearchViewModel) {
@@ -31,6 +31,7 @@ public class MovieSearchPresenter implements MovieSearchOutputBoundary {
      */
     @Override
     public void prepareSuccessView(MovieSearchOutputData outputData) {
+        this.movieList = new ArrayList<>();
         final MovieSearchState movieSearchState = movieSearchViewModel.getState();
         ArrayList<ArrayList<Object>> moviesInfo = new ArrayList<>();
         movieSearchState.setSearchFound(true);
